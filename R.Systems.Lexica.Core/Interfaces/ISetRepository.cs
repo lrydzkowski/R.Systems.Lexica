@@ -7,5 +7,5 @@ public interface ISetRepository
 {
     public Task<OperationResult<Set?>> GetSetAsync(string name);
 
-    public Task<OperationResult<List<Set>>> GetSetsAsync();
+    public Task<OperationResult<List<Set>?>> GetSetsAsync();
 }

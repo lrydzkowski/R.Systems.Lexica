@@ -34,7 +34,7 @@ public class SetController : ControllerBase
     [HttpGet, Authorize(Roles = "lexica")]
     public async Task<IActionResult> Get()
     {
-        OperationResult<List<Set>> operationResult = await SetReadService.GetAsync();
+        OperationResult<List<Set>?> operationResult = await SetReadService.GetAsync();
         if (!operationResult.Result)
         {
             return BadRequest(ValidationResult.Errors);

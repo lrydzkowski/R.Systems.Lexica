@@ -1,6 +1,6 @@
-﻿namespace R.Systems.Lexica.Infrastructure.Settings;
+﻿namespace R.Systems.Lexica.FunctionalTests.Settings;
 
-public class InfrastructureSettings
+public class TestInfrastructureSettings
 {
     public const string PropertyName = "Lexica";
 

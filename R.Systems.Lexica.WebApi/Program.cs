@@ -3,7 +3,7 @@ using NLog.Web;
 using R.Systems.Lexica.WebApi.DependencyInjection;
 using R.Systems.Shared.WebApi.Middlewares;
 
-namespace R.Systems.Shared.WebApiTest;
+namespace R.Systems.Lexica.WebApi;
 
 public class Program
 {

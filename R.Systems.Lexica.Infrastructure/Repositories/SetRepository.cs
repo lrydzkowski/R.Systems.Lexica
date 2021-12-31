@@ -11,14 +11,40 @@ public class SetRepository : ISetRepository
 {
     public SetRepository(
         IOptionsSnapshot<InfrastructureSettings> infrastructureSettings,
-        SetValidator setValidator)
+        SetValidator setValidator,
+        ISetSource setSource)
     {
         InfrastructureSettings = infrastructureSettings.Value;
         SetValidator = setValidator;
+        SetSource = setSource;
     }
 
     public InfrastructureSettings InfrastructureSettings { get; }
     public SetValidator SetValidator { get; }
+    public ISetSource SetSource { get; }
+
+    public async Task<OperationResult<List<Set>?>> GetSetsAsync()
+    {
+        string setFilesDirPath = InfrastructureSettings.SetFilesDirPath;
+        if (!SetValidator.SetDirExists(setFilesDirPath))
+        {
+            return new OperationResult<List<Set>?> { Result = false };
+        }
+        bool result = true;
+        List<Set> sets = new();
+        List<string> setNames = SetSource.GetSetNames(setFilesDirPath);
+        foreach (string setName in setNames)
+        {
+            OperationResult<Set?> gettingSetResult = await GetSetAsync(setName);
+            result &= gettingSetResult.Result;
+            if (gettingSetResult.Data == null)
+            {
+                continue;
+            }
+            sets.Add(gettingSetResult.Data);
+        }
+        return new OperationResult<List<Set>?> { Result = result, Data = sets };
+    }
 
     public async Task<OperationResult<Set?>> GetSetAsync(string name)
     {
@@ -27,7 +53,7 @@ public class SetRepository : ISetRepository
         {
             return new OperationResult<Set?> { Result = false };
         }
-        string? fileContent = await File.ReadAllTextAsync(filePath);
+        string? fileContent = await SetSource.GetContentAsync(filePath);
         if (!SetValidator.ValidateSetFileContent(fileContent, filePath))
         {
             return new OperationResult<Set?> { Result = false };
@@ -56,24 +82,5 @@ public class SetRepository : ISetRepository
             Entries = entries
         };
         return new OperationResult<Set?>() { Result = true, Data = set };
-    }
-
-    public async Task<OperationResult<List<Set>>> GetSetsAsync()
-    {
-        bool result = true;
-        List<Set> sets = new();
-        DirectoryInfo dirInfo = new(InfrastructureSettings.SetFilesDirPath);
-        FileInfo[] files = dirInfo.GetFiles("*.*");
-        foreach (FileInfo file in files)
-        {
-            OperationResult<Set?> gettingSetResult = await GetSetAsync(file.Name);
-            result &= gettingSetResult.Result;
-            if (gettingSetResult.Data == null)
-            {
-                continue;
-            }
-            sets.Add(gettingSetResult.Data);
-        }
-        return new OperationResult<List<Set>> { Result = result, Data = sets };
     }
 }

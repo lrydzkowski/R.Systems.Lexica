@@ -19,7 +19,7 @@ public class SetReadService : IDependencyInjectionScoped
         return await SetRepository.GetSetAsync(name);
     }
 
-    public async Task<OperationResult<List<Set>>> GetAsync()
+    public async Task<OperationResult<List<Set>?>> GetAsync()
     {
         return await SetRepository.GetSetsAsync();
     }
