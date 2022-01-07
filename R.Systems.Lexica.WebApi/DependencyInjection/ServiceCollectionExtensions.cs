@@ -12,6 +12,6 @@ public static class ServiceCollectionExtensions
         services.AddInfrastructureServices(configuration);
         services.AddJwtSettingsServices(configuration);
         services.AddJwtServices();
-        services.AddSwaggerServices();
+        services.AddSwaggerServices(swaggerPageTitle: "R.Systems.Lexica.WebApi");
     }
 }
