@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A52C9367-509
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{67F2315A-18E9-499E-A67D-28DA6892813C}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.gitignore = .gitignore
+		Dockerfile = Dockerfile
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
@@ -20,7 +22,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastruc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FE032E4E-DF87-44D6-A90F-62243399B4BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Lexica.FunctionalTests", "R.Systems.Lexica.FunctionalTests\R.Systems.Lexica.FunctionalTests.csproj", "{514B4B30-CC99-42AD-8FAC-F3D77763DADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.FunctionalTests", "R.Systems.Lexica.FunctionalTests\R.Systems.Lexica.FunctionalTests.csproj", "{514B4B30-CC99-42AD-8FAC-F3D77763DADF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{467CEEB1-5728-44E1-93FA-AE9BDA56C8A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{2F238DA9-CE87-4894-A992-01BC78F1FFFA}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main.yml = .github\workflows\main.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +62,8 @@ Global
 		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF} = {A52C9367-509C-40D1-8469-6C8FF8214633}
 		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00} = {A52C9367-509C-40D1-8469-6C8FF8214633}
 		{514B4B30-CC99-42AD-8FAC-F3D77763DADF} = {FE032E4E-DF87-44D6-A90F-62243399B4BB}
+		{467CEEB1-5728-44E1-93FA-AE9BDA56C8A2} = {67F2315A-18E9-499E-A67D-28DA6892813C}
+		{2F238DA9-CE87-4894-A992-01BC78F1FFFA} = {467CEEB1-5728-44E1-93FA-AE9BDA56C8A2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {921A323E-B5D3-4A50-A61F-9216711D5B91}
