@@ -32,7 +32,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
 
     private void OverrideConfiguration(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration((context, configBuilder) =>
+        builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
             configBuilder.AddInMemoryCollection(
                 new Dictionary<string, string>

@@ -78,7 +78,7 @@ public class GetSetTests : SetControllerTests
         Assert.NotNull(set);
         Assert.Equal(setFileName, set?.Name);
         Assert.Equal(numOfEntries, set?.Entries.Count);
-        set?.Entries.First().Should().BeEquivalentTo(firstEntry);
+        set?.Entries[0].Should().BeEquivalentTo(firstEntry);
         set?.Entries.Last().Should().BeEquivalentTo(lastEntry);
     }
 

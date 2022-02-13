@@ -13,7 +13,7 @@ internal class SetEmbeddedFileSource : ISetSource
     {
         path = TransformPath(path);
         Assembly assembly = GetType().Assembly;
-        bool exists = assembly.GetManifestResourceNames().Where(x => x == path).Any();
+        bool exists = assembly.GetManifestResourceNames().Any(x => x == path);
         return exists;
     }
 
@@ -21,7 +21,7 @@ internal class SetEmbeddedFileSource : ISetSource
     {
         dirPath = TransformPath(dirPath);
         Assembly assembly = GetType().Assembly;
-        bool exists = assembly.GetManifestResourceNames().Where(x => x.StartsWith(dirPath)).Any();
+        bool exists = assembly.GetManifestResourceNames().Any(x => x.StartsWith(dirPath));
         return exists;
     }
 
