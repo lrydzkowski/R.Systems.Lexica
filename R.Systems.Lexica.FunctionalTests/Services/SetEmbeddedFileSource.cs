@@ -1,9 +1,9 @@
-﻿using R.Systems.Lexica.Core.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using R.Systems.Lexica.Core.Interfaces;
 
 namespace R.Systems.Lexica.FunctionalTests.Services;
 

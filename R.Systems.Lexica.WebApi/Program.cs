@@ -1,4 +1,4 @@
-using NLog;
+﻿using NLog;
 using NLog.Web;
 using R.Systems.Lexica.WebApi.DependencyInjection;
 using R.Systems.Shared.WebApi.Middlewares;
