@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.WebApi", "R.Systems.Lexica.WebApi\R.Systems.Lexica.WebApi.csproj", "{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A52C9367-509C-40D1-8469-6C8FF8214633}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{A52C9367-509C-40D1-8469-6C8FF8214633}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{67F2315A-18E9-499E-A67D-28DA6892813C}"
 	ProjectSection(SolutionItems) = preProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Core", "R.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure", "R.Systems.Lexica.Infrastructure\R.Systems.Lexica.Infrastructure.csproj", "{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FE032E4E-DF87-44D6-A90F-62243399B4BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE032E4E-DF87-44D6-A90F-62243399B4BB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.FunctionalTests", "R.Systems.Lexica.FunctionalTests\R.Systems.Lexica.FunctionalTests.csproj", "{514B4B30-CC99-42AD-8FAC-F3D77763DADF}"
 EndProject
