@@ -1,4 +1,4 @@
-﻿using R.Systems.Lexica.Core.Interfaces;
+﻿using R.Systems.Lexica.Infrastructure.Interfaces;
 
 namespace R.Systems.Lexica.Infrastructure.Sources;
 

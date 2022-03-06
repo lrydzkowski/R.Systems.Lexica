@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using R.Systems.Lexica.Core.Interfaces;
 using R.Systems.Lexica.Core.Models;
+using R.Systems.Lexica.Infrastructure.Interfaces;
 using R.Systems.Lexica.Infrastructure.Settings;
 using R.Systems.Lexica.Infrastructure.Validators;
 using R.Systems.Shared.Core.Validation;

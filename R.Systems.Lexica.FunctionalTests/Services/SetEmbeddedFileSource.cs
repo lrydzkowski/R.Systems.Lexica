@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using R.Systems.Lexica.Core.Interfaces;
+using R.Systems.Lexica.Infrastructure.Interfaces;
 
 namespace R.Systems.Lexica.FunctionalTests.Services;
 

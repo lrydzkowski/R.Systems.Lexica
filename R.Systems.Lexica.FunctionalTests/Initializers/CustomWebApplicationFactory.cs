@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Lexica.Core.Interfaces;
 using R.Systems.Lexica.FunctionalTests.Services;
+using R.Systems.Lexica.Infrastructure.Interfaces;
 using R.Systems.Shared.Core.Interfaces;
 
 namespace R.Systems.Lexica.FunctionalTests.Initializers;

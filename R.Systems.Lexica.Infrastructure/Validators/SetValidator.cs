@@ -1,4 +1,4 @@
-﻿using R.Systems.Lexica.Core.Interfaces;
+﻿using R.Systems.Lexica.Infrastructure.Interfaces;
 using R.Systems.Shared.Core.Interfaces;
 using R.Systems.Shared.Core.Validation;
 

@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Core.Interfaces;
+﻿namespace R.Systems.Lexica.Infrastructure.Interfaces;
 
 public interface ISetSource
 {

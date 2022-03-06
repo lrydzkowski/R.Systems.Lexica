@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Core.Interfaces;
+using R.Systems.Lexica.Infrastructure.Interfaces;
 using R.Systems.Lexica.Infrastructure.Repositories;
 using R.Systems.Lexica.Infrastructure.Settings;
 using R.Systems.Lexica.Infrastructure.Sources;
