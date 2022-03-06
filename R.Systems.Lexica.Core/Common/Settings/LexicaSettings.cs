@@ -1,6 +1,6 @@
-﻿namespace R.Systems.Lexica.Infrastructure.Settings;
+﻿namespace R.Systems.Lexica.Core.Common.Settings;
 
-public class InfrastructureSettings
+public class LexicaSettings
 {
     public const string PropertyName = "Lexica";
 

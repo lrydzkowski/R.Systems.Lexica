@@ -1,9 +1,9 @@
-﻿using R.Systems.Lexica.Core.Interfaces;
-using R.Systems.Lexica.Core.Models;
+﻿using R.Systems.Lexica.Core.Common.Interfaces;
+using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Shared.Core.Interfaces;
 using R.Systems.Shared.Core.Validation;
 
-namespace R.Systems.Lexica.Core.Services;
+namespace R.Systems.Lexica.Core.Common.Services;
 
 public class SetReadService : IDependencyInjectionScoped
 {

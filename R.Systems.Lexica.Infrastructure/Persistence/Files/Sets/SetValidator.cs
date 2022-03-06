@@ -1,8 +1,7 @@
-﻿using R.Systems.Lexica.Infrastructure.Interfaces;
-using R.Systems.Shared.Core.Interfaces;
+﻿using R.Systems.Shared.Core.Interfaces;
 using R.Systems.Shared.Core.Validation;
 
-namespace R.Systems.Lexica.Infrastructure.Validators;
+namespace R.Systems.Lexica.Infrastructure.Persistence.Files.Sets;
 
 public class SetValidator : IDependencyInjectionScoped
 {
@@ -61,11 +60,11 @@ public class SetValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        bool result = true;
-        string[] lines = fileContent.Split('\n');
-        for (int i = 0; i < lines.Length; i++)
+        var result = true;
+        var lines = fileContent.Split('\n');
+        for (var i = 0; i < lines.Length; i++)
         {
-            string line = lines[i];
+            var line = lines[i];
             result &= ValidateLine(line, i + 1);
         }
         return result;
@@ -73,7 +72,7 @@ public class SetValidator : IDependencyInjectionScoped
 
     private bool ValidateLine(string line, int lineNum)
     {
-        string[] parts = line.Split(';').Select(x => x.Trim()).ToArray();
+        var parts = line.Split(';').Select(x => x.Trim()).ToArray();
         if (parts.Length == 1)
         {
             ValidationResult.Errors.Add(
@@ -100,10 +99,10 @@ public class SetValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        bool result = true;
-        string wordsPart = parts[0].Trim();
+        var result = true;
+        var wordsPart = parts[0].Trim();
         result &= ValidateWords(wordsPart, lineNum);
-        string translationsPart = parts[1].Trim();
+        var translationsPart = parts[1].Trim();
         result &= ValidateTranslations(translationsPart, lineNum);
         return result;
     }
@@ -124,9 +123,9 @@ public class SetValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        bool result = true;
-        List<string> words = wordsPart.Split(',').Select(x => x.Trim()).ToList();
-        foreach (string word in words)
+        var result = true;
+        var words = wordsPart.Split(',').Select(x => x.Trim()).ToList();
+        foreach (var word in words)
         {
             if (word.Length == 0)
             {
@@ -178,9 +177,9 @@ public class SetValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        bool result = true;
-        List<string> translations = translationsPart.Split(',').Select(x => x.Trim()).ToList();
-        foreach (string translation in translations)
+        var result = true;
+        var translations = translationsPart.Split(',').Select(x => x.Trim()).ToList();
+        foreach (var translation in translations)
         {
             if (translation.Length == 0)
             {

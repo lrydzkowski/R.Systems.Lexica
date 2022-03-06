@@ -1,6 +1,4 @@
-﻿using R.Systems.Lexica.Infrastructure.Interfaces;
-
-namespace R.Systems.Lexica.Infrastructure.Sources;
+﻿namespace R.Systems.Lexica.Infrastructure.Persistence.Files.Sets;
 
 public class SetFileSource : ISetSource
 {
@@ -22,7 +20,7 @@ public class SetFileSource : ISetSource
     public List<string> GetSetNames(string dirPath)
     {
         DirectoryInfo dirInfo = new(dirPath);
-        List<string> setsNames = dirInfo.GetFiles("*.*").Select(file => file.Name).ToList();
+        var setsNames = dirInfo.GetFiles("*.*").Select(file => file.Name).ToList();
         return setsNames;
     }
 }

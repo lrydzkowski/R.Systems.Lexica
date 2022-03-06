@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Core.Models;
+﻿namespace R.Systems.Lexica.Core.Common.Models;
 
 public class Set
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using R.Systems.Lexica.Core.Models;
-using R.Systems.Lexica.Core.Services;
+using R.Systems.Lexica.Core.Common.Models;
+using R.Systems.Lexica.Core.Common.Services;
 using R.Systems.Shared.Core.Validation;
 
 namespace R.Systems.Lexica.WebApi.Controllers;

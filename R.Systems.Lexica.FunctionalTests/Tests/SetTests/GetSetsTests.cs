@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using R.Systems.Lexica.Core.Models;
+using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.FunctionalTests.Initializers;
 using R.Systems.Lexica.WebApi;
 using R.Systems.Shared.Core.Validation;
