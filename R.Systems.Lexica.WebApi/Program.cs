@@ -1,6 +1,5 @@
 ﻿using NLog;
 using NLog.Web;
-using R.Systems.Lexica.WebApi.DependencyInjection;
 using R.Systems.Shared.WebApi.Middlewares;
 
 namespace R.Systems.Lexica.WebApi;
@@ -40,7 +39,7 @@ public class Program
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddServices(builder.Configuration);
+        builder.Services.AddWebApiServices(builder.Configuration);
     }
 
     private static void Configure(WebApplication app)

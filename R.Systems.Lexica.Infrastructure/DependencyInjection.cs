@@ -5,9 +5,9 @@ using R.Systems.Lexica.Infrastructure.Repositories;
 using R.Systems.Lexica.Infrastructure.Settings;
 using R.Systems.Lexica.Infrastructure.Sources;
 
-namespace R.Systems.Lexica.Infrastructure.DependencyInjection;
+namespace R.Systems.Lexica.Infrastructure;
 
-public static class ServiceCollectionExtensions
+public static class DependencyInjection
 {
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
