@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.WebApi", "R.Systems.Lexica.WebApi\R.Systems.Lexica.WebApi.csproj", "{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{A52C9367-509C-40D1-8469-6C8FF8214633}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{67F2315A-18E9-499E-A67D-28DA6892813C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AFD7C239-78C9-4EF4-9581-0A0062B7B0F7}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
 		.editorconfig = .editorconfig
@@ -17,20 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Core", "R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj", "{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure", "R.Systems.Lexica.Infrastructure\R.Systems.Lexica.Infrastructure.csproj", "{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3E906166-5EEB-4033-ADB7-54D7A71B7338}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FE032E4E-DF87-44D6-A90F-62243399B4BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Core", "R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj", "{5C040565-9CE1-4396-9EB0-618B821846D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.FunctionalTests", "R.Systems.Lexica.FunctionalTests\R.Systems.Lexica.FunctionalTests.csproj", "{514B4B30-CC99-42AD-8FAC-F3D77763DADF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure", "R.Systems.Lexica.Infrastructure\R.Systems.Lexica.Infrastructure.csproj", "{3B48398E-CA45-4D48-ABE0-65A8720C407E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{467CEEB1-5728-44E1-93FA-AE9BDA56C8A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.WebApi", "R.Systems.Lexica.WebApi\R.Systems.Lexica.WebApi.csproj", "{D5F926D2-C426-479C-A46B-B082D0F9B7F2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{2F238DA9-CE87-4894-A992-01BC78F1FFFA}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\main.yml = .github\workflows\main.yml
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.FunctionalTests", "R.Systems.Lexica.FunctionalTests\R.Systems.Lexica.FunctionalTests.csproj", "{83D06177-C851-45A3-9A4D-D8FA949BF48C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,35 +31,33 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7FE3549-55CF-4F37-93BC-DB1BC8651F81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{514B4B30-CC99-42AD-8FAC-F3D77763DADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{514B4B30-CC99-42AD-8FAC-F3D77763DADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{514B4B30-CC99-42AD-8FAC-F3D77763DADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{514B4B30-CC99-42AD-8FAC-F3D77763DADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C040565-9CE1-4396-9EB0-618B821846D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C040565-9CE1-4396-9EB0-618B821846D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C040565-9CE1-4396-9EB0-618B821846D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C040565-9CE1-4396-9EB0-618B821846D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B48398E-CA45-4D48-ABE0-65A8720C407E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B48398E-CA45-4D48-ABE0-65A8720C407E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B48398E-CA45-4D48-ABE0-65A8720C407E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B48398E-CA45-4D48-ABE0-65A8720C407E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F926D2-C426-479C-A46B-B082D0F9B7F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F926D2-C426-479C-A46B-B082D0F9B7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F926D2-C426-479C-A46B-B082D0F9B7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F926D2-C426-479C-A46B-B082D0F9B7F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D06177-C851-45A3-9A4D-D8FA949BF48C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D06177-C851-45A3-9A4D-D8FA949BF48C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D06177-C851-45A3-9A4D-D8FA949BF48C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D06177-C851-45A3-9A4D-D8FA949BF48C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B7FE3549-55CF-4F37-93BC-DB1BC8651F81} = {A52C9367-509C-40D1-8469-6C8FF8214633}
-		{275D98FD-6C72-4FE8-BF4E-48B8576D4EAF} = {A52C9367-509C-40D1-8469-6C8FF8214633}
-		{3F6B5A5D-14D5-498B-B98B-AF6F6FE40A00} = {A52C9367-509C-40D1-8469-6C8FF8214633}
-		{514B4B30-CC99-42AD-8FAC-F3D77763DADF} = {FE032E4E-DF87-44D6-A90F-62243399B4BB}
-		{467CEEB1-5728-44E1-93FA-AE9BDA56C8A2} = {67F2315A-18E9-499E-A67D-28DA6892813C}
-		{2F238DA9-CE87-4894-A992-01BC78F1FFFA} = {467CEEB1-5728-44E1-93FA-AE9BDA56C8A2}
+		{5C040565-9CE1-4396-9EB0-618B821846D0} = {7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}
+		{3B48398E-CA45-4D48-ABE0-65A8720C407E} = {7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}
+		{D5F926D2-C426-479C-A46B-B082D0F9B7F2} = {7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}
+		{83D06177-C851-45A3-9A4D-D8FA949BF48C} = {3E906166-5EEB-4033-ADB7-54D7A71B7338}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {921A323E-B5D3-4A50-A61F-9216711D5B91}
+		SolutionGuid = {2E1DCDE4-60A1-468B-A940-3285EFD762A9}
 	EndGlobalSection
 EndGlobal
