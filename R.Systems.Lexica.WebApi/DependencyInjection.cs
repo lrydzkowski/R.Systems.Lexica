@@ -1,5 +1,5 @@
 ﻿using R.Systems.Lexica.Core;
-using R.Systems.Lexica.Infrastructure;
+using R.Systems.Lexica.Persistence.Files;
 using R.Systems.Shared.Core.DependencyInjection;
 using R.Systems.Shared.WebApi.DependencyInjection;
 
@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         services.AddAutomaticServices();
         services.AddCoreServices(configuration);
-        services.AddInfrastructureServices();
+        services.AddPersistenceFilesServices();
         services.AddJwtSettingsServices(configuration);
         services.AddJwtServices();
         services.AddSwaggerServices(swaggerPageTitle: "R.Systems.Lexica.WebApi");

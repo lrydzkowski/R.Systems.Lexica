@@ -1,73 +1,43 @@
-﻿using R.Systems.Shared.Core.Interfaces;
+﻿using R.Systems.Lexica.Core.Common.Exceptions;
+using R.Systems.Lexica.Persistence.Files.Sets.Common;
+using R.Systems.Shared.Core.Interfaces;
 using R.Systems.Shared.Core.Validation;
 
-namespace R.Systems.Lexica.Infrastructure.Persistence.Files.Sets;
+namespace R.Systems.Lexica.Persistence.Files.Sets.Queries.GetSet;
 
-public class SetValidator : IDependencyInjectionScoped
+internal class SetContentValidator : IDependencyInjectionScoped
 {
-    public SetValidator(ValidationResult validationResult, ISetSource setSource)
+    public SetContentValidator(ISetSource setSource)
     {
-        ValidationResult = validationResult;
         SetSource = setSource;
     }
 
-    public ValidationResult ValidationResult { get; }
     public ISetSource SetSource { get; }
+    private List<ErrorInfo> Errors { get; set; } = new();
 
-    public bool SetDirExists(string dirPath)
+    public void ValidateContent(string? fileContent, string filePath)
     {
-        if (!SetSource.DirExists(dirPath))
-        {
-            ValidationResult.Errors.Add(
-                new ErrorInfo(
-                    errorKey: "NotExist",
-                    elementKey: "SetDir",
-                    data: new Dictionary<string, string>() { ["DirPath"] = dirPath }
-                )
-            );
-            return false;
-        }
-        return true;
-    }
-
-    public bool SetFileExists(string filePath)
-    {
-        if (!SetSource.Exists(filePath))
-        {
-            ValidationResult.Errors.Add(
-                new ErrorInfo(
-                    errorKey: "NotExist",
-                    elementKey: "SetFile",
-                    data: new Dictionary<string, string>() { ["FilePath"] = filePath }
-                )
-            );
-            return false;
-        }
-        return true;
-    }
-
-    public bool ValidateSetFileContent(string? fileContent, string filePath)
-    {
+        Errors = new List<ErrorInfo>();
         fileContent = fileContent?.Trim();
         if (string.IsNullOrEmpty(fileContent))
         {
-            ValidationResult.Errors.Add(
-                new ErrorInfo(
-                    errorKey: "Empty",
-                    elementKey: "SetFile",
-                    data: new Dictionary<string, string> { ["FilePath"] = filePath }
-                )
+            ErrorInfo errorInfo = new(
+                errorKey: "Empty",
+                elementKey: "SetFile",
+                data: new Dictionary<string, string> { ["FilePath"] = filePath }
             );
-            return false;
+            throw new ValidationException(errorInfo);
         }
-        var result = true;
         var lines = fileContent.Split('\n');
         for (var i = 0; i < lines.Length; i++)
         {
             var line = lines[i];
-            result &= ValidateLine(line, i + 1);
+            ValidateLine(line, i + 1);
         }
-        return result;
+        if (Errors.Count > 0)
+        {
+            throw new ValidationException(Errors);
+        }
     }
 
     private bool ValidateLine(string line, int lineNum)
@@ -75,7 +45,7 @@ public class SetValidator : IDependencyInjectionScoped
         var parts = line.Split(';').Select(x => x.Trim()).ToArray();
         if (parts.Length == 1)
         {
-            ValidationResult.Errors.Add(
+            Errors.Add(
                 new ErrorInfo(
                     errorKey: "NoSemicolon",
                     elementKey: "SetFile",
@@ -86,7 +56,7 @@ public class SetValidator : IDependencyInjectionScoped
         }
         if (parts.Length > 2)
         {
-            ValidationResult.Errors.Add(
+            Errors.Add(
                 new ErrorInfo(
                     errorKey: "TooManySemicolons",
                     elementKey: "SetFile",
@@ -111,7 +81,7 @@ public class SetValidator : IDependencyInjectionScoped
     {
         if (wordsPart.Length == 0)
         {
-            ValidationResult.Errors.Add(
+            Errors.Add(
                 new ErrorInfo(
                     errorKey: "NoWords",
                     elementKey: "SetFile",
@@ -129,7 +99,7 @@ public class SetValidator : IDependencyInjectionScoped
         {
             if (word.Length == 0)
             {
-                ValidationResult.Errors.Add(
+                Errors.Add(
                     new ErrorInfo(
                         errorKey: "EmptyWord",
                         elementKey: "SetFile",
@@ -144,7 +114,7 @@ public class SetValidator : IDependencyInjectionScoped
             }
             if (word.Length > 400)
             {
-                ValidationResult.Errors.Add(
+                Errors.Add(
                     new ErrorInfo(
                         errorKey: "TooLongWord",
                         elementKey: "SetFile",
@@ -165,7 +135,7 @@ public class SetValidator : IDependencyInjectionScoped
     {
         if (translationsPart.Length == 0)
         {
-            ValidationResult.Errors.Add(
+            Errors.Add(
                 new ErrorInfo(
                     errorKey: "NoTranslations",
                     elementKey: "SetFile",
@@ -183,7 +153,7 @@ public class SetValidator : IDependencyInjectionScoped
         {
             if (translation.Length == 0)
             {
-                ValidationResult.Errors.Add(
+                Errors.Add(
                     new ErrorInfo(
                         errorKey: "EmptyTranslation",
                         elementKey: "SetFile",
@@ -198,7 +168,7 @@ public class SetValidator : IDependencyInjectionScoped
             }
             if (translation.Length > 400)
             {
-                ValidationResult.Errors.Add(
+                Errors.Add(
                     new ErrorInfo(
                         errorKey: "TooLongTranslation",
                         elementKey: "SetFile",

@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Infrastructure.Persistence.Files.Sets;
+﻿namespace R.Systems.Lexica.Persistence.Files.Sets.Common;
 
 public interface ISetSource
 {

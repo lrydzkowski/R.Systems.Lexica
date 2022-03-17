@@ -1,5 +1,6 @@
 ﻿using NLog;
 using NLog.Web;
+using R.Systems.Lexica.WebApi.Filters;
 using R.Systems.Shared.WebApi.Middlewares;
 
 namespace R.Systems.Lexica.WebApi;
@@ -37,7 +38,7 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddWebApiServices(builder.Configuration);
     }

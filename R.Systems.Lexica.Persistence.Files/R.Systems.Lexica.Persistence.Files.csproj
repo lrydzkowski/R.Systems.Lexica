@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,10 +6,6 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="R.Systems.Shared.Core" Version="1.0.0-preview.2" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />

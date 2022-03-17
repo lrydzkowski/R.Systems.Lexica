@@ -1,6 +1,6 @@
-﻿namespace R.Systems.Lexica.Infrastructure.Persistence.Files.Sets;
+﻿namespace R.Systems.Lexica.Persistence.Files.Sets.Common;
 
-public class SetFileSource : ISetSource
+internal class SetFileSource : ISetSource
 {
     public bool Exists(string path)
     {
@@ -20,7 +20,6 @@ public class SetFileSource : ISetSource
     public List<string> GetSetNames(string dirPath)
     {
         DirectoryInfo dirInfo = new(dirPath);
-        var setsNames = dirInfo.GetFiles("*.*").Select(file => file.Name).ToList();
-        return setsNames;
+        return dirInfo.GetFiles("*.*").Select(file => file.Name).ToList();
     }
 }

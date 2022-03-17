@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Common.Models;
-using R.Systems.Lexica.Core.Common.Services;
+using R.Systems.Lexica.Core.Sets.Queries.GetSet;
+using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 using R.Systems.Shared.Core.Validation;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
@@ -10,35 +11,29 @@ namespace R.Systems.Lexica.WebApi.Controllers;
 public class SetController : ControllerBase
 {
     public SetController(
-        SetReadService setReadService,
-        ValidationResult validationResult)
+        ValidationResult validationResult,
+        GetSetsQuery getSetsQuery,
+        GetSetQuery getSetQuery)
     {
-        SetReadService = setReadService;
         ValidationResult = validationResult;
+        GetSetsQuery = getSetsQuery;
+        GetSetQuery = getSetQuery;
     }
-
-    public SetReadService SetReadService { get; }
     public ValidationResult ValidationResult { get; }
-
-    [HttpGet, Route("{setName}"), Authorize(Roles = "lexica")]
-    public async Task<IActionResult> Get(string setName)
-    {
-        OperationResult<Set?> operationResult = await SetReadService.GetAsync(setName);
-        if (!operationResult.Result)
-        {
-            return BadRequest(ValidationResult.Errors);
-        }
-        return Ok(operationResult.Data);
-    }
+    public GetSetsQuery GetSetsQuery { get; }
+    public GetSetQuery GetSetQuery { get; }
 
     [HttpGet, Authorize(Roles = "lexica")]
     public async Task<IActionResult> Get()
     {
-        OperationResult<List<Set>?> operationResult = await SetReadService.GetAsync();
-        if (!operationResult.Result)
-        {
-            return BadRequest(ValidationResult.Errors);
-        }
-        return Ok(operationResult.Data);
+        List<Set> sets = await GetSetsQuery.GetAsync();
+        return Ok(sets);
+    }
+
+    [HttpGet, Route("{setName}"), Authorize(Roles = "lexica")]
+    public async Task<IActionResult> Get(string setName)
+    {
+        Set set = await GetSetQuery.GetAsync(setName);
+        return Ok(set);
     }
 }
