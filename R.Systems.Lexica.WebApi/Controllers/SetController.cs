@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
-using R.Systems.Shared.Core.Validation;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
 
@@ -11,15 +10,12 @@ namespace R.Systems.Lexica.WebApi.Controllers;
 public class SetController : ControllerBase
 {
     public SetController(
-        ValidationResult validationResult,
         GetSetsQuery getSetsQuery,
         GetSetQuery getSetQuery)
     {
-        ValidationResult = validationResult;
         GetSetsQuery = getSetsQuery;
         GetSetQuery = getSetQuery;
     }
-    public ValidationResult ValidationResult { get; }
     public GetSetsQuery GetSetsQuery { get; }
     public GetSetQuery GetSetQuery { get; }
 
