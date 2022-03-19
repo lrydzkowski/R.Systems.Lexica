@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
+using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Core.Common.Settings;
 
@@ -8,6 +10,7 @@ public static class DependencyInjection
 {
     public static void AddCoreServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddMediatR(Assembly.GetExecutingAssembly());
         services.Configure<LexicaSettings>(configuration.GetSection(LexicaSettings.PropertyName));
     }
 }

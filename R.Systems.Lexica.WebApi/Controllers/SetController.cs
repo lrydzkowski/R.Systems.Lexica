@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.Core.Sets.Queries.GetSet;
@@ -9,27 +10,24 @@ namespace R.Systems.Lexica.WebApi.Controllers;
 [ApiController, Route("sets")]
 public class SetController : ControllerBase
 {
-    public SetController(
-        GetSetsQuery getSetsQuery,
-        GetSetQuery getSetQuery)
+    public SetController(ISender mediator)
     {
-        GetSetsQuery = getSetsQuery;
-        GetSetQuery = getSetQuery;
+        Mediator = mediator;
     }
-    public GetSetsQuery GetSetsQuery { get; }
-    public GetSetQuery GetSetQuery { get; }
+
+    public ISender Mediator { get; }
 
     [HttpGet, Authorize(Roles = "lexica")]
     public async Task<IActionResult> Get()
     {
-        List<Set> sets = await GetSetsQuery.GetAsync();
+        List<Set> sets = await Mediator.Send(new GetSetsQuery());
         return Ok(sets);
     }
 
     [HttpGet, Route("{setName}"), Authorize(Roles = "lexica")]
     public async Task<IActionResult> Get(string setName)
     {
-        Set set = await GetSetQuery.GetAsync(setName);
+        Set set = await Mediator.Send(new GetSetQuery { SetName = setName });
         return Ok(set);
     }
 }
