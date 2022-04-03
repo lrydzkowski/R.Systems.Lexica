@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Persistence.Files.Sets.Common;
+﻿namespace R.Systems.Lexica.Persistence.Files.Common;
 
 internal class SetFileSource : ISetSource
 {
@@ -21,5 +21,10 @@ internal class SetFileSource : ISetSource
     {
         DirectoryInfo dirInfo = new(dirPath);
         return dirInfo.GetFiles("*.*").Select(file => file.Name).ToList();
+    }
+
+    public async Task CreateSetAsync(string path, string content)
+    {
+        await File.WriteAllTextAsync(path, content);
     }
 }

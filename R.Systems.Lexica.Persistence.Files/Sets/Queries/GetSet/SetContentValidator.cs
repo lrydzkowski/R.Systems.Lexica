@@ -1,5 +1,5 @@
 ﻿using R.Systems.Lexica.Core.Common.Exceptions;
-using R.Systems.Lexica.Persistence.Files.Sets.Common;
+using R.Systems.Lexica.Persistence.Files.Common;
 using R.Systems.Shared.Core.Interfaces;
 using R.Systems.Shared.Core.Validation;
 

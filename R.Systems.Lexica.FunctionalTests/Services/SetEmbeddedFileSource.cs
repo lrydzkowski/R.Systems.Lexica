@@ -3,12 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using R.Systems.Lexica.Persistence.Files.Sets.Common;
+using R.Systems.Lexica.Persistence.Files.Common;
 
 namespace R.Systems.Lexica.FunctionalTests.Services;
 
 internal class SetEmbeddedFileSource : ISetSource
 {
+    private Dictionary<string, string> CreatedSets { get; } = new();
+
     public bool Exists(string path)
     {
         path = TransformPath(path);
@@ -25,11 +27,10 @@ internal class SetEmbeddedFileSource : ISetSource
         return exists;
     }
 
-    public async Task<string> GetContentAsync(string path)
+    public Task<string> GetContentAsync(string path)
     {
-        string content = "";
-        await Task.Run(() => content = GetContent(path) ?? "");
-        return content;
+        string content = GetContent(path) ?? "";
+        return Task.FromResult(content);
     }
 
     public List<string> GetSetNames(string dirPath)
@@ -45,6 +46,12 @@ internal class SetEmbeddedFileSource : ISetSource
             .Select(x => string.Join('.', x.Split('.').Reverse().Take(2).Reverse()))
             .ToList();
         return setNames;
+    }
+
+    public Task CreateSetAsync(string path, string content)
+    {
+        CreatedSets[path] = content;
+        return Task.CompletedTask;
     }
 
     private string? GetContent(string path)

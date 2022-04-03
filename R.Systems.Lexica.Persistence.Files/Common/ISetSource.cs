@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Persistence.Files.Sets.Common;
+﻿namespace R.Systems.Lexica.Persistence.Files.Common;
 
 public interface ISetSource
 {
@@ -9,4 +9,6 @@ public interface ISetSource
     public Task<string> GetContentAsync(string path);
 
     public List<string> GetSetNames(string dirPath);
+
+    public Task CreateSetAsync(string path, string content);
 }

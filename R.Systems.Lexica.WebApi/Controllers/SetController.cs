@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Common.Models;
+using R.Systems.Lexica.Core.Sets.Commands.CreateSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 
@@ -29,5 +30,12 @@ public class SetController : ControllerBase
     {
         Set set = await Mediator.Send(new GetSetQuery { SetName = setName });
         return Ok(set);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateSetCommand command)
+    {
+        await Mediator.Send(command);
+        return Ok();
     }
 }

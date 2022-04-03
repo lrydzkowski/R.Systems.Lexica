@@ -3,7 +3,7 @@ using R.Systems.Lexica.Core.Common.Exceptions;
 using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.Core.Common.Settings;
 using R.Systems.Lexica.Core.Sets.Queries.GetSet;
-using R.Systems.Lexica.Persistence.Files.Sets.Common;
+using R.Systems.Lexica.Persistence.Files.Common;
 using R.Systems.Shared.Core.Validation;
 
 namespace R.Systems.Lexica.Persistence.Files.Sets.Queries.GetSet;
