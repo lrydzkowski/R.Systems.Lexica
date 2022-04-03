@@ -1,6 +1,6 @@
 ﻿using R.Systems.Lexica.FunctionalTests.Services;
 
-namespace R.Systems.Lexica.FunctionalTests.Tests.SetTests;
+namespace R.Systems.Lexica.FunctionalTests.Tests.Common;
 
 public class SetControllerTests
 {

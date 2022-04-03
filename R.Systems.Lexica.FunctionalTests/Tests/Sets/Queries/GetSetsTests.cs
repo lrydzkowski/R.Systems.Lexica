@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.FunctionalTests.Initializers;
+using R.Systems.Lexica.FunctionalTests.Tests.Common;
 using R.Systems.Lexica.WebApi;
 using R.Systems.Shared.Core.Validation;
 using Xunit;
 
-namespace R.Systems.Lexica.FunctionalTests.Tests.SetTests;
+namespace R.Systems.Lexica.FunctionalTests.Tests.Sets.Queries;
 
 public class GetSetsTests : SetControllerTests
 {
     [Fact]
     public async Task GetSets_WithoutAuthenticationToken_Unauthorized()
     {
-        string setFilesDirPath = "_Assets/Sets/Correct/";
-        HttpClient httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
+        var setFilesDirPath = "_Assets/Sets/Correct/";
+        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
 
-        (HttpStatusCode httpStatusCode, List<Set>? sets) = await RequestService.SendGetAsync<List<Set>>(
+        (var httpStatusCode, var sets) = await RequestService.SendGetAsync<List<Set>>(
             SetsUrl,
             httpClient
         );
@@ -32,16 +32,16 @@ public class GetSetsTests : SetControllerTests
     [Fact]
     public async Task GetSets_UserWithoutRoleLexica_Forbidden()
     {
-        string setFilesDirPath = "_Assets/Sets/Correct/";
-        HttpClient httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        string accessToken = AuthenticatorService.GenerateAccessToken(
+        var setFilesDirPath = "_Assets/Sets/Correct/";
+        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
+        var accessToken = AuthenticatorService.GenerateAccessToken(
             userId: 1,
             userEmail: "lexica@lukaszrydzkowski.pl",
             userRolesKeys: new List<string>() { "admin" },
             privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
         );
 
-        (HttpStatusCode httpStatusCode, Set? set) = await RequestService.SendGetAsync<Set>(
+        (var httpStatusCode, var set) = await RequestService.SendGetAsync<Set>(
             SetsUrl,
             httpClient,
             accessToken
@@ -54,16 +54,16 @@ public class GetSetsTests : SetControllerTests
     [Fact]
     public async Task GetSets_PathToDirWithCorrectSets_ReturnsSets()
     {
-        string setFilesDirPath = "_Assets/Sets/Correct/";
-        HttpClient httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        string accessToken = AuthenticatorService.GenerateAccessToken(
+        var setFilesDirPath = "_Assets/Sets/Correct/";
+        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
+        var accessToken = AuthenticatorService.GenerateAccessToken(
             userId: 1,
             userEmail: "lexica@lukaszrydzkowski.pl",
             userRolesKeys: new List<string>() { "lexica" },
             privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
         );
 
-        (HttpStatusCode httpStatusCode, List<Set>? sets) = await RequestService.SendGetAsync<List<Set>>(
+        (var httpStatusCode, var sets) = await RequestService.SendGetAsync<List<Set>>(
             SetsUrl,
             httpClient,
             accessToken
@@ -79,15 +79,15 @@ public class GetSetsTests : SetControllerTests
     public async Task GetSets_PathToDirWithIncorrectSets_ReturnsErrorsList(
         string setFilesDirPath, List<ErrorInfo> expectedErrors)
     {
-        HttpClient httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        string accessToken = AuthenticatorService.GenerateAccessToken(
+        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
+        var accessToken = AuthenticatorService.GenerateAccessToken(
             userId: 1,
             userEmail: "lexica@lukaszrydzkowski.pl",
             userRolesKeys: new List<string>() { "lexica" },
             privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
         );
 
-        (HttpStatusCode httpStatusCode, List<ErrorInfo>? errors) = await RequestService.SendGetAsync<List<ErrorInfo>>(
+        (var httpStatusCode, var errors) = await RequestService.SendGetAsync<List<ErrorInfo>>(
             SetsUrl,
             httpClient,
             accessToken
@@ -100,7 +100,7 @@ public class GetSetsTests : SetControllerTests
 
     public static IEnumerable<object[]> GetParametersFor_GetSets_PathToDirWithIncorrectSets()
     {
-        string setFilesDirPath = @"_Assets\Sets";
+        var setFilesDirPath = @"_Assets\Sets";
         return new List<object[]>
         {
             new object[]
