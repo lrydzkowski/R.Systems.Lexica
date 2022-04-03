@@ -52,7 +52,7 @@ public class GetSetsTests : SetControllerTests
     }
 
     [Fact]
-    public async Task GetSets_PathToDirWithCorrectSet_ReturnsSets()
+    public async Task GetSets_PathToDirWithCorrectSets_ReturnsSets()
     {
         string setFilesDirPath = "_Assets/Sets/Correct/";
         HttpClient httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
