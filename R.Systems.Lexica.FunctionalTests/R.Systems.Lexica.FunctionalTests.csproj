@@ -9,49 +9,49 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="_Assets\Keys\private.pem" />
-    <None Remove="_Assets\Keys\public.pem" />
-    <None Remove="_Assets\Sets\Correct\example_set_1.txt" />
-    <None Remove="_Assets\Sets\Correct\example_set_2.txt" />
-    <None Remove="_Assets\Sets\Correct\example_set_3.txt" />
-    <None Remove="_Assets\Sets\Correct\example_set_4.txt" />
-    <None Remove="_Assets\Sets\Correct\example_set_5.txt" />
-    <None Remove="_Assets\Sets\EmptyTranslation\empty_translation_1.txt" />
-    <None Remove="_Assets\Sets\EmptyWord\empty_word_1.txt" />
-    <None Remove="_Assets\Sets\Empty\empty_1.txt" />
-    <None Remove="_Assets\Sets\ErrorsCombination\example_set_1.txt" />
-    <None Remove="_Assets\Sets\ErrorsCombination\example_set_2.txt" />
-    <None Remove="_Assets\Sets\ErrorsCombination\example_set_3.txt" />
-    <None Remove="_Assets\Sets\NoSemicolon\no_semicolon_1.txt" />
-    <None Remove="_Assets\Sets\NoSemicolon\no_semicolon_2.txt" />
-    <None Remove="_Assets\Sets\NoTranslations\no_translations_1.txt" />
-    <None Remove="_Assets\Sets\NoWords\no_words_1.txt" />
-    <None Remove="_Assets\Sets\TooLongTranslation\too_long_translation_1.txt" />
-    <None Remove="_Assets\Sets\TooLongWord\too_long_word_1.txt" />
-    <None Remove="_Assets\Sets\TooManySemicolons\too_many_semicolons_1.txt" />
+    <None Remove="Assets\Keys\private.pem" />
+    <None Remove="Assets\Keys\public.pem" />
+    <None Remove="Assets\Sets\Correct\example_set_1.txt" />
+    <None Remove="Assets\Sets\Correct\example_set_2.txt" />
+    <None Remove="Assets\Sets\Correct\example_set_3.txt" />
+    <None Remove="Assets\Sets\Correct\example_set_4.txt" />
+    <None Remove="Assets\Sets\Correct\example_set_5.txt" />
+    <None Remove="Assets\Sets\EmptyTranslation\empty_translation_1.txt" />
+    <None Remove="Assets\Sets\EmptyWord\empty_word_1.txt" />
+    <None Remove="Assets\Sets\Empty\empty_1.txt" />
+    <None Remove="Assets\Sets\ErrorsCombination\example_set_1.txt" />
+    <None Remove="Assets\Sets\ErrorsCombination\example_set_2.txt" />
+    <None Remove="Assets\Sets\ErrorsCombination\example_set_3.txt" />
+    <None Remove="Assets\Sets\NoSemicolon\no_semicolon_1.txt" />
+    <None Remove="Assets\Sets\NoSemicolon\no_semicolon_2.txt" />
+    <None Remove="Assets\Sets\NoTranslations\no_translations_1.txt" />
+    <None Remove="Assets\Sets\NoWords\no_words_1.txt" />
+    <None Remove="Assets\Sets\TooLongTranslation\too_long_translation_1.txt" />
+    <None Remove="Assets\Sets\TooLongWord\too_long_word_1.txt" />
+    <None Remove="Assets\Sets\TooManySemicolons\too_many_semicolons_1.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="_Assets\Keys\private.pem" />
-    <EmbeddedResource Include="_Assets\Keys\public.pem" />
-    <EmbeddedResource Include="_Assets\Sets\Correct\example_set_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\Correct\example_set_2.txt" />
-    <EmbeddedResource Include="_Assets\Sets\Correct\example_set_3.txt" />
-    <EmbeddedResource Include="_Assets\Sets\Correct\example_set_4.txt" />
-    <EmbeddedResource Include="_Assets\Sets\Correct\example_set_5.txt" />
-    <EmbeddedResource Include="_Assets\Sets\EmptyTranslation\empty_translation_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\EmptyWord\empty_word_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\Empty\empty_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\ErrorsCombination\example_set_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\ErrorsCombination\example_set_2.txt" />
-    <EmbeddedResource Include="_Assets\Sets\ErrorsCombination\example_set_3.txt" />
-    <EmbeddedResource Include="_Assets\Sets\NoSemicolon\no_semicolon_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\NoSemicolon\no_semicolon_2.txt" />
-    <EmbeddedResource Include="_Assets\Sets\NoTranslations\no_translations_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\NoWords\no_words_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\TooLongTranslation\too_long_translation_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\TooLongWord\too_long_word_1.txt" />
-    <EmbeddedResource Include="_Assets\Sets\TooManySemicolons\too_many_semicolons_1.txt" />
+    <EmbeddedResource Include="Assets\Keys\private.pem" />
+    <EmbeddedResource Include="Assets\Keys\public.pem" />
+    <EmbeddedResource Include="Assets\Sets\Correct\example_set_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\Correct\example_set_2.txt" />
+    <EmbeddedResource Include="Assets\Sets\Correct\example_set_3.txt" />
+    <EmbeddedResource Include="Assets\Sets\Correct\example_set_4.txt" />
+    <EmbeddedResource Include="Assets\Sets\Correct\example_set_5.txt" />
+    <EmbeddedResource Include="Assets\Sets\EmptyTranslation\empty_translation_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\EmptyWord\empty_word_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\Empty\empty_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\ErrorsCombination\example_set_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\ErrorsCombination\example_set_2.txt" />
+    <EmbeddedResource Include="Assets\Sets\ErrorsCombination\example_set_3.txt" />
+    <EmbeddedResource Include="Assets\Sets\NoSemicolon\no_semicolon_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\NoSemicolon\no_semicolon_2.txt" />
+    <EmbeddedResource Include="Assets\Sets\NoTranslations\no_translations_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\NoWords\no_words_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\TooLongTranslation\too_long_translation_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\TooLongWord\too_long_word_1.txt" />
+    <EmbeddedResource Include="Assets\Sets\TooManySemicolons\too_many_semicolons_1.txt" />
   </ItemGroup>
 
   <ItemGroup>

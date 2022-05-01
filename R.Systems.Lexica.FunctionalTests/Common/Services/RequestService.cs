@@ -5,16 +5,14 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace R.Systems.Lexica.FunctionalTests.Services;
+namespace R.Systems.Lexica.FunctionalTests.Common.Services;
 
 public class RequestService
 {
     public async Task<(HttpStatusCode, TResp?)> SendPostAsync<TReq, TResp>(
         string url, TReq request, HttpClient httpClient, string? accessToken = null) where TResp : class
     {
-        var requestContent = new StringContent(
-            JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"
-        );
+        StringContent requestContent = new(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
         HttpRequestMessage requestMessage = new(HttpMethod.Post, url)
         {
             Content = requestContent

@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.FunctionalTests.Settings;
+﻿namespace R.Systems.Lexica.FunctionalTests.Common.Settings;
 
 public class TestInfrastructureSettings
 {

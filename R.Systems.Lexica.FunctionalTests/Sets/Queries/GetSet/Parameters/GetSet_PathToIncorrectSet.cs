@@ -1,159 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using FluentAssertions;
-using R.Systems.Lexica.Core.Common.Models;
-using R.Systems.Lexica.FunctionalTests.Initializers;
-using R.Systems.Lexica.FunctionalTests.Services;
-using R.Systems.Lexica.FunctionalTests.Tests.Common;
-using R.Systems.Lexica.WebApi;
+using R.Systems.Lexica.FunctionalTests.Common.Settings;
 using R.Systems.Shared.Core.Validation;
-using Xunit;
 
-namespace R.Systems.Lexica.FunctionalTests.Tests.Sets.Queries;
+namespace R.Systems.Lexica.FunctionalTests.Sets.Queries.GetSet.Parameters;
 
-public class GetSetTests : SetControllerTests
+internal static class GetSet_PathToIncorrectSet
 {
-    [Fact]
-    public async Task GetSet_WithoutAuthenticationToken_Unauthorized()
+    public static IEnumerable<object[]> Get()
     {
-        var setFilesDirPath = "_Assets/Sets/Correct/";
-        var setFileName = "example_set_1.txt";
-        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-
-        (var httpStatusCode, var set) = await RequestService.SendGetAsync<Set>(
-            $"{SetsUrl}/{setFileName}",
-            httpClient
-        );
-
-        Assert.Equal(HttpStatusCode.Unauthorized, httpStatusCode);
-        Assert.Null(set);
-    }
-
-    [Fact]
-    public async Task GetSet_UserWithoutRoleLexica_Forbidden()
-    {
-        var setFilesDirPath = "_Assets/Sets/Correct/";
-        var setFileName = "example_set_1.txt";
-        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        var accessToken = AuthenticatorService.GenerateAccessToken(
-            userId: 1,
-            userEmail: "lexica@lukaszrydzkowski.pl",
-            userRolesKeys: new List<string>() { "admin" },
-            privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
-        );
-
-        (var httpStatusCode, var set) = await RequestService.SendGetAsync<Set>(
-            $"{SetsUrl}/{setFileName}",
-            httpClient,
-            accessToken
-        );
-
-        Assert.Equal(HttpStatusCode.Forbidden, httpStatusCode);
-        Assert.Null(set);
-    }
-
-    [Theory]
-    [MemberData(nameof(GetParametersFor_GetSet_PathToCorrectSet))]
-    public async Task GetSet_PathToCorrectSet_ReturnsSet(
-        string setFilesDirPath, string setFileName, int numOfEntries, Entry firstEntry, Entry lastEntry)
-    {
-        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        var accessToken = AuthenticatorService.GenerateAccessToken(
-            userId: 1,
-            userEmail: "lexica@lukaszrydzkowski.pl",
-            userRolesKeys: new List<string>() { "lexica" },
-            privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
-        );
-
-        (var httpStatusCode, var set) = await RequestService.SendGetAsync<Set>(
-            $"{SetsUrl}/{setFileName}",
-            httpClient,
-            accessToken
-        );
-
-        Assert.Equal(HttpStatusCode.OK, httpStatusCode);
-        Assert.NotNull(set);
-        Assert.Equal(setFileName, set?.Name);
-        Assert.Equal(numOfEntries, set?.Entries.Count);
-        set?.Entries[0].Should().BeEquivalentTo(firstEntry);
-        set?.Entries.Last().Should().BeEquivalentTo(lastEntry);
-    }
-
-    public static IEnumerable<object[]> GetParametersFor_GetSet_PathToCorrectSet()
-    {
-        var setFilesDirPath = @"_Assets\Sets\Correct";
         return new List<object[]>
         {
             new object[]
             {
-                setFilesDirPath,
-                "example_set_1.txt",
-                31,
-                new Entry
-                {
-                    Words = new List<string>() { "incomparably" },
-                    Translations = new List<string>() { "nieporównywalnie" }
-                },
-                new Entry
-                {
-                    Words = new List<string>() { "mist" },
-                    Translations = new List<string>() { "mgła" }
-                }
-            },
-            new object[]
-            {
-                setFilesDirPath,
-                "example_set_5.txt",
-                28,
-                new Entry
-                {
-                    Words = new List<string>() { "jagged" },
-                    Translations = new List<string>() { "postrzępiony", "wyszczerbiony" }
-                },
-                new Entry
-                {
-                    Words = new List<string>() { "misfit", "creep" },
-                    Translations = new List<string>() { "odmieniec" }
-                }
-            }
-        };
-    }
-
-    [Theory]
-    [MemberData(nameof(GetParametersFor_GetSet_PathToIncorrectSet))]
-    public async Task GetSet_PathToIncorrectSet_ReturnsErrorsList(
-        string setFilesDirPath, string setFileName, List<ErrorInfo> expectedErrors)
-    {
-        var httpClient = new CustomWebApplicationFactory<Program>(setFilesDirPath).CreateClient();
-        var accessToken = AuthenticatorService.GenerateAccessToken(
-            userId: 1,
-            userEmail: "lexica@lukaszrydzkowski.pl",
-            userRolesKeys: new List<string>() { "lexica" },
-            privateKeyPem: EmbeddedRsaKeys.PrivateKey ?? ""
-        );
-
-        (var httpStatusCode, var errors) = await RequestService.SendGetAsync<List<ErrorInfo>>(
-            $"{SetsUrl}/{setFileName}",
-            httpClient,
-            accessToken
-        );
-
-        Assert.Equal(HttpStatusCode.BadRequest, httpStatusCode);
-        Assert.NotNull(errors);
-        errors?.Should().BeEquivalentTo(expectedErrors);
-    }
-
-    public static IEnumerable<object[]> GetParametersFor_GetSet_PathToIncorrectSet()
-    {
-        var setFilesDirPath = @"_Assets\Sets";
-        return new List<object[]>
-        {
-            new object[]
-            {
-                Path.Combine(setFilesDirPath, "Empty"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "Empty"),
                 "empty_999.txt",
                 new List<ErrorInfo>()
                 {
@@ -162,14 +22,14 @@ public class GetSetTests : SetControllerTests
                         elementKey: "SetFile",
                         data: new Dictionary<string, string>()
                         {
-                            ["FilePath"] = Path.Combine(setFilesDirPath, "Empty", "empty_999.txt")
+                            ["FilePath"] = Path.Combine(AssetsPaths.SetFilesDirPath, "Empty", "empty_999.txt")
                         }
                     )
                 }
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "Empty"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "Empty"),
                 "empty_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -178,14 +38,14 @@ public class GetSetTests : SetControllerTests
                         elementKey: "SetFile",
                         data: new Dictionary<string, string>()
                         {
-                            ["FilePath"] = Path.Combine(setFilesDirPath, "Empty", "empty_1.txt")
+                            ["FilePath"] = Path.Combine(AssetsPaths.SetFilesDirPath, "Empty", "empty_1.txt")
                         }
                     )
                 }
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "NoSemicolon"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "NoSemicolon"),
                 "no_semicolon_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -203,7 +63,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "NoSemicolon"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "NoSemicolon"),
                 "no_semicolon_2.txt",
                 new List<ErrorInfo>()
                 {
@@ -216,7 +76,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "TooManySemicolons"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "TooManySemicolons"),
                 "too_many_semicolons_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -239,7 +99,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "NoWords"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "NoWords"),
                 "no_words_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -257,7 +117,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "EmptyWord"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "EmptyWord"),
                 "empty_word_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -280,7 +140,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "TooLongWord"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "TooLongWord"),
                 "too_long_word_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -293,7 +153,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "NoTranslations"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "NoTranslations"),
                 "no_translations_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -306,7 +166,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "EmptyTranslation"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "EmptyTranslation"),
                 "empty_translation_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -329,7 +189,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "TooLongTranslation"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "TooLongTranslation"),
                 "too_long_translation_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -342,7 +202,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "ErrorsCombination"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "ErrorsCombination"),
                 "example_set_1.txt",
                 new List<ErrorInfo>()
                 {
@@ -370,7 +230,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "ErrorsCombination"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "ErrorsCombination"),
                 "example_set_2.txt",
                 new List<ErrorInfo>()
                 {
@@ -393,7 +253,7 @@ public class GetSetTests : SetControllerTests
             },
             new object[]
             {
-                Path.Combine(setFilesDirPath, "ErrorsCombination"),
+                Path.Combine(AssetsPaths.SetFilesDirPath, "ErrorsCombination"),
                 "example_set_3.txt",
                 new List<ErrorInfo>()
                 {

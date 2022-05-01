@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using R.Systems.Lexica.Persistence.Files.Common;
 
-namespace R.Systems.Lexica.FunctionalTests.Services;
+namespace R.Systems.Lexica.FunctionalTests.Common.Services;
 
 internal class SetEmbeddedFileSource : ISetSource
 {
@@ -15,16 +15,14 @@ internal class SetEmbeddedFileSource : ISetSource
     {
         path = TransformPath(path);
         Assembly assembly = GetType().Assembly;
-        bool exists = assembly.GetManifestResourceNames().Any(x => x == path);
-        return exists;
+        return assembly.GetManifestResourceNames().Any(x => x == path);
     }
 
     public bool DirExists(string dirPath)
     {
         dirPath = TransformPath(dirPath);
         Assembly assembly = GetType().Assembly;
-        bool exists = assembly.GetManifestResourceNames().Any(x => x.StartsWith(dirPath));
-        return exists;
+        return assembly.GetManifestResourceNames().Any(x => x.StartsWith(dirPath));
     }
 
     public Task<string> GetContentAsync(string path)
@@ -41,11 +39,10 @@ internal class SetEmbeddedFileSource : ISetSource
         }
         dirPath = TransformPath(dirPath);
         Assembly assembly = GetType().Assembly;
-        List<string> setNames = assembly.GetManifestResourceNames()
+        return assembly.GetManifestResourceNames()
             .Where(x => x.StartsWith(dirPath))
             .Select(x => string.Join('.', x.Split('.').Reverse().Take(2).Reverse()))
             .ToList();
-        return setNames;
     }
 
     public Task CreateSetAsync(string path, string content)
@@ -73,8 +70,7 @@ internal class SetEmbeddedFileSource : ISetSource
 
     private string TransformPath(string path)
     {
-        string transformedPath = path.Replace('/', '.').Replace('\\', '.');
-        string transformedPathWithAssembly = $"R.Systems.Lexica.FunctionalTests.{transformedPath}";
-        return transformedPathWithAssembly;
+        string? transformedPath = path.Replace('/', '.').Replace('\\', '.');
+        return $"R.Systems.Lexica.FunctionalTests.{transformedPath}";
     }
 }

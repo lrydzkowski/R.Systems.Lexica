@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace R.Systems.Lexica.FunctionalTests.Services;
+namespace R.Systems.Lexica.FunctionalTests.Common.Services;
 
 public class AuthenticatorService
 {

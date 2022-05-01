@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using R.Systems.Lexica.FunctionalTests.Services;
+using R.Systems.Lexica.FunctionalTests.Common.Services;
 using R.Systems.Lexica.Persistence.Files.Common;
 using R.Systems.Shared.Core.Interfaces;
 
-namespace R.Systems.Lexica.FunctionalTests.Initializers;
+namespace R.Systems.Lexica.FunctionalTests.Common.Initializers;
 
-public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
-    public CustomWebApplicationFactory(string setFilesDirPath)
+    public TestWebApplicationFactory(string setFilesDirPath)
     {
         SetFilesDirPath = setFilesDirPath;
     }
