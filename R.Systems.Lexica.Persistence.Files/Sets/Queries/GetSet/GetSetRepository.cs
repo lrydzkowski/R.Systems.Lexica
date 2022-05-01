@@ -54,16 +54,16 @@ internal class GetSetRepository : IGetSetRepository
     private List<Entry> ParseContent(string content)
     {
         List<Entry> entries = new();
-        var lines = content.Split('\n');
-        foreach (var line in lines)
+        string[] lines = content.Split('\n');
+        foreach (string line in lines)
         {
-            var lineParts = line.Split(';');
+            string[] lineParts = line.Split(';');
             if (lineParts.Length != 2)
             {
                 continue;
             }
-            var words = lineParts[0].Split(',').Select(x => x.Trim()).ToList();
-            var translations = lineParts[1].Split(',').Select(x => x.Trim()).ToList();
+            List<string> words = lineParts[0].Split(',').Select(x => x.Trim()).ToList();
+            List<string> translations = lineParts[1].Split(',').Select(x => x.Trim()).ToList();
             Entry entry = new()
             {
                 Words = words,

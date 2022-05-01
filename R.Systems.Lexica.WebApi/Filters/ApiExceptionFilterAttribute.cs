@@ -31,7 +31,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private void HandleValidationException(ExceptionContext context)
     {
-        var exception = (ValidationException)context.Exception;
+        ValidationException exception = (ValidationException)context.Exception;
         context.Result = new BadRequestObjectResult(exception.Errors);
         context.ExceptionHandled = true;
     }

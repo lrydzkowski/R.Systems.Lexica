@@ -26,9 +26,9 @@ internal class CreateSetRepository : ICreateSetRepository
 
     public async Task CreateSetAsync(Set set)
     {
-        var filePath = Path.Combine(LexicaSettings.SetFilesDirPath, set.Name);
+        string filePath = Path.Combine(LexicaSettings.SetFilesDirPath, set.Name);
         ValidateFileExistence(filePath);
-        var serializedSet = SetSerializer.Serialize(set);
+        string serializedSet = SetSerializer.Serialize(set);
         await SetSource.CreateSetAsync(filePath, serializedSet);
     }
 

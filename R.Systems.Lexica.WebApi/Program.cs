@@ -9,7 +9,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        Logger logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         logger.Debug("Starting up!");
         try
         {

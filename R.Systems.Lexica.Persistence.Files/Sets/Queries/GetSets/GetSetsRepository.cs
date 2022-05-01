@@ -35,12 +35,12 @@ internal class GetSetsRepository : IGetSetsRepository
         ValidateDirExistence(setFilesDirPath);
         List<Set> sets = new();
         List<ErrorInfo> errors = new();
-        var setNames = SetSource.GetSetNames(setFilesDirPath);
-        foreach (var setName in setNames)
+        List<string> setNames = SetSource.GetSetNames(setFilesDirPath);
+        foreach (string setName in setNames)
         {
             try
             {
-                var set = await GetSetRepository.GetSetAsync(setName);
+                Set set = await GetSetRepository.GetSetAsync(setName);
                 sets.Add(set);
             }
             catch (ValidationException ex)

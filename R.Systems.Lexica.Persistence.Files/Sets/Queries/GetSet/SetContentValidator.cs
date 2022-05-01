@@ -28,10 +28,10 @@ internal class SetContentValidator : IDependencyInjectionScoped
             );
             throw new ValidationException(errorInfo);
         }
-        var lines = fileContent.Split('\n');
-        for (var i = 0; i < lines.Length; i++)
+        string[] lines = fileContent.Split('\n');
+        for (int i = 0; i < lines.Length; i++)
         {
-            var line = lines[i];
+            string line = lines[i];
             ValidateLine(line, i + 1);
         }
         if (Errors.Count > 0)
@@ -42,7 +42,7 @@ internal class SetContentValidator : IDependencyInjectionScoped
 
     private bool ValidateLine(string line, int lineNum)
     {
-        var parts = line.Split(';').Select(x => x.Trim()).ToArray();
+        string[] parts = line.Split(';').Select(x => x.Trim()).ToArray();
         if (parts.Length == 1)
         {
             Errors.Add(
@@ -69,10 +69,10 @@ internal class SetContentValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        var result = true;
-        var wordsPart = parts[0].Trim();
+        bool result = true;
+        string wordsPart = parts[0].Trim();
         result &= ValidateWords(wordsPart, lineNum);
-        var translationsPart = parts[1].Trim();
+        string translationsPart = parts[1].Trim();
         result &= ValidateTranslations(translationsPart, lineNum);
         return result;
     }
@@ -93,9 +93,9 @@ internal class SetContentValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        var result = true;
-        var words = wordsPart.Split(',').Select(x => x.Trim()).ToList();
-        foreach (var word in words)
+        bool result = true;
+        List<string> words = wordsPart.Split(',').Select(x => x.Trim()).ToList();
+        foreach (string word in words)
         {
             if (word.Length == 0)
             {
@@ -147,9 +147,9 @@ internal class SetContentValidator : IDependencyInjectionScoped
             );
             return false;
         }
-        var result = true;
-        var translations = translationsPart.Split(',').Select(x => x.Trim()).ToList();
-        foreach (var translation in translations)
+        bool result = true;
+        List<string> translations = translationsPart.Split(',').Select(x => x.Trim()).ToList();
+        foreach (string translation in translations)
         {
             if (translation.Length == 0)
             {
