@@ -22,16 +22,7 @@ public class GetSetTests : TestsBase
     {
         const string setFileName = "example_set_1.txt";
         string setUrl = $"{SetsUrl}/{setFileName}";
-        HttpClient httpClient = new TestWebApplicationFactory<Program>(AssetsPaths.SetCorrectFilesDirPath)
-            .CreateClient();
-
-        (HttpStatusCode httpStatusCode, Set? set) = await RequestService.SendGetAsync<Set>(
-            setUrl,
-            httpClient
-        );
-
-        Assert.Equal(HttpStatusCode.Unauthorized, httpStatusCode);
-        Assert.Null(set);
+        await SendRequestWithoutAuthenticationTokenAsync<Set>(setUrl);
     }
 
     [Fact]

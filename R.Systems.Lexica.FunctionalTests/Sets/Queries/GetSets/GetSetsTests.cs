@@ -19,16 +19,7 @@ public class GetSetsTests : TestsBase
     [Fact]
     public async Task GetSets_WithoutAuthenticationToken_Unauthorized()
     {
-        HttpClient httpClient = new TestWebApplicationFactory<Program>(AssetsPaths.SetCorrectFilesDirPath)
-            .CreateClient();
-
-        (HttpStatusCode httpStatusCode, List<Set>? sets) = await RequestService.SendGetAsync<List<Set>>(
-            SetsUrl,
-            httpClient
-        );
-
-        Assert.Equal(HttpStatusCode.Unauthorized, httpStatusCode);
-        Assert.Null(sets);
+        await SendRequestWithoutAuthenticationTokenAsync<List<Set>>(SetsUrl);
     }
 
     [Fact]
