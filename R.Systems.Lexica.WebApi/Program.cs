@@ -1,6 +1,6 @@
-using NLog;
+﻿using NLog;
 using NLog.Web;
-using R.Systems.Lexica.WebApi.DependencyInjection;
+using R.Systems.Lexica.WebApi.Filters;
 using R.Systems.Shared.WebApi.Middlewares;
 
 namespace R.Systems.Lexica.WebApi;
@@ -9,7 +9,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        Logger logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         logger.Debug("Starting up!");
         try
         {
@@ -38,9 +38,9 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options => options.Filters.Add<ApiExceptionFilterAttribute>());
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddServices(builder.Configuration);
+        builder.Services.AddWebApiServices(builder.Configuration);
     }
 
     private static void Configure(WebApplication app)

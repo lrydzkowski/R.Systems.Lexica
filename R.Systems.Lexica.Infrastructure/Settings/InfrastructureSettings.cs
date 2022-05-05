@@ -1,8 +1,0 @@
-﻿namespace R.Systems.Lexica.Infrastructure.Settings;
-
-public class InfrastructureSettings
-{
-    public const string PropertyName = "Lexica";
-
-    public string SetFilesDirPath { get; init; } = "";
-}

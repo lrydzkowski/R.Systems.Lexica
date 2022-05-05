@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
 COPY ["./R.Systems.Lexica.Core/.", "R.Systems.Lexica.Core/"]
-COPY ["./R.Systems.Lexica.Infrastructure/.", "R.Systems.Lexica.Infrastructure/"]
+COPY ["./R.Systems.Lexica.Persistence.Files/.", "R.Systems.Lexica.Persistence.Files/"]
 COPY ["./R.Systems.Lexica.WebApi/.", "R.Systems.Lexica.WebApi/"]
 WORKDIR "/src/R.Systems.Lexica.WebApi"
 RUN dotnet restore "R.Systems.Lexica.WebApi.csproj"

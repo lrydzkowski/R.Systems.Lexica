@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UserSecretsId>984e601d-358e-49a4-9f25-7bb1077ad3c4</UserSecretsId>
-    <Version>1.0.0-preview.1</Version>
+    <Version>1.0.0-preview.2</Version>
     <Authors>lrydzkowski</Authors>
   </PropertyGroup>
 
@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />
-    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure\R.Systems.Lexica.Infrastructure.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Persistence.Files\R.Systems.Lexica.Persistence.Files.csproj" />
   </ItemGroup>
 
 </Project>

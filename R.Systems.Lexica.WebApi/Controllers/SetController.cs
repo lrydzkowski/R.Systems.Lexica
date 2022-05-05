@@ -1,44 +1,41 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using R.Systems.Lexica.Core.Models;
-using R.Systems.Lexica.Core.Services;
-using R.Systems.Shared.Core.Validation;
+using R.Systems.Lexica.Core.Common.Models;
+using R.Systems.Lexica.Core.Sets.Commands.CreateSet;
+using R.Systems.Lexica.Core.Sets.Queries.GetSet;
+using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
 
 [ApiController, Route("sets")]
 public class SetController : ControllerBase
 {
-    public SetController(
-        SetReadService setReadService,
-        ValidationResult validationResult)
+    public SetController(ISender mediator)
     {
-        SetReadService = setReadService;
-        ValidationResult = validationResult;
+        Mediator = mediator;
     }
 
-    public SetReadService SetReadService { get; }
-    public ValidationResult ValidationResult { get; }
-
-    [HttpGet, Route("{setName}"), Authorize(Roles = "lexica")]
-    public async Task<IActionResult> Get(string setName)
-    {
-        OperationResult<Set?> operationResult = await SetReadService.GetAsync(setName);
-        if (!operationResult.Result)
-        {
-            return BadRequest(ValidationResult.Errors);
-        }
-        return Ok(operationResult.Data);
-    }
+    public ISender Mediator { get; }
 
     [HttpGet, Authorize(Roles = "lexica")]
     public async Task<IActionResult> Get()
     {
-        OperationResult<List<Set>?> operationResult = await SetReadService.GetAsync();
-        if (!operationResult.Result)
-        {
-            return BadRequest(ValidationResult.Errors);
-        }
-        return Ok(operationResult.Data);
+        List<Set> sets = await Mediator.Send(new GetSetsQuery());
+        return Ok(sets);
+    }
+
+    [HttpGet, Route("{setName}"), Authorize(Roles = "lexica")]
+    public async Task<IActionResult> Get(string setName)
+    {
+        Set set = await Mediator.Send(new GetSetQuery { SetName = setName });
+        return Ok(set);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateSetCommand command)
+    {
+        await Mediator.Send(command);
+        return Ok();
     }
 }
