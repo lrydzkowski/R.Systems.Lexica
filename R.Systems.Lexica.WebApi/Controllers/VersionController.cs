@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using R.Systems.Lexica.Core.Common.Models;
 using R.Systems.Lexica.Core.Version.Queries.GetVersion;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
@@ -18,7 +19,7 @@ public class VersionController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetVersion()
     {
-        string? version = await Mediator.Send(new GetVersionQuery());
-        return Ok(version);
+        App app = await Mediator.Send(new GetVersionQuery());
+        return Ok(app);
     }
 }

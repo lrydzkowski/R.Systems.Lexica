@@ -1,19 +1,20 @@
 ﻿using MediatR;
+using R.Systems.Lexica.Core.Common.Models;
 using System.Reflection;
 
 namespace R.Systems.Lexica.Core.Version.Queries.GetVersion;
 
-public class GetVersionQuery : IRequest<string?>
+public class GetVersionQuery : IRequest<App>
 {
 }
 
-public class GetVersionQueryHandler : IRequestHandler<GetVersionQuery, string?>
+public class GetVersionQueryHandler : IRequestHandler<GetVersionQuery, App>
 {
-    public Task<string?> Handle(GetVersionQuery request, CancellationToken cancellationToken)
+    public Task<App> Handle(GetVersionQuery request, CancellationToken cancellationToken)
     {
         string? version = Assembly.GetEntryAssembly()?
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
             InformationalVersion;
-        return Task.FromResult(version);
+        return Task.FromResult(new App { Version = version });
     }
 }
