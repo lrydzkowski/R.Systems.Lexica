@@ -1,4 +1,4 @@
-name: CI to GitHub Container Registry
+name: Docker image creation
 
 on:
   push:
@@ -12,33 +12,32 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Get the version
-        id: get_version
+      - name: Getting the version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
     
-      - name: Checkout repository
+      - name: Repository checkout
         uses: actions/checkout@v2
         
-      - name: Log in to the Container registry
+      - name: Signing in to the Container registry
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Extract metadata (tags, labels) for app docker container
+      - name: Extracting metadata (tags, labels) for an application docker image
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}
 
-      - name: Build app container and push it
-        id: docker_app_build
+      - name: Building an application docker image
         uses: docker/build-push-action@v2
         with:
           context: .
