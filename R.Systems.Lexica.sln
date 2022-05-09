@@ -25,6 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Functional
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Persistence.Files", "R.Systems.Lexica.Persistence.Files\R.Systems.Lexica.Persistence.Files.csproj", "{DFF06DB9-A8D2-438C-9528-4B34B0C2CCAC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C5B57CB1-EA22-46EE-901B-7E376D1C9E1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{9A860875-DCA0-409B-B07E-18FBC68ED52A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docker-image-creation.yml = .github\workflows\docker-image-creation.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +63,8 @@ Global
 		{D5F926D2-C426-479C-A46B-B082D0F9B7F2} = {7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}
 		{F64FAC43-38D8-4AB0-B84E-7F31083D832B} = {3E906166-5EEB-4033-ADB7-54D7A71B7338}
 		{DFF06DB9-A8D2-438C-9528-4B34B0C2CCAC} = {7AB9EAF9-C90B-4F8D-A9DA-06E0BE175DB4}
+		{C5B57CB1-EA22-46EE-901B-7E376D1C9E1C} = {AFD7C239-78C9-4EF4-9581-0A0062B7B0F7}
+		{9A860875-DCA0-409B-B07E-18FBC68ED52A} = {C5B57CB1-EA22-46EE-901B-7E376D1C9E1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E1DCDE4-60A1-468B-A940-3285EFD762A9}

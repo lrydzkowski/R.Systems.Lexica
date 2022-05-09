@@ -9,7 +9,7 @@ You can find here the following projects:
 - R.Systems.Lexica.Core - Class library, .NET 6, C# language. Core functionalities of R.Systems.Lexica.
 - R.Systems.Lexica.FunctionalTests - xUnit tests, .NET 6, C# language. E2E tests for endpoints available in R.Systems.Lexica.WebApi.
 
-This project is used by the web frontend written in Angular: [R.Systems.WebFrontend](https://github.com/lrydzkowski/R.Systems.WebFrontend).
+This project is used by the web frontend written in Angular: [R.Systems.NgFront](https://github.com/lrydzkowski/R.Systems.NgFront).
 
 The architecture of this solution is based on "Clean Architecture":
 
