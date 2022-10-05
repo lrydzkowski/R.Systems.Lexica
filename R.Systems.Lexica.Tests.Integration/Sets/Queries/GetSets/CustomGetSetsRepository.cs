@@ -10,7 +10,7 @@ internal class CustomGetSetsRepository : IGetSetsRepository
     {
         new()
         {
-            Name = "Test11",
+            Path = "Test11",
             Entries = new()
             {
                 new()
@@ -22,7 +22,7 @@ internal class CustomGetSetsRepository : IGetSetsRepository
         }
     };
 
-    public Task<List<Set>> GetSetsAsync(ListParameters listParameters)
+    public Task<List<Set>> GetSetsAsync(ListParameters listParameters, bool _)
     {
         return Task.FromResult(Sets);
     }

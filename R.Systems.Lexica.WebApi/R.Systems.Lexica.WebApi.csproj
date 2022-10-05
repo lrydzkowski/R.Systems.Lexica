@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />
-    <ProjectReference Include="..\R.Systems.Lexica.Persistence.Files\R.Systems.Lexica.Persistence.Files.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Persistence.AzureFiles\R.Systems.Lexica.Persistence.AzureFiles.csproj" />
   </ItemGroup>
 
 </Project>

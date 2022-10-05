@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Common.Domain;
-using R.Systems.Lexica.Core.Sets.Queries.GetSet;
+using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
+using R.Systems.Lexica.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
@@ -11,11 +13,13 @@ namespace R.Systems.Lexica.WebApi.Controllers;
 [Route("sets")]
 public class SetController : ControllerBase
 {
-    public SetController(ISender mediator)
+    public SetController(IMapper mapper, ISender mediator)
     {
+        Mapper = mapper;
         Mediator = mediator;
     }
 
+    private IMapper Mapper { get; }
     private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get sets")]
@@ -27,26 +31,16 @@ public class SetController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> GetSets(
+        [FromQuery] ListRequest listRequest,
+        [FromQuery] bool includeSetContent = false
+    )
     {
-        GetSetsResult result = await Mediator.Send(new GetSetsQuery());
+        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
+        GetSetsResult result = await Mediator.Send(
+            new GetSetsQuery { ListParameters = listParameters, IncludeSetContent = includeSetContent }
+        );
 
         return Ok(result.Sets);
-    }
-
-    [SwaggerOperation(Summary = "Get the set")]
-    [SwaggerResponse(
-        statusCode: 200,
-        description: "Correct response",
-        type: typeof(Set),
-        contentTypes: new[] { "application/json" }
-    )]
-    [SwaggerResponse(statusCode: 404, description: "Set doesn't exist.")]
-    [HttpGet, Route("{setName}")]
-    public async Task<IActionResult> Get(string setName)
-    {
-        GetSetResult result = await Mediator.Send(new GetSetQuery { SetName = setName });
-
-        return Ok(result.Set);
     }
 }

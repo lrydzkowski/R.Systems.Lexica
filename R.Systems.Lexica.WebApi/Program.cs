@@ -1,7 +1,7 @@
 using NLog;
 using NLog.Web;
 using R.Systems.Lexica.Core;
-using R.Systems.Lexica.Persistence.Files;
+using R.Systems.Lexica.Persistence.AzureFiles;
 using R.Systems.Lexica.WebApi.Middleware;
 
 namespace R.Systems.Lexica.WebApi;
@@ -37,7 +37,7 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Configuration);
         builder.Services.ConfigureCoreServices();
-        builder.Services.AddPersistenceFilesServices();
+        builder.Services.ConfigurePersistenceAzureFilesServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
