@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using R.Systems.Lexica.Core.Common.Domain;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
@@ -30,6 +32,7 @@ public class SetController : ControllerBase
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
+    [Authorize, RequiredScope("Read")]
     [HttpGet]
     public async Task<IActionResult> GetSets(
         [FromQuery] ListRequest listRequest,

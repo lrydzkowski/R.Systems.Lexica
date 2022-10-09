@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using Microsoft.OpenApi.Models;
 
 namespace R.Systems.Lexica.WebApi;
 
@@ -6,6 +8,8 @@ public static class DependencyInjection
 {
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(configuration.GetSection("AzureAd"));
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.ConfigureSwagger();
