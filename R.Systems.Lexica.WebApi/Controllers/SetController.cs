@@ -32,7 +32,7 @@ public class SetController : ControllerBase
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
-    [Authorize, RequiredScope("Read")]
+    [Authorize, RequiredScope("Access")]
     [HttpGet]
     public async Task<IActionResult> GetSets(
         [FromQuery] ListRequest listRequest,
