@@ -6,23 +6,27 @@ namespace R.Systems.Lexica.Tests.Integration.Sets.Queries.GetSets;
 
 internal class CustomGetSetsRepository : IGetSetsRepository
 {
-    public static List<Set> Sets => new()
+    public static ListInfo<Set> Sets => new()
     {
-        new()
+        Data = new List<Set>
         {
-            Path = "Test11",
-            Entries = new()
+            new()
             {
-                new()
+                Path = "Test11",
+                Entries = new()
                 {
-                    Words = new() { "word11" },
-                    Translations = new() { "translation11" }
+                    new()
+                    {
+                        Words = new() { "word11" },
+                        Translations = new() { "translation11" }
+                    }
                 }
             }
-        }
+        },
+        NumberOfAllRows = 1
     };
 
-    public Task<List<Set>> GetSetsAsync(ListParameters listParameters, bool _)
+    public Task<ListInfo<Set>> GetSetsAsync(ListParameters listParameters, bool _)
     {
         return Task.FromResult(Sets);
     }

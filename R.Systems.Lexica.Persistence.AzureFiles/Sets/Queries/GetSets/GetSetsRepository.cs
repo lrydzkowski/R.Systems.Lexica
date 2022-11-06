@@ -15,24 +15,35 @@ internal class GetSetsRepository : IGetSetsRepository
 
     private IFileShareClient FileShareClient { get; }
 
-    public async Task<List<Set>> GetSetsAsync(ListParameters listParameters, bool includeSetContent)
+    public async Task<ListInfo<Set>> GetSetsAsync(ListParameters listParameters, bool includeSetContent)
     {
         List<string> fieldsAvailableToSort = new() { "Path" };
         List<string> fieldsAvailableToFilter = new() { "Path" };
         List<string> filePaths = await FileShareClient.GetFilePathsAsync();
 
-        List<Set> sets = filePaths
-            .Select(filePath => new Set
-            {
-                Path = filePath
-            })
+        IQueryable<Set> query = filePaths
+            .Select(
+                filePath => new Set
+                {
+                    Path = filePath
+                }
+            )
             .AsQueryable()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "Path")
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Filter(fieldsAvailableToFilter, listParameters.Search);
+
+        int numberOfAllRows = query.Count();
+        List<Set> sets = query
             .Paginate(listParameters.Pagination)
             .ToList();
 
-        return await ParseSetsAsync(sets, includeSetContent);
+        List<Set> parsedSets = await ParseSetsAsync(sets, includeSetContent);
+
+        return new ListInfo<Set>
+        {
+            Data = parsedSets,
+            NumberOfAllRows = numberOfAllRows
+        };
     }
 
     private async Task<List<Set>> ParseSetsAsync(List<Set> setsToParse, bool includeSetContent)

@@ -11,7 +11,7 @@ public class GetSetsQuery : GetElementsQuery, IRequest<GetSetsResult>
 
 public class GetSetsResult
 {
-    public List<Set> Sets { get; init; } = new();
+    public ListInfo<Set> Sets { get; init; } = new();
 }
 
 public class GetSetsQueryHandler : IRequestHandler<GetSetsQuery, GetSetsResult>

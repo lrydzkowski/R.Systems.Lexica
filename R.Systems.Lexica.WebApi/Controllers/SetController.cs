@@ -28,7 +28,7 @@ public class SetController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(List<Set>),
+        type: typeof(ListInfo<List<Set>>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
