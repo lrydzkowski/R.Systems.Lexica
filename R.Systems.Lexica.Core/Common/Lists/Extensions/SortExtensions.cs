@@ -13,13 +13,14 @@ public static class SortExtensions
     {
         sorting = PrepareSortingParameters(sorting, defaultSortingFieldName);
 
-        if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
+        string fieldName = sorting.FieldName!.FirstCharToUpper();
+        if (!fieldsAvailableToSort.Contains(fieldName))
         {
             return query;
         }
 
         string sortOrderQuery = sorting.Order == SortingOrder.Ascending ? "" : " desc";
-        string sortQuery = $"{sorting.FieldName}{sortOrderQuery}";
+        string sortQuery = $"{fieldName}{sortOrderQuery}";
         query = query.OrderBy(sortQuery);
 
         return query;
@@ -38,4 +39,12 @@ public static class SortExtensions
             Order = SortingOrder.Ascending
         };
     }
+
+    private static string FirstCharToUpper(this string input) =>
+        input switch
+        {
+            null => throw new ArgumentNullException(nameof(input)),
+            "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
+            _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
+        };
 }

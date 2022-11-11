@@ -11,9 +11,9 @@ public class ListParameters
 
 public class Pagination
 {
-    public int FirstIndex { get; init; } = 0;
+    public int Page { get; init; } = 0;
 
-    public int NumberOfRows { get; init; } = 100;
+    public int PageSize { get; init; } = 100;
 }
 
 public class Sorting

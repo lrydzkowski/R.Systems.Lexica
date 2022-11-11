@@ -17,8 +17,8 @@ internal class GetSetsRepository : IGetSetsRepository
 
     public async Task<ListInfo<Set>> GetSetsAsync(ListParameters listParameters, bool includeSetContent)
     {
-        List<string> fieldsAvailableToSort = new() { "Path" };
-        List<string> fieldsAvailableToFilter = new() { "Path" };
+        List<string> fieldsAvailableToSort = new() { nameof(Set.Path) };
+        List<string> fieldsAvailableToFilter = new() { nameof(Set.Path) };
         List<string> filePaths = await FileShareClient.GetFilePathsAsync();
 
         IQueryable<Set> query = filePaths
@@ -29,7 +29,7 @@ internal class GetSetsRepository : IGetSetsRepository
                 }
             )
             .AsQueryable()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, "Path")
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, nameof(Set.Path))
             .Filter(fieldsAvailableToFilter, listParameters.Search);
 
         int numberOfAllRows = query.Count();
