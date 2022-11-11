@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using R.Systems.Lexica.Core.Common.Domain;
 using R.Systems.Lexica.Core.Common.Lists;
+using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 using R.Systems.Lexica.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
@@ -45,5 +46,23 @@ public class SetController : ControllerBase
         );
 
         return Ok(result.Sets);
+    }
+
+    [SwaggerOperation(Summary = "Get set")]
+    [SwaggerResponse(
+        statusCode: 200,
+        description: "Correct response",
+        type: typeof(ListInfo<List<Set>>),
+        contentTypes: new[] { "application/json" }
+    )]
+    [SwaggerResponse(statusCode: 500)]
+    [Authorize, RequiredScope("Access")]
+    [Route("{setPath}")]
+    [HttpGet]
+    public async Task<IActionResult> GetSet(string setPath)
+    {
+        GetSetResult result = await Mediator.Send(new GetSetQuery { SetPath = setPath });
+
+        return Ok(result.Set);
     }
 }

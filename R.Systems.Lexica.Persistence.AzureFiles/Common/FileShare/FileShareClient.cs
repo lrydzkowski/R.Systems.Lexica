@@ -55,11 +55,12 @@ internal class FileShareClient : IFileShareClient
             throw new InvalidOperationException($"File share with name {ShareClient.Name} doesn't exist.");
         }
 
-        ShareDirectoryClient directory = ShareClient.GetDirectoryClient(Path.GetDirectoryName(filePath)?.TrimStart('\\').TrimStart('/') ?? "");
+        ShareDirectoryClient directory =
+            ShareClient.GetDirectoryClient(Path.GetDirectoryName(filePath)?.TrimStart('\\').TrimStart('/') ?? "");
         ShareFileClient file = directory.GetFileClient(Path.GetFileName(filePath));
         ShareFileDownloadInfo download = await file.DownloadAsync();
 
-        using StreamReader reader = new StreamReader(download.Content);
+        using StreamReader reader = new(download.Content);
         string content = await reader.ReadToEndAsync();
 
         return content;
