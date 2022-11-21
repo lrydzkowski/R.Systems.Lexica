@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
+using R.Systems.Lexica.Core.Common.Errors;
 
 namespace R.Systems.Lexica.Persistence.AzureFiles.Common.FileShare;
 
@@ -58,6 +59,21 @@ internal class FileShareClient : IFileShareClient
         ShareDirectoryClient directory =
             ShareClient.GetDirectoryClient(Path.GetDirectoryName(filePath)?.TrimStart('\\').TrimStart('/') ?? "");
         ShareFileClient file = directory.GetFileClient(Path.GetFileName(filePath));
+        if (!await file.ExistsAsync())
+        {
+            string errorMessage = $"File {filePath} doesn't exist.";
+            throw new NotFoundException(
+                errorMessage,
+                new ErrorInfo
+                {
+                    PropertyName = "File",
+                    AttemptedValue = filePath,
+                    ErrorCode = "FileNotFound",
+                    ErrorMessage = errorMessage
+                }
+            );
+        }
+
         ShareFileDownloadInfo download = await file.DownloadAsync();
 
         using StreamReader reader = new(download.Content);

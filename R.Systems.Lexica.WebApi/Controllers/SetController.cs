@@ -9,6 +9,7 @@ using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 using R.Systems.Lexica.WebApi.Api;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace R.Systems.Lexica.WebApi.Controllers;
 
@@ -61,7 +62,7 @@ public class SetController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetSet(string setPath)
     {
-        GetSetResult result = await Mediator.Send(new GetSetQuery { SetPath = setPath });
+        GetSetResult result = await Mediator.Send(new GetSetQuery { SetPath = WebUtility.UrlDecode(setPath) });
 
         return Ok(result.Set);
     }
