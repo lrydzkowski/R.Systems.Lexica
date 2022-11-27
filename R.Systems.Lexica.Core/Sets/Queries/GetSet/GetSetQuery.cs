@@ -27,13 +27,7 @@ public class GetSetQueryHandler : IRequestHandler<GetSetQuery, GetSetResult>
         List<Set> sets = new();
         foreach (string setPath in query.SetPaths)
         {
-            sets.Add(
-                new Set
-                {
-                    Path = setPath,
-                    Entries = await GetSetRepository.GetSetEntriesAsync(setPath)
-                }
-            );
+            sets.Add(await GetSetRepository.GetSetAsync(setPath));
         }
 
         return new GetSetResult

@@ -29,7 +29,7 @@ public class GetSetTests
             .WithoutAuthentication()
             .WithScopedService<IGetSetRepository, CustomGetSetRepository>()
             .CreateRestClient();
-        RestRequest restRequest = new($"{_endpointUrlPath}/{string.Join(",", setPaths)}");
+        RestRequest restRequest = new($"{_endpointUrlPath}/{string.Join("|", setPaths)}");
 
         RestResponse<List<Set>> response = await restClient.ExecuteAsync<List<Set>>(restRequest);
 

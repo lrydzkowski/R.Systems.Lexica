@@ -1,14 +1,15 @@
 ﻿using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using R.Systems.Lexica.Core.Common.Errors;
+using R.Systems.Lexica.Persistence.AzureFiles.Common.Models;
 
 namespace R.Systems.Lexica.Persistence.AzureFiles.Common.FileShare;
 
 internal interface IFileShareClient
 {
-    Task<List<string>> GetFilePathsAsync();
+    Task<List<AzureFileInfo>> GetFilesAsync(bool includeContent);
 
-    Task<string> GetFileContentAsync(string filePath);
+    Task<AzureFileInfo> GetFileAsync(string filePath, ShareDirectoryClient? directoryClient = null);
 }
 
 internal class FileShareClient : IFileShareClient
@@ -20,14 +21,11 @@ internal class FileShareClient : IFileShareClient
 
     private ShareClient ShareClient { get; }
 
-    public async Task<List<string>> GetFilePathsAsync()
+    public async Task<List<AzureFileInfo>> GetFilesAsync(bool includeContent)
     {
-        if (!await ShareClient.ExistsAsync())
-        {
-            throw new InvalidOperationException($"File share with name {ShareClient.Name} doesn't exist.");
-        }
+        await VerifyFileShareExistenceAsync();
 
-        List<string> filePaths = new();
+        List<AzureFileInfo> files = new();
         Queue<ShareDirectoryClient> remaining = new();
         remaining.Enqueue(ShareClient.GetRootDirectoryClient());
         while (remaining.Count > 0)
@@ -42,22 +40,78 @@ internal class FileShareClient : IFileShareClient
                 }
 
                 string filePath = string.IsNullOrEmpty(dir.Path) ? $"/{item.Name}" : $"/{dir.Path}/{item.Name}";
-                filePaths.Add(filePath);
+                ShareDirectoryClient directory = GetDirectoryClient(filePath);
+                DateTimeOffset? lastModified;
+                string? content = null;
+                if (includeContent)
+                {
+                    AzureFileInfo fileInfo = await GetFileAsync(filePath, directory);
+                    lastModified = fileInfo.LastModified;
+                    content = fileInfo.Content;
+                }
+                else
+                {
+                    lastModified = await GetFileLastModifiedAsync(filePath, directory);
+                }
+
+                files.Add(
+                    new AzureFileInfo()
+                    {
+                        FilePath = filePath,
+                        LastModified = lastModified,
+                        Content = content
+                    }
+                );
             }
         }
 
-        return filePaths;
+        return files;
     }
 
-    public async Task<string> GetFileContentAsync(string filePath)
+    public async Task<AzureFileInfo> GetFileAsync(string filePath, ShareDirectoryClient? directoryClient = null)
+    {
+        await VerifyFileShareExistenceAsync();
+
+        (ShareFileClient file, ShareFileProperties shareFileProperties) =
+            await GetShareFileAsync(filePath, directoryClient);
+
+        ShareFileDownloadInfo download = await file.DownloadAsync();
+
+        using StreamReader reader = new(download.Content);
+        string content = await reader.ReadToEndAsync();
+
+        return new AzureFileInfo
+        {
+            FilePath = filePath,
+            Content = content,
+            LastModified = shareFileProperties.LastModified
+        };
+    }
+
+    private async Task VerifyFileShareExistenceAsync()
     {
         if (!await ShareClient.ExistsAsync())
         {
             throw new InvalidOperationException($"File share with name {ShareClient.Name} doesn't exist.");
         }
+    }
 
-        ShareDirectoryClient directory =
-            ShareClient.GetDirectoryClient(Path.GetDirectoryName(filePath)?.TrimStart('\\').TrimStart('/') ?? "");
+    private async Task<DateTimeOffset> GetFileLastModifiedAsync(string filePath, ShareDirectoryClient? directory = null)
+    {
+        await VerifyFileShareExistenceAsync();
+
+        (ShareFileClient _, ShareFileProperties shareFileProperties) = await GetShareFileAsync(filePath, directory);
+
+        return shareFileProperties.LastModified;
+    }
+
+    private async Task<Tuple<ShareFileClient, ShareFileProperties>> GetShareFileAsync(
+        string filePath,
+        ShareDirectoryClient? directory = null
+    )
+    {
+        directory ??= GetDirectoryClient(filePath);
+
         ShareFileClient file = directory.GetFileClient(Path.GetFileName(filePath));
         if (!await file.ExistsAsync())
         {
@@ -74,11 +128,13 @@ internal class FileShareClient : IFileShareClient
             );
         }
 
-        ShareFileDownloadInfo download = await file.DownloadAsync();
+        ShareFileProperties shareFileProperties = await file.GetPropertiesAsync();
 
-        using StreamReader reader = new(download.Content);
-        string content = await reader.ReadToEndAsync();
+        return new(file, shareFileProperties);
+    }
 
-        return content;
+    private ShareDirectoryClient GetDirectoryClient(string filePath)
+    {
+        return ShareClient.GetDirectoryClient(Path.GetDirectoryName(filePath)?.TrimStart('\\').TrimStart('/') ?? "");
     }
 }

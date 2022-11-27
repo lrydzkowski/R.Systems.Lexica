@@ -5,4 +5,6 @@ public class Set
     public string Path { get; init; } = "";
 
     public List<Entry> Entries { get; init; } = new();
+
+    public DateTimeOffset? LastModified { get; init; }
 }

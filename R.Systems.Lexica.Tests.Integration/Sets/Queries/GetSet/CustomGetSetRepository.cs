@@ -33,8 +33,8 @@ internal class CustomGetSetRepository : IGetSetRepository
         }
     };
 
-    public Task<List<Entry>> GetSetEntriesAsync(string filePath)
+    public Task<Set> GetSetAsync(string filePath)
     {
-        return Task.FromResult(!Sets.ContainsKey(filePath) ? new List<Entry>() : Sets[filePath].Entries);
+        return Task.FromResult(!Sets.ContainsKey(filePath) ? new Set() : Sets[filePath]);
     }
 }
