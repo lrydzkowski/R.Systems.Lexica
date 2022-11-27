@@ -13,17 +13,25 @@ public class GetSetTests
 {
     private readonly string _endpointUrlPath = "/sets";
 
-    [Fact]
-    public async Task GetSet_ShouldReturnSet_WhenCorrectData()
+    public static IEnumerable<object[]> Data =>
+        new List<object[]>
+        {
+            new object[] { new List<string> { "Test11" } },
+            new object[] { new List<string> { "Test11", "Test22" } }
+        };
+
+    [Theory]
+    [MemberData(nameof(Data))]
+    public async Task GetSet_ShouldReturnSet_WhenCorrectData(List<string> setPaths)
     {
-        Set expectedResponse = CustomGetSetRepository.Set;
+        List<Set> expectedResponse = setPaths.Select(setPath => CustomGetSetRepository.Sets[setPath]).ToList();
         RestClient restClient = new WebApiFactory<Program>()
             .WithoutAuthentication()
             .WithScopedService<IGetSetRepository, CustomGetSetRepository>()
             .CreateRestClient();
-        RestRequest restRequest = new($"{_endpointUrlPath}/Test11");
+        RestRequest restRequest = new($"{_endpointUrlPath}/{string.Join(",", setPaths)}");
 
-        RestResponse<Set> response = await restClient.ExecuteAsync<Set>(restRequest);
+        RestResponse<List<Set>> response = await restClient.ExecuteAsync<List<Set>>(restRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Data.Should().NotBeNull();

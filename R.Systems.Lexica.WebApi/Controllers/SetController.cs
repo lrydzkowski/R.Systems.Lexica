@@ -58,12 +58,14 @@ public class SetController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [Authorize, RequiredScope("Access")]
-    [Route("{setPath}")]
+    [Route("{setPaths}")]
     [HttpGet]
-    public async Task<IActionResult> GetSet(string setPath)
+    public async Task<IActionResult> GetSet(string setPaths)
     {
-        GetSetResult result = await Mediator.Send(new GetSetQuery { SetPath = WebUtility.UrlDecode(setPath) });
+        GetSetResult result = await Mediator.Send(
+            new GetSetQuery { SetPaths = WebUtility.UrlDecode(setPaths).Split("|").ToList() }
+        );
 
-        return Ok(result.Set);
+        return Ok(result.Sets);
     }
 }
