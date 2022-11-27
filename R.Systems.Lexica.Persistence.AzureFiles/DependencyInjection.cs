@@ -8,6 +8,7 @@ using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 using R.Systems.Lexica.Persistence.AzureFiles.Common.FileShare;
 using R.Systems.Lexica.Persistence.AzureFiles.Common.Options;
+using R.Systems.Lexica.Persistence.AzureFiles.Sets.Common;
 using R.Systems.Lexica.Persistence.AzureFiles.Sets.Queries.GetSet;
 using R.Systems.Lexica.Persistence.AzureFiles.Sets.Queries.GetSets;
 
@@ -41,5 +42,6 @@ public static class DependencyInjection
         services.AddScoped<IFileShareClient, FileShareClient>();
         services.AddScoped<IGetSetsRepository, GetSetsRepository>();
         services.AddScoped<IGetSetRepository, GetSetRepository>();
+        services.AddScoped<SetParser>();
     }
 }
