@@ -4,5 +4,5 @@ namespace R.Systems.Lexica.Core.Sets.Queries.GetSet;
 
 public interface IGetSetRepository
 {
-    public Task<Set> GetSetAsync(string name);
+    public Task<List<Entry>> GetSetEntriesAsync(string filePath);
 }

@@ -6,11 +6,12 @@ namespace R.Systems.Lexica.Core.Sets.Queries.GetSets;
 
 public class GetSetsQuery : GetElementsQuery, IRequest<GetSetsResult>
 {
+    public bool IncludeSetContent { get; init; } = false;
 }
 
 public class GetSetsResult
 {
-    public List<Set> Sets { get; init; } = new();
+    public ListInfo<Set> Sets { get; init; } = new();
 }
 
 public class GetSetsQueryHandler : IRequestHandler<GetSetsQuery, GetSetsResult>
@@ -24,6 +25,9 @@ public class GetSetsQueryHandler : IRequestHandler<GetSetsQuery, GetSetsResult>
 
     public async Task<GetSetsResult> Handle(GetSetsQuery query, CancellationToken cancellationToken)
     {
-        return new GetSetsResult { Sets = await GetSetsRepository.GetSetsAsync(query.ListParameters) };
+        return new GetSetsResult
+        {
+            Sets = await GetSetsRepository.GetSetsAsync(query.ListParameters, query.IncludeSetContent)
+        };
     }
 }

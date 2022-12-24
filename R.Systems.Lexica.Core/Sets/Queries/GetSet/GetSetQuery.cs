@@ -5,12 +5,12 @@ namespace R.Systems.Lexica.Core.Sets.Queries.GetSet;
 
 public class GetSetQuery : IRequest<GetSetResult>
 {
-    public string SetName { get; init; } = "";
+    public List<string> SetPaths { get; init; } = new();
 }
 
 public class GetSetResult
 {
-    public Set Set { get; init; } = new();
+    public List<Set> Sets { get; init; } = new();
 }
 
 public class GetSetQueryHandler : IRequestHandler<GetSetQuery, GetSetResult>
@@ -24,6 +24,21 @@ public class GetSetQueryHandler : IRequestHandler<GetSetQuery, GetSetResult>
 
     public async Task<GetSetResult> Handle(GetSetQuery query, CancellationToken cancellationToken)
     {
-        return new GetSetResult { Set = await GetSetRepository.GetSetAsync(query.SetName) };
+        List<Set> sets = new();
+        foreach (string setPath in query.SetPaths)
+        {
+            sets.Add(
+                new Set
+                {
+                    Path = setPath,
+                    Entries = await GetSetRepository.GetSetEntriesAsync(setPath)
+                }
+            );
+        }
+
+        return new GetSetResult
+        {
+            Sets = sets
+        };
     }
 }
