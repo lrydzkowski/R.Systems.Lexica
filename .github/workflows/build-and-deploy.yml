@@ -65,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./R.Systems.Lexica.WebApi/Dockerfile
+          file: ./R.Systems.Lexica.Api.Web/Dockerfile
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.APP_VERSION }}
           
