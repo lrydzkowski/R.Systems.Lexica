@@ -5,5 +5,5 @@ namespace R.Systems.Lexica.Core.Sets.Queries.GetSets;
 
 public interface IGetSetsRepository
 {
-    public Task<ListInfo<Set>> GetSetsAsync(ListParameters listParameters, bool includeSetContent);
+    Task<ListInfo<Set>> GetSetsAsync(ListParameters listParameters, bool includeSetContent);
 }

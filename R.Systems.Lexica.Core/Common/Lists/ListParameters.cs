@@ -11,7 +11,7 @@ public class ListParameters
 
 public class Pagination
 {
-    public int Page { get; init; } = 0;
+    public int Page { get; init; } = 1;
 
     public int PageSize { get; init; } = 100;
 }
@@ -25,8 +25,8 @@ public class Sorting
 
 public enum SortingOrder
 {
-    Ascending = 0,
-    Descending = 1
+    Ascending,
+    Descending
 }
 
 public class Search

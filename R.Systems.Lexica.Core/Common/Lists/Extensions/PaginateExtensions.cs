@@ -6,7 +6,8 @@ public static class PaginateExtensions
     {
         if (pagination.PageSize > -1)
         {
-            query = query.Skip((pagination.Page - 1) * pagination.PageSize).Take(pagination.PageSize);
+            int page = pagination.Page > 0 ? pagination.Page : 1;
+            query = query.Skip((page - 1) * pagination.PageSize).Take(pagination.PageSize);
         }
 
         return query;

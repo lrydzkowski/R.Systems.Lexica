@@ -9,18 +9,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{348E1E8F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3FC77EDA-4DED-4EA0-B6FA-F1A06DD40E61}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-and-deploy.yml = .github\workflows\build-and-deploy.yml
+		docker-compose.yml = docker-compose.yml
+		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.WebApi", "R.Systems.Lexica.WebApi\R.Systems.Lexica.WebApi.csproj", "{FCB3C50B-E2CC-44A2-B440-033E872EAFC4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2781F1A5-CCD4-4E90-A448-3E2563C58EDB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Core", "R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj", "{E86AD37C-5D4A-4C07-AD31-C1FC0E280797}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0EA84822-8C66-4704-ABB5-7E621106A8AC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{715FAF19-81F5-451B-BB71-09F365326371}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{F1F14032-B02E-4494-AD73-4839A49CDEF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Tests.Integration", "R.Systems.Lexica.Tests.Integration\R.Systems.Lexica.Tests.Integration.csproj", "{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Core", "R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj", "{AEC3BC5D-4391-4A5D-B72D-364028919FFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Persistence.AzureFiles", "R.Systems.Lexica.Persistence.AzureFiles\R.Systems.Lexica.Persistence.AzureFiles.csproj", "{16252F34-4C17-43DD-8D9C-FC5BCEE76489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure.Azure", "R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj", "{8EDE1B87-B09C-4403-9822-92C83F8B394D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Api.Web", "R.Systems.Lexica.Api.Web\R.Systems.Lexica.Api.Web.csproj", "{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Tests.Api.Web.Integration", "R.Systems.Lexica.Tests.Api.Web.Integration\R.Systems.Lexica.Tests.Api.Web.Integration.csproj", "{E556BB32-CF17-413A-8F53-4723248989AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,32 +35,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FCB3C50B-E2CC-44A2-B440-033E872EAFC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCB3C50B-E2CC-44A2-B440-033E872EAFC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCB3C50B-E2CC-44A2-B440-033E872EAFC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCB3C50B-E2CC-44A2-B440-033E872EAFC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E86AD37C-5D4A-4C07-AD31-C1FC0E280797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E86AD37C-5D4A-4C07-AD31-C1FC0E280797}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E86AD37C-5D4A-4C07-AD31-C1FC0E280797}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E86AD37C-5D4A-4C07-AD31-C1FC0E280797}.Release|Any CPU.Build.0 = Release|Any CPU
-		{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02F542E7-C0FD-401E-8049-7E3F8AC80CAA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16252F34-4C17-43DD-8D9C-FC5BCEE76489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16252F34-4C17-43DD-8D9C-FC5BCEE76489}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16252F34-4C17-43DD-8D9C-FC5BCEE76489}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16252F34-4C17-43DD-8D9C-FC5BCEE76489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC3BC5D-4391-4A5D-B72D-364028919FFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC3BC5D-4391-4A5D-B72D-364028919FFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC3BC5D-4391-4A5D-B72D-364028919FFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC3BC5D-4391-4A5D-B72D-364028919FFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDE1B87-B09C-4403-9822-92C83F8B394D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E556BB32-CF17-413A-8F53-4723248989AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E556BB32-CF17-413A-8F53-4723248989AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E556BB32-CF17-413A-8F53-4723248989AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E556BB32-CF17-413A-8F53-4723248989AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FCB3C50B-E2CC-44A2-B440-033E872EAFC4} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
-		{E86AD37C-5D4A-4C07-AD31-C1FC0E280797} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
-		{715FAF19-81F5-451B-BB71-09F365326371} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
-		{02F542E7-C0FD-401E-8049-7E3F8AC80CAA} = {348E1E8F-5473-43FF-A448-6746DE652F54}
-		{16252F34-4C17-43DD-8D9C-FC5BCEE76489} = {715FAF19-81F5-451B-BB71-09F365326371}
+		{2781F1A5-CCD4-4E90-A448-3E2563C58EDB} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
+		{0EA84822-8C66-4704-ABB5-7E621106A8AC} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
+		{F1F14032-B02E-4494-AD73-4839A49CDEF7} = {C1664B72-41A3-4029-8715-AF3B65AE44BC}
+		{AEC3BC5D-4391-4A5D-B72D-364028919FFB} = {0EA84822-8C66-4704-ABB5-7E621106A8AC}
+		{8EDE1B87-B09C-4403-9822-92C83F8B394D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{5F3A832D-FBF5-42E3-8E9E-2EE27ECEA407} = {F1F14032-B02E-4494-AD73-4839A49CDEF7}
+		{E556BB32-CF17-413A-8F53-4723248989AF} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}
