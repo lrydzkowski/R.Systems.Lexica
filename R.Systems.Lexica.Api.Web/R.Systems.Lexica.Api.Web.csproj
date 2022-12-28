@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Forvo\R.Systems.Lexica.Infrastructure.Forvo.csproj" />
   </ItemGroup>
 
 </Project>
