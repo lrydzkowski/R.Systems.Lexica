@@ -7,4 +7,8 @@ internal class AzureFilesOptions
     public string ConnectionString { get; init; } = "";
 
     public string FileShareName { get; init; } = "";
+
+    public string SetsDirectoryPath { get; init; } = "";
+
+    public string RecordingsDirectoryPath { get; init; } = "";
 }

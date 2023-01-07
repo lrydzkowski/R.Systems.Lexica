@@ -7,7 +7,7 @@
     <UserSecretsId>adf01f20-131d-4a88-8d37-86bf37847c02</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>1.0.0-preview.5</Version>
+    <Version>1.0.0-preview.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Forvo\R.Systems.Lexica.Infrastructure.Forvo.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Pronunciation\R.Systems.Lexica.Infrastructure.Pronunciation.csproj" />
   </ItemGroup>
 
 </Project>

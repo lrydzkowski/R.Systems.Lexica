@@ -15,9 +15,9 @@ namespace R.Systems.Lexica.Api.Web.Controllers;
 
 [ApiController]
 [Route("sets")]
-public class SetController : ControllerBase
+public class SetsController : ControllerBase
 {
-    public SetController(IMapper mapper, ISender mediator)
+    public SetsController(IMapper mapper, ISender mediator)
     {
         Mapper = mapper;
         Mediator = mediator;
