@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Forvo\R.Systems.Lexica.Infrastructure.Forvo.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Pronunciation\R.Systems.Lexica.Infrastructure.Pronunciation.csproj" />
   </ItemGroup>
 
 </Project>

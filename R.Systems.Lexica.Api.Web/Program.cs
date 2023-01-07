@@ -3,7 +3,7 @@ using NLog.Web;
 using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Azure;
-using R.Systems.Lexica.Infrastructure.Forvo;
+using R.Systems.Lexica.Infrastructure.Pronunciation;
 
 namespace R.Systems.Lexica.Api.Web;
 
@@ -39,7 +39,7 @@ public class Program
         builder.Services.ConfigureServices(builder.Environment);
         builder.Services.ConfigureCoreServices();
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureForvoServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructurePronunciationServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
