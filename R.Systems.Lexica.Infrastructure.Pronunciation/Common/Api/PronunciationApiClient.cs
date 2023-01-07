@@ -73,7 +73,13 @@ internal class PronunciationApiClient : IPronunciationApiClient
         string? fileUrl = null;
         HtmlDocument htmlDoc = new();
         htmlDoc.LoadHtml(content);
-        foreach (HtmlNode node in htmlDoc.DocumentNode.SelectNodes("//div[@class=\"pos-header dpos-h\"]"))
+        HtmlNodeCollection? nodeCollection = htmlDoc.DocumentNode.SelectNodes("//div[@class=\"pos-header dpos-h\"]");
+        if (nodeCollection == null)
+        {
+            return null;
+        }
+
+        foreach (HtmlNode node in nodeCollection)
         {
             HtmlNode titleNode = node.SelectSingleNode(".//div[@class=\"di-title\"]/span/span");
             if (titleNode == null)

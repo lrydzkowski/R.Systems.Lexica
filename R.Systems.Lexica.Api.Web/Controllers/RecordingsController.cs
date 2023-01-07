@@ -30,7 +30,7 @@ public class RecordingsController : ControllerBase
     [HttpGet, Route("{word}")]
     public async Task<IActionResult> GetRecording([FromRoute] string word)
     {
-        GetRecordingResult result = await Mediator.Send(new GetRecordingQuery { Word = word });
+        GetRecordingResult result = await Mediator.Send(new GetRecordingQuery { Word = word.Trim() });
         if (result.RecordingFile == null)
         {
             return NotFound(null);

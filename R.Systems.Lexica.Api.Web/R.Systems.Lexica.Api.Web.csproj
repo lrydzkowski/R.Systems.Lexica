@@ -7,7 +7,7 @@
     <UserSecretsId>adf01f20-131d-4a88-8d37-86bf37847c02</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>1.0.0-preview.7</Version>
+    <Version>1.0.0-preview.8</Version>
   </PropertyGroup>
 
   <ItemGroup>
