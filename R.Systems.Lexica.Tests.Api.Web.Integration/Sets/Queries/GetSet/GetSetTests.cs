@@ -13,7 +13,7 @@ namespace R.Systems.Lexica.Tests.Api.Web.Integration.Sets.Queries.GetSet;
 [Trait(TestConstants.Category, MainTestsCollection.CollectionName)]
 public class GetSetTests : IClassFixture<WebApiFactory>
 {
-    private readonly string _endpointUrlPath = "/sets";
+    private readonly string _endpointUrlPath = "/sets/content";
 
     public static IEnumerable<object[]> Data =>
         new List<object[]>
@@ -31,7 +31,11 @@ public class GetSetTests : IClassFixture<WebApiFactory>
             .WithoutAuthentication()
             .WithScopedService<IGetSetRepository, CustomGetSetRepository>()
             .CreateRestClient();
-        RestRequest restRequest = new($"{_endpointUrlPath}/{string.Join("|", setPaths)}");
+        RestRequest restRequest = new(_endpointUrlPath);
+        foreach (string setPath in setPaths)
+        {
+            restRequest.AddQueryParameter(nameof(setPath), setPath);
+        }
 
         RestResponse<List<Set>> response = await restClient.ExecuteAsync<List<Set>>(restRequest);
 
