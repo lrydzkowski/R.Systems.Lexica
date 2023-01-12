@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.ConfigureSwagger();
         services.ConfigureCors();
         services.AddAutoMapper(typeof(DependencyInjection).Assembly);
+        services.AddApplicationInsightsTelemetry();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
