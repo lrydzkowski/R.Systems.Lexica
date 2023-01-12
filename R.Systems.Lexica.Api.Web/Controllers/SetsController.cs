@@ -9,7 +9,6 @@ using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Sets.Queries.GetSet;
 using R.Systems.Lexica.Core.Sets.Queries.GetSets;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Net;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
@@ -58,12 +57,12 @@ public class SetsController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 500)]
     [Authorize, RequiredScope("Access")]
-    [Route("{setPaths}")]
+    [Route("content")]
     [HttpGet]
-    public async Task<IActionResult> GetSet(string setPaths)
+    public async Task<IActionResult> GetSet([FromQuery(Name = "setPath")] List<string> setPaths)
     {
         GetSetResult result = await Mediator.Send(
-            new GetSetQuery { SetPaths = WebUtility.UrlDecode(setPaths).Split("|").ToList() }
+            new GetSetQuery { SetPaths = setPaths }
         );
 
         return Ok(result.Sets);
