@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <UserSecretsId>f9916da7-b348-4033-9ff7-7cbc521b873c</UserSecretsId>
+    <UserSecretsId>6e6b36fc-f163-46c2-b538-71217b9b0c80</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,8 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Configurations\" />
-    <Folder Include="Common\Entities\" />
     <Folder Include="Common\Mappers\" />
   </ItemGroup>
 
