@@ -37,15 +37,4 @@ internal static class WebApiFactoryBuilder
             )
         );
     }
-
-    public static WebApplicationFactory<Program> WithScopedService<TService, TImplementation>(
-        this WebApplicationFactory<Program> webApplicationFactory
-    ) where TService : class where TImplementation : class, TService
-    {
-        return webApplicationFactory.WithWebHostBuilder(
-            builder => builder.ConfigureServices(
-                services => services.AddScoped<TService, TImplementation>()
-            )
-        );
-    }
 }

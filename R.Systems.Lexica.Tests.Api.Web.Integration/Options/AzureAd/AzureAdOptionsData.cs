@@ -1,4 +1,4 @@
-﻿using R.Systems.Lexica.Infrastructure.Azure.Common.Options;
+﻿using R.Systems.Lexica.Infrastructure.Azure.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
@@ -15,7 +15,7 @@ internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
 
     public Dictionary<string, string?> ConvertToInMemoryCollection()
     {
-        return new()
+        return new Dictionary<string, string?>
         {
             [$"{Position}:{nameof(Instance)}"] = Instance,
             [$"{Position}:{nameof(ClientId)}"] = ClientId,

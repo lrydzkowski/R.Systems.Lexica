@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
 using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
@@ -11,14 +11,12 @@ namespace R.Systems.Lexica.Api.Web.Controllers;
 [ApiController]
 public class AppController : ControllerBase
 {
-    public AppController(ISender mediator, IMapper mapper)
+    public AppController(ISender mediator)
     {
         Mediator = mediator;
-        Mapper = mapper;
     }
 
     private ISender Mediator { get; }
-    private IMapper Mapper { get; }
 
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
@@ -27,13 +25,15 @@ public class AppController : ControllerBase
         type: typeof(GetAppInfoResponse),
         contentTypes: new[] { "application/json" }
     )]
+    [SwaggerResponse(statusCode: 500)]
     [HttpGet, Route("")]
     public async Task<IActionResult> GetAppInfo()
     {
         GetAppInfoResult result = await Mediator.Send(
             new GetAppInfoQuery { AppAssembly = Assembly.GetExecutingAssembly() }
         );
-        GetAppInfoResponse response = Mapper.Map<GetAppInfoResponse>(result);
+        GetAppInfoMapper mapper = new();
+        GetAppInfoResponse response = mapper.ToResponse(result);
 
         return Ok(response);
     }

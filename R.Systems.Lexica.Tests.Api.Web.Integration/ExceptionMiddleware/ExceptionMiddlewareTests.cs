@@ -8,9 +8,9 @@ using System.Net;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.ExceptionMiddleware;
 
-[Collection(MainTestsCollection.CollectionName)]
-[Trait(TestConstants.Category, MainTestsCollection.CollectionName)]
-public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory>
+[Collection(StandardCollection.CollectionName)]
+[Trait(TestConstants.Category, StandardCollection.CollectionName)]
+public class ExceptionMiddlewareTests
 {
     public ExceptionMiddlewareTests(WebApiFactory webApiFactory)
     {

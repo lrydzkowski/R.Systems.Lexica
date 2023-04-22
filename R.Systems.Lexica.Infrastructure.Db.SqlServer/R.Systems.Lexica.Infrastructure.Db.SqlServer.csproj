@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <UserSecretsId>f9916da7-b348-4033-9ff7-7cbc521b873c</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.Web.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.DataGeneratorCli.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.AzureFunctions.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Core.Integration" />
+    <InternalsVisibleTo Include="R.Systems.Lexica.Api.DataGeneratorCli" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Configurations\" />
+    <Folder Include="Common\Entities\" />
+    <Folder Include="Common\Mappers\" />
+  </ItemGroup>
+
+</Project>
