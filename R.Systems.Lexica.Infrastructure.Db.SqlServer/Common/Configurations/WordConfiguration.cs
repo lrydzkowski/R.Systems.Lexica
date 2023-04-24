@@ -26,10 +26,32 @@ internal class WordConfiguration : IEntityTypeConfiguration<WordEntity>
 
     private void ConfigureRelations(EntityTypeBuilder<WordEntity> builder)
     {
+        ConfigureRelationWithWordType(builder);
+        ConfigureRelationWithTranslations(builder);
+    }
+
+    private static void ConfigureRelationWithWordType(EntityTypeBuilder<WordEntity> builder)
+    {
         builder.HasOne(entity => entity.WordType)
             .WithMany(parent => parent.Words)
             .HasForeignKey(entity => entity.WordTypeId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    private void ConfigureRelationWithTranslations(EntityTypeBuilder<WordEntity> builder)
+    {
+        builder.HasMany(entity => entity.Translations)
+            .WithMany(parent => parent.Words)
+            .UsingEntity(
+                "word_translation",
+                r => r.HasOne(typeof(TranslationEntity))
+                    .WithMany()
+                    .HasForeignKey("translation_id"),
+                l => l.HasOne(typeof(WordEntity))
+                    .WithMany()
+                    .HasForeignKey("word_id"),
+                j => j.ToTable(name: "word_translation")
+            );
     }
 
     private void ConfigureColumns(EntityTypeBuilder<WordEntity> builder)

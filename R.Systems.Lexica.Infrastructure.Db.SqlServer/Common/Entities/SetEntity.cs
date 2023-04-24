@@ -9,6 +9,5 @@ internal class SetEntity
     public DateTimeOffset CreatedAtUtc { get; set; }
 
     public ICollection<WordEntity> Words { get; set; } = new List<WordEntity>();
-
-    public ICollection<TranslationEntity> Translations { get; set; } = new List<TranslationEntity>();
+    public ICollection<SetWordEntity> SetWords { get; set; } = new List<SetWordEntity>();
 }

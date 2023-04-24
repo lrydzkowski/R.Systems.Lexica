@@ -27,38 +27,15 @@ internal class SetConfiguration : IEntityTypeConfiguration<SetEntity>
     private void ConfigureRelations(EntityTypeBuilder<SetEntity> builder)
     {
         ConfigurationRelationWithWords(builder);
-        ConfigureRelationWithTranslations(builder);
     }
 
     private void ConfigurationRelationWithWords(EntityTypeBuilder<SetEntity> builder)
     {
         builder.HasMany(entity => entity.Words)
             .WithMany(parent => parent.Sets)
-            .UsingEntity(
-                "set_word",
-                r => r.HasOne(typeof(WordEntity))
-                    .WithMany()
-                    .HasForeignKey("word_id"),
-                l => l.HasOne(typeof(SetEntity))
-                    .WithMany()
-                    .HasForeignKey("set_id"),
-                j => j.ToTable(name: "set_word")
-            );
-    }
-
-    private static void ConfigureRelationWithTranslations(EntityTypeBuilder<SetEntity> builder)
-    {
-        builder.HasMany(entity => entity.Translations)
-            .WithMany(parent => parent.Sets)
-            .UsingEntity(
-                "set_translation",
-                r => r.HasOne(typeof(TranslationEntity))
-                    .WithMany()
-                    .HasForeignKey("translation_id"),
-                l => l.HasOne(typeof(SetEntity))
-                    .WithMany()
-                    .HasForeignKey("set_id"),
-                j => j.ToTable(name: "set_translation")
+            .UsingEntity<SetWordEntity>(
+                r => r.HasOne(e => e.Word).WithMany(e => e.SetWords),
+                l => l.HasOne(e => e.Set).WithMany(e => e.SetWords)
             );
     }
 

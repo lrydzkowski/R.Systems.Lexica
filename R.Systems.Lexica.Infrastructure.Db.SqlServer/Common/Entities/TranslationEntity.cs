@@ -6,5 +6,5 @@ internal class TranslationEntity
 
     public string Translation { get; set; } = "";
 
-    public ICollection<SetEntity> Sets { get; set; } = new List<SetEntity>();
+    public ICollection<WordEntity> Words { get; set; } = new List<WordEntity>();
 }
