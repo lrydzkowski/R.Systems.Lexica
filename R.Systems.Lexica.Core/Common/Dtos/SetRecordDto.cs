@@ -1,12 +1,10 @@
-﻿namespace R.Systems.Lexica.Core.Common.Domain;
+﻿namespace R.Systems.Lexica.Core.Common.Dtos;
 
-public class Set
+public class SetRecordDto
 {
     public long SetId { get; init; }
 
     public string Name { get; init; } = "";
-
-    public List<Entry> Entries { get; init; } = new();
 
     public DateTimeOffset CreatedAt { get; init; }
 }
