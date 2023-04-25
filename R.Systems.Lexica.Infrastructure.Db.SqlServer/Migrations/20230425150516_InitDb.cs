@@ -79,7 +79,7 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                 {
                     set_id = table.Column<long>(type: "bigint", nullable: false),
                     word_id = table.Column<long>(type: "bigint", nullable: false),
-                    Order = table.Column<int>(type: "int", nullable: false)
+                    order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

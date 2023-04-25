@@ -32,5 +32,9 @@ internal class SetWordConfiguration : IEntityTypeConfiguration<SetWordEntity>
         builder.Property(entity => entity.WordId)
             .HasColumnName("word_id")
             .IsRequired();
+
+        builder.Property(entity => entity.Order)
+            .HasColumnName("order")
+            .IsRequired();
     }
 }

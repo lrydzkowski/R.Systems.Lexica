@@ -12,7 +12,7 @@ using R.Systems.Lexica.Infrastructure.Db.SqlServer;
 namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230424164955_InitDb")]
+    [Migration("20230425150516_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -63,7 +63,8 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                         .HasColumnName("word_id");
 
                     b.Property<int>("Order")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("order");
 
                     b.HasKey("SetId", "WordId");
 

@@ -60,7 +60,8 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                         .HasColumnName("word_id");
 
                     b.Property<int>("Order")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("order");
 
                     b.HasKey("SetId", "WordId");
 
