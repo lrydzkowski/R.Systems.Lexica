@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using MediatR;
 
-namespace R.Systems.Lexica.Core.App.Queries.GetAppInfo;
+namespace R.Systems.Lexica.Core.Queries.GetAppInfo;
 
 public class GetAppInfoQuery : IRequest<GetAppInfoResult>
 {

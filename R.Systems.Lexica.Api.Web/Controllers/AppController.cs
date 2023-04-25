@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Reflection;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 

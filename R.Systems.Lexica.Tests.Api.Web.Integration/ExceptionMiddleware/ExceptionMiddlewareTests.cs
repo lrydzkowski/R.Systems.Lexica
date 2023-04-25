@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.WebApplication;
 using RestSharp;
 using System.Net;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.ExceptionMiddleware;
 

@@ -1,5 +1,5 @@
 ﻿using R.Systems.Lexica.Api.Web.Models;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 using Riok.Mapperly.Abstractions;
 
 namespace R.Systems.Lexica.Api.Web.Mappers;

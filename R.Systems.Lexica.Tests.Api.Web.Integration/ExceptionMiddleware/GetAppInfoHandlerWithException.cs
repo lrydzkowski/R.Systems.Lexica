@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.ExceptionMiddleware;
 
