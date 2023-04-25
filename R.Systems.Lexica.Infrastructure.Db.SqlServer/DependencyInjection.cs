@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using R.Systems.Lexica.Core;
+using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
 using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Options;
 using R.Systems.Lexica.Infrastructure.Db.SqlServer.Repositories;
@@ -44,5 +45,6 @@ public static class DependencyInjection
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<IGetSetsRepository, SetsRepository>();
+        services.AddScoped<IGetSetRepository, SetsRepository>();
     }
 }
