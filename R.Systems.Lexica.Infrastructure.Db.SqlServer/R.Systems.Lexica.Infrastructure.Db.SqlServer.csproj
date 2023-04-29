@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\Mappers\**" />
+    <EmbeddedResource Remove="Common\Mappers\**" />
+    <None Remove="Common\Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,10 +33,6 @@
     <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.AzureFunctions.Integration" />
     <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Core.Integration" />
     <InternalsVisibleTo Include="R.Systems.Lexica.Api.DataGeneratorCli" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Mappers\" />
   </ItemGroup>
 
 </Project>

@@ -6,5 +6,8 @@ internal class TranslationEntity
 
     public string Translation { get; set; } = "";
 
-    public ICollection<WordEntity> Words { get; set; } = new List<WordEntity>();
+    public int Order { get; set; }
+
+    public long WordId { get; set; }
+    public WordEntity? Word { get; set; }
 }

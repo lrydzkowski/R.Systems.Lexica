@@ -63,12 +63,12 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository
                     SetId = setEntity.SetId,
                     Name = setEntity.Name,
                     CreatedAt = setEntity.CreatedAtUtc,
-                    Entries = setEntity.SetWords.OrderBy(x => x.Order)
+                    Entries = setEntity.Words.OrderBy(x => x.Order)
                         .Select(
                             x => new Entry
                             {
-                                Word = x.Word!.Word, WordType = MapWordType(x.Word!.WordType!.Name),
-                                Translations = x.Word!.Translations.Select(y => y.Translation).ToList()
+                                Word = x.Word, WordType = MapWordType(x.WordType!.Name),
+                                Translations = x.Translations.Select(y => y.Translation).ToList()
                             }
                         )
                         .ToList()

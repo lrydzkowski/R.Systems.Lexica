@@ -9,8 +9,10 @@ internal class WordEntity
     public int WordTypeId { get; set; }
     public WordTypeEntity? WordType { get; set; }
 
-    public ICollection<SetWordEntity> SetWords { get; set; } = new List<SetWordEntity>();
-    public ICollection<SetEntity> Sets { get; set; } = new List<SetEntity>();
+    public int Order { get; set; }
+
+    public long SetId { get; set; }
+    public SetEntity? Set { get; set; }
 
     public ICollection<TranslationEntity> Translations { get; set; } = new List<TranslationEntity>();
 }

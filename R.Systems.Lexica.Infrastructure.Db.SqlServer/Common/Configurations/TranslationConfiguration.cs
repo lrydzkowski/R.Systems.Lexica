@@ -10,6 +10,7 @@ internal class TranslationConfiguration : IEntityTypeConfiguration<TranslationEn
     {
         SetTableName(builder);
         SetPrimaryKey(builder);
+        ConfigureRelations(builder);
         ConfigureColumns(builder);
     }
 
@@ -23,6 +24,19 @@ internal class TranslationConfiguration : IEntityTypeConfiguration<TranslationEn
         builder.HasKey(entity => entity.TranslationId);
     }
 
+    private void ConfigureRelations(EntityTypeBuilder<TranslationEntity> builder)
+    {
+        ConfigureRelationWithWord(builder);
+    }
+
+    private static void ConfigureRelationWithWord(EntityTypeBuilder<TranslationEntity> builder)
+    {
+        builder.HasOne(entity => entity.Word)
+            .WithMany(parent => parent.Translations)
+            .HasForeignKey(entity => entity.WordId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
     private void ConfigureColumns(EntityTypeBuilder<TranslationEntity> builder)
     {
         builder.Property(entity => entity.TranslationId)
@@ -34,5 +48,13 @@ internal class TranslationConfiguration : IEntityTypeConfiguration<TranslationEn
             .HasColumnName("translation")
             .IsRequired()
             .HasMaxLength(200);
+
+        builder.Property(entity => entity.Order)
+            .HasColumnName("order")
+            .IsRequired();
+
+        builder.Property(entity => entity.WordId)
+            .HasColumnName("word_id")
+            .IsRequired();
     }
 }

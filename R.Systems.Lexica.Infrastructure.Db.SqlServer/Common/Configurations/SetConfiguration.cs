@@ -10,7 +10,6 @@ internal class SetConfiguration : IEntityTypeConfiguration<SetEntity>
     {
         SetTableName(builder);
         SetPrimaryKey(builder);
-        ConfigureRelations(builder);
         ConfigureColumns(builder);
     }
 
@@ -22,21 +21,6 @@ internal class SetConfiguration : IEntityTypeConfiguration<SetEntity>
     private void SetPrimaryKey(EntityTypeBuilder<SetEntity> builder)
     {
         builder.HasKey(entity => entity.SetId);
-    }
-
-    private void ConfigureRelations(EntityTypeBuilder<SetEntity> builder)
-    {
-        ConfigurationRelationWithWords(builder);
-    }
-
-    private void ConfigurationRelationWithWords(EntityTypeBuilder<SetEntity> builder)
-    {
-        builder.HasMany(entity => entity.Words)
-            .WithMany(parent => parent.Sets)
-            .UsingEntity<SetWordEntity>(
-                r => r.HasOne(e => e.Word).WithMany(e => e.SetWords),
-                l => l.HasOne(e => e.Set).WithMany(e => e.SetWords)
-            );
     }
 
     private void ConfigureColumns(EntityTypeBuilder<SetEntity> builder)

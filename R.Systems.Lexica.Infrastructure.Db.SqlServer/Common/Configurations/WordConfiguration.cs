@@ -27,7 +27,7 @@ internal class WordConfiguration : IEntityTypeConfiguration<WordEntity>
     private void ConfigureRelations(EntityTypeBuilder<WordEntity> builder)
     {
         ConfigureRelationWithWordType(builder);
-        ConfigureRelationWithTranslations(builder);
+        ConfigureRelationWithSet(builder);
     }
 
     private static void ConfigureRelationWithWordType(EntityTypeBuilder<WordEntity> builder)
@@ -38,20 +38,12 @@ internal class WordConfiguration : IEntityTypeConfiguration<WordEntity>
             .OnDelete(DeleteBehavior.Cascade);
     }
 
-    private void ConfigureRelationWithTranslations(EntityTypeBuilder<WordEntity> builder)
+    private static void ConfigureRelationWithSet(EntityTypeBuilder<WordEntity> builder)
     {
-        builder.HasMany(entity => entity.Translations)
+        builder.HasOne(entity => entity.Set)
             .WithMany(parent => parent.Words)
-            .UsingEntity(
-                "word_translation",
-                r => r.HasOne(typeof(TranslationEntity))
-                    .WithMany()
-                    .HasForeignKey("translation_id"),
-                l => l.HasOne(typeof(WordEntity))
-                    .WithMany()
-                    .HasForeignKey("word_id"),
-                j => j.ToTable(name: "word_translation")
-            );
+            .HasForeignKey(entity => entity.SetId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private void ConfigureColumns(EntityTypeBuilder<WordEntity> builder)
@@ -68,6 +60,14 @@ internal class WordConfiguration : IEntityTypeConfiguration<WordEntity>
 
         builder.Property(entity => entity.WordTypeId)
             .HasColumnName("word_type_id")
+            .IsRequired();
+
+        builder.Property(entity => entity.Order)
+            .HasColumnName("order")
+            .IsRequired();
+
+        builder.Property(entity => entity.SetId)
+            .HasColumnName("set_id")
             .IsRequired();
     }
 }

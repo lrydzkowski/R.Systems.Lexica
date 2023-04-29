@@ -12,7 +12,7 @@ using R.Systems.Lexica.Infrastructure.Db.SqlServer;
 namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230425150516_InitDb")]
+    [Migration("20230429052414_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -52,27 +52,6 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                     b.ToTable("set", (string)null);
                 });
 
-            modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.SetWordEntity", b =>
-                {
-                    b.Property<long>("SetId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("set_id");
-
-                    b.Property<long>("WordId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("word_id");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int")
-                        .HasColumnName("order");
-
-                    b.HasKey("SetId", "WordId");
-
-                    b.HasIndex("WordId");
-
-                    b.ToTable("set_word", (string)null);
-                });
-
             modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.TranslationEntity", b =>
                 {
                     b.Property<long>("TranslationId")
@@ -82,13 +61,23 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("TranslationId"));
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int")
+                        .HasColumnName("order");
+
                     b.Property<string>("Translation")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)")
                         .HasColumnName("translation");
 
+                    b.Property<long>("WordId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("word_id");
+
                     b.HasKey("TranslationId");
+
+                    b.HasIndex("WordId");
 
                     b.ToTable("translation", (string)null);
                 });
@@ -102,6 +91,14 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("WordId"));
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int")
+                        .HasColumnName("order");
+
+                    b.Property<long>("SetId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("set_id");
+
                     b.Property<string>("Word")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -113,6 +110,8 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                         .HasColumnName("word_type_id");
 
                     b.HasKey("WordId");
+
+                    b.HasIndex("SetId");
 
                     b.HasIndex("WordTypeId");
 
@@ -169,74 +168,44 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("word_translation", b =>
+            modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.TranslationEntity", b =>
                 {
-                    b.Property<long>("translation_id")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("word_id")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("translation_id", "word_id");
-
-                    b.HasIndex("word_id");
-
-                    b.ToTable("word_translation", (string)null);
-                });
-
-            modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.SetWordEntity", b =>
-                {
-                    b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.SetEntity", "Set")
-                        .WithMany("SetWords")
-                        .HasForeignKey("SetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordEntity", "Word")
-                        .WithMany("SetWords")
+                        .WithMany("Translations")
                         .HasForeignKey("WordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Set");
 
                     b.Navigation("Word");
                 });
 
             modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordEntity", b =>
                 {
+                    b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.SetEntity", "Set")
+                        .WithMany("Words")
+                        .HasForeignKey("SetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordTypeEntity", "WordType")
                         .WithMany("Words")
                         .HasForeignKey("WordTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Set");
+
                     b.Navigation("WordType");
-                });
-
-            modelBuilder.Entity("word_translation", b =>
-                {
-                    b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.TranslationEntity", null)
-                        .WithMany()
-                        .HasForeignKey("translation_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordEntity", null)
-                        .WithMany()
-                        .HasForeignKey("word_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.SetEntity", b =>
                 {
-                    b.Navigation("SetWords");
+                    b.Navigation("Words");
                 });
 
             modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordEntity", b =>
                 {
-                    b.Navigation("SetWords");
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities.WordTypeEntity", b =>
