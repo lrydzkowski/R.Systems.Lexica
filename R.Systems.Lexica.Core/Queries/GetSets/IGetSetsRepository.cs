@@ -1,5 +1,4 @@
-﻿using R.Systems.Lexica.Core.Common.Dtos;
-using R.Systems.Lexica.Core.Common.Lists;
+﻿using R.Systems.Lexica.Core.Common.Lists;
 
 namespace R.Systems.Lexica.Core.Queries.GetSets;
 

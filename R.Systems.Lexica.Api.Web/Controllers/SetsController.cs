@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
+using R.Systems.Lexica.Core.Commands.CreateSet;
+using R.Systems.Lexica.Core.Commands.DeleteSet;
 using R.Systems.Lexica.Core.Common.Domain;
-using R.Systems.Lexica.Core.Common.Dtos;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
@@ -74,5 +75,41 @@ public class SetsController : ControllerBase
         }
 
         return Ok(result.Set);
+    }
+
+    [SwaggerOperation(Summary = "Delete set")]
+    [SwaggerResponse(
+        statusCode: 204,
+        description: "Set deleted"
+    )]
+    [SwaggerResponse(statusCode: 404)]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpDelete("{setId}")]
+    public async Task<IActionResult> DeleteSet(
+        long setId,
+        CancellationToken cancellationToken
+    )
+    {
+        await _mediator.Send(
+            new DeleteSetCommand { SetId = setId },
+            cancellationToken
+        );
+
+        return NoContent();
+    }
+
+    [SwaggerOperation(Summary = "Create set")]
+    [SwaggerResponse(
+        statusCode: 204,
+        description: "Set created"
+    )]
+    [SwaggerResponse(statusCode: 404)]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPost]
+    public async Task<IActionResult> CreateSet(CreateSetCommand createSetCommand)
+    {
+        await _mediator.Send(createSetCommand);
+
+        return NoContent();
     }
 }

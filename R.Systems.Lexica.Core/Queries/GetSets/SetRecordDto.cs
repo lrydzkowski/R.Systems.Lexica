@@ -1,4 +1,4 @@
-﻿namespace R.Systems.Lexica.Core.Common.Dtos;
+﻿namespace R.Systems.Lexica.Core.Queries.GetSets;
 
 public class SetRecordDto
 {

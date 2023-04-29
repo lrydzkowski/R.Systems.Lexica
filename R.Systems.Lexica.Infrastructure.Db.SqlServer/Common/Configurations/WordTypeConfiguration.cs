@@ -46,27 +46,27 @@ internal class WordTypeConfiguration : IEntityTypeConfiguration<WordTypeEntity>
             new WordTypeEntity()
             {
                 WordTypeId = 1,
-                Name = WordTypes.None.ToString()
+                Name = WordType.None.ToString()
             },
             new WordTypeEntity()
             {
                 WordTypeId = 2,
-                Name = WordTypes.Noun.ToString()
+                Name = WordType.Noun.ToString()
             },
             new WordTypeEntity()
             {
                 WordTypeId = 3,
-                Name = WordTypes.Verb.ToString()
+                Name = WordType.Verb.ToString()
             },
             new WordTypeEntity()
             {
                 WordTypeId = 4,
-                Name = WordTypes.Adjective.ToString()
+                Name = WordType.Adjective.ToString()
             },
             new WordTypeEntity()
             {
                 WordTypeId = 5,
-                Name = WordTypes.Adverb.ToString()
+                Name = WordType.Adverb.ToString()
             }
         );
     }

@@ -1,6 +1,6 @@
 ﻿namespace R.Systems.Lexica.Core.Common.Domain;
 
-public enum WordTypes
+public enum WordType
 {
     None,
     Noun,
