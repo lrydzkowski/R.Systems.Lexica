@@ -2,5 +2,7 @@
 
 public interface ICreateSetRepository
 {
-    Task CreateSetAsync(CreateSetCommand createSetCommand);
+    Task<long> CreateSetAsync(CreateSetCommand createSetCommand);
+
+    Task<bool> SetExistsAsync(string setName, CancellationToken cancellationToken);
 }

@@ -5,13 +5,14 @@ namespace R.Systems.Lexica.Core.Commands.CreateSet;
 
 public class CreateSetCommand : IRequest<CreateSetResult>
 {
-    public string SetName { get; init; } = "";
+    public string SetName { get; set; } = "";
 
-    public List<Entry> Entries { get; init; } = new();
+    public List<Entry> Entries { get; set; } = new();
 }
 
 public class CreateSetResult
 {
+    public long SetId { get; init; }
 }
 
 public class CreateSetCommandHandler : IRequestHandler<CreateSetCommand, CreateSetResult>
@@ -25,8 +26,11 @@ public class CreateSetCommandHandler : IRequestHandler<CreateSetCommand, CreateS
 
     public async Task<CreateSetResult> Handle(CreateSetCommand command, CancellationToken cancellationToken)
     {
-        await _createSetRepository.CreateSetAsync(command);
+        long setId = await _createSetRepository.CreateSetAsync(command);
 
-        return new CreateSetResult();
+        return new CreateSetResult
+        {
+            SetId = setId
+        };
     }
 }

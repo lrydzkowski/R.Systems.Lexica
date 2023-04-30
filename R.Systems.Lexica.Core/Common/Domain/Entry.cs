@@ -2,9 +2,9 @@
 
 public class Entry
 {
-    public string Word { get; init; } = "";
+    public string Word { get; set; } = "";
 
-    public WordType WordType { get; init; } = WordType.None;
+    public WordType WordType { get; set; } = WordType.None;
 
-    public List<string> Translations { get; init; } = new();
+    public List<string> Translations { get; set; } = new();
 }

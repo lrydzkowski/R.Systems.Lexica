@@ -5,7 +5,9 @@ using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
 using R.Systems.Lexica.Core.Commands.CreateSet;
 using R.Systems.Lexica.Core.Commands.DeleteSet;
+using R.Systems.Lexica.Core.Commands.UpdateSet;
 using R.Systems.Lexica.Core.Common.Domain;
+using R.Systems.Lexica.Core.Common.Errors;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
@@ -82,7 +84,7 @@ public class SetsController : ControllerBase
         statusCode: 204,
         description: "Set deleted"
     )]
-    [SwaggerResponse(statusCode: 404)]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet(
@@ -100,15 +102,38 @@ public class SetsController : ControllerBase
 
     [SwaggerOperation(Summary = "Create set")]
     [SwaggerResponse(
-        statusCode: 204,
+        statusCode: 201,
         description: "Set created"
     )]
-    [SwaggerResponse(statusCode: 404)]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
     [HttpPost]
-    public async Task<IActionResult> CreateSet(CreateSetCommand createSetCommand)
+    public async Task<IActionResult> CreateSet(CreateSetRequest createSetRequest)
     {
-        await _mediator.Send(createSetCommand);
+        CreateSetMapper mapper = new();
+        CreateSetCommand command = mapper.ToCommand(createSetRequest);
+        CreateSetResult result = await _mediator.Send(command);
+
+        return CreatedAtAction(
+            nameof(GetSet),
+            new { setId = result.SetId },
+            result
+        );
+    }
+
+    [SwaggerOperation(Summary = "Update set")]
+    [SwaggerResponse(
+        statusCode: 204,
+        description: "Set updated"
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPut]
+    public async Task<IActionResult> UpdateSet(UpdateSetRequest updateSetRequest)
+    {
+        UpdateSetMapper mapper = new();
+        UpdateSetCommand command = mapper.ToCommand(updateSetRequest);
+        await _mediator.Send(command);
 
         return NoContent();
     }

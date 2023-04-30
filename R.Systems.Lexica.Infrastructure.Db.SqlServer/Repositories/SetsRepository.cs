@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using R.Systems.Lexica.Core.Commands.CreateSet;
 using R.Systems.Lexica.Core.Commands.DeleteSet;
+using R.Systems.Lexica.Core.Commands.UpdateSet;
 using R.Systems.Lexica.Core.Common.Domain;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Common.Lists.Extensions;
@@ -13,12 +14,16 @@ using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Entities;
 
 namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Repositories;
 
-internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSetRepository, ICreateSetRepository
+internal class SetsRepository
+    : IGetSetsRepository, IGetSetRepository, IDeleteSetRepository, ICreateSetRepository, IUpdateSetRepository
 {
     private readonly AppDbContext _dbContext;
     private readonly IWordTypesRepository _wordTypesRepository;
 
-    public SetsRepository(AppDbContext dbContext, IWordTypesRepository wordTypesRepository)
+    public SetsRepository(
+        AppDbContext dbContext,
+        IWordTypesRepository wordTypesRepository
+    )
     {
         _dbContext = dbContext;
         _wordTypesRepository = wordTypesRepository;
@@ -30,7 +35,7 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
     )
     {
         List<string> fieldsAvailableToSort = new() { "setId", "name", "createdAtUtc" };
-        List<string> fieldsAvailableToFilter = new() { "setId", "name" };
+        List<string> fieldsAvailableToFilter = new() { "name" };
 
         List<SetRecordDto> sets = await _dbContext.SetEntities.AsNoTracking()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId")
@@ -64,7 +69,24 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
     {
         Set? set = await _dbContext.SetEntities.AsNoTracking()
             .Where(setEntity => setEntity.SetId == setId)
-            .Select(setEntity => MapToSet(setEntity))
+            .Select(
+                setEntity => new Set
+                {
+                    SetId = setEntity.SetId,
+                    Name = setEntity.Name,
+                    CreatedAt = setEntity.CreatedAtUtc,
+                    Entries = setEntity.Words.OrderBy(x => x.Order)
+                        .Select(
+                            x => new Entry
+                            {
+                                Word = x.Word,
+                                WordType = MapWordType(x.WordType!.Name),
+                                Translations = x.Translations.Select(y => y.Translation).ToList()
+                            }
+                        )
+                        .ToList()
+                }
+            )
             .FirstOrDefaultAsync(cancellationToken);
 
         return set;
@@ -72,13 +94,28 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
 
     public async Task DeleteSetAsync(long setId)
     {
-        SetEntity setEntity = await GetSetAsync(setId);
+        if (!await SetExistsAsync(setId))
+        {
+            throw new ValidationException(
+                new List<ValidationFailure>
+                {
+                    new()
+                    {
+                        PropertyName = "Set",
+                        ErrorMessage = $"Set with the given id doesn't exist ('{setId}').",
+                        AttemptedValue = setId,
+                        ErrorCode = "NotExist"
+                    }
+                }
+            );
+        }
 
-        _dbContext.SetEntities.Remove(setEntity);
+        SetEntity setEntity = new() { SetId = setId };
+        _dbContext.Entry(setEntity).State = EntityState.Deleted;
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task CreateSetAsync(CreateSetCommand createSetCommand)
+    public async Task<long> CreateSetAsync(CreateSetCommand createSetCommand)
     {
         await using IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync();
 
@@ -100,6 +137,8 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
             }
 
             await transaction.CommitAsync();
+
+            return setEntity.SetId;
         }
         catch (Exception)
         {
@@ -108,49 +147,75 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
         }
     }
 
-    public async Task<bool> SetNameExists(string setName)
+    public async Task UpdateSetAsync(UpdateSetCommand updateSetCommand)
     {
-        SetEntity? setEntity = await _dbContext.SetEntities.AsNoTracking()
-            .Where(x => x.Name == setName)
-            .Select(x => new SetEntity() { SetId = x.SetId })
-            .FirstOrDefaultAsync();
-        bool exists = setEntity != null;
+        await using IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync();
 
-        return exists;
-    }
-
-    private static WordType MapWordType(string wordTypeName)
-    {
-        bool parsingResult = Enum.TryParse(wordTypeName, out WordType wordType);
-        if (!parsingResult)
+        try
         {
-            return WordType.None;
-        }
-
-        return wordType;
-    }
-
-    private async Task<SetEntity> GetSetAsync(long setId)
-    {
-        SetEntity? setEntity = await _dbContext.SetEntities.Where(x => x.SetId == setId)
-            .FirstOrDefaultAsync();
-        if (setEntity == null)
-        {
-            throw new ValidationException(
-                new List<ValidationFailure>
-                {
-                    new()
+            SetEntity? setEntity = await _dbContext.SetEntities
+                .Include(setEntity => setEntity.Words)
+                .FirstOrDefaultAsync(setEntity => setEntity.SetId == updateSetCommand.SetId);
+            if (setEntity == null)
+            {
+                throw new ValidationException(
+                    new List<ValidationFailure>
                     {
-                        PropertyName = "Set",
-                        ErrorMessage = $"Set with the given id doesn't exist ('{setId}').",
-                        AttemptedValue = setId,
-                        ErrorCode = "NotExist"
+                        new()
+                        {
+                            PropertyName = "Set",
+                            ErrorMessage = $"Set with the given id doesn't exist ('{updateSetCommand.SetId}').",
+                            AttemptedValue = updateSetCommand.SetId,
+                            ErrorCode = "NotExist"
+                        }
                     }
-                }
-            );
-        }
+                );
+            }
 
-        return setEntity;
+            setEntity.Name = updateSetCommand.SetName;
+            await _dbContext.SaveChangesAsync();
+
+            _dbContext.RemoveRange(setEntity.Words);
+            await _dbContext.SaveChangesAsync();
+
+            for (int i = 0; i < updateSetCommand.Entries.Count; i++)
+            {
+                Entry entry = updateSetCommand.Entries[i];
+                int wordTypeId = await GetWordTypeIdAsync(entry);
+                WordEntity wordEntity = await AddWordAsync(entry, wordTypeId, i, setEntity);
+
+                for (int j = 0; j < entry.Translations.Count; j++)
+                {
+                    string translation = entry.Translations[j];
+                    await AddTranslationAsync(translation, j, wordEntity);
+                }
+            }
+
+            await transaction.CommitAsync();
+        }
+        catch (Exception)
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
+    }
+
+    public async Task<bool> SetExistsAsync(string setName, CancellationToken cancellationToken)
+    {
+        bool setExists = await _dbContext.SetEntities.AsNoTracking()
+            .Select(x => x.Name)
+            .AnyAsync(x => x == setName, cancellationToken);
+
+        return setExists;
+    }
+
+    private async Task<bool> SetExistsAsync(long setId)
+    {
+        bool setExists = await _dbContext.SetEntities.AsNoTracking()
+            .Select(x => x.SetId)
+            .AnyAsync(x => x == setId);
+
+        return setExists;
     }
 
     private async Task<SetEntity> AddSetAsync(CreateSetCommand createSetCommand)
@@ -206,23 +271,14 @@ internal class SetsRepository : IGetSetsRepository, IGetSetRepository, IDeleteSe
         return translationEntity;
     }
 
-    private static Set MapToSet(SetEntity setEntity)
+    private static WordType MapWordType(string wordTypeName)
     {
-        return new Set
+        bool parsingResult = Enum.TryParse(wordTypeName, out WordType wordType);
+        if (!parsingResult)
         {
-            SetId = setEntity.SetId,
-            Name = setEntity.Name,
-            CreatedAt = setEntity.CreatedAtUtc,
-            Entries = setEntity.Words.OrderBy(x => x.Order)
-                .Select(
-                    x => new Entry
-                    {
-                        Word = x.Word,
-                        WordType = MapWordType(x.WordType!.Name),
-                        Translations = x.Translations.Select(y => y.Translation).ToList()
-                    }
-                )
-                .ToList()
-        };
+            return WordType.None;
+        }
+
+        return wordType;
     }
 }
