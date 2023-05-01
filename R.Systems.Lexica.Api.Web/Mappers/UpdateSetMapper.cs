@@ -10,15 +10,5 @@ public partial class UpdateSetMapper
 {
     public partial UpdateSetCommand ToCommand(UpdateSetRequest request);
 
-    private WordType MapToWordType(string wordType)
-    {
-        return wordType switch
-        {
-            "noun" => WordType.Noun,
-            "verb" => WordType.Verb,
-            "adjective" => WordType.Adjective,
-            "adverb" => WordType.Adverb,
-            _ => WordType.None
-        };
-    }
+    private WordType MapToWordType(string wordType) => WordTypeMapper.MapToWordType(wordType);
 }

@@ -30,7 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Db.SqlServer\R.Systems.Lexica.Infrastructure.Db.SqlServer.csproj" />
-    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Wordnik\R.Systems.Lexica.Infrastructure.Wordnik.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

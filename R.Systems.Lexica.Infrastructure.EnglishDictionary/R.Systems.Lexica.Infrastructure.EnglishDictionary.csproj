@@ -8,16 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.Web.Integration" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
   </ItemGroup>
 
 </Project>

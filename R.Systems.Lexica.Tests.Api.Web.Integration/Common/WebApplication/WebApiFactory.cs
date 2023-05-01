@@ -8,7 +8,6 @@ using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.ConnectionStrings;
-using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
 using Testcontainers.MsSql;
 using WireMock.Server;
@@ -24,8 +23,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
-        new AzureAdOptionsData(), new ConnectionStringsOptionsData(),
-        new WordnikOptionsData()
+        new AzureAdOptionsData(), new ConnectionStringsOptionsData()
     };
 
     public WireMockServer WireMockServer { get; }

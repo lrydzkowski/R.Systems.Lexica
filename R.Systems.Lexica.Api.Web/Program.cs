@@ -2,7 +2,7 @@ using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Azure;
 using R.Systems.Lexica.Infrastructure.Db.SqlServer;
-using R.Systems.Lexica.Infrastructure.Wordnik;
+using R.Systems.Lexica.Infrastructure.EnglishDictionary;
 using Serilog;
 
 namespace R.Systems.Lexica.Api.Web;
@@ -39,7 +39,7 @@ public class Program
         builder.Services.ConfigureCoreServices();
         builder.Services.ConfigureInfrastructureDbSqlServerServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
