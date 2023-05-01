@@ -6,6 +6,7 @@ using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Core.Commands.CreateSet;
 using R.Systems.Lexica.Core.Commands.DeleteSet;
 using R.Systems.Lexica.Core.Commands.UpdateSet;
+using R.Systems.Lexica.Core.Queries.GetRecording;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
 using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Options;
@@ -53,5 +54,6 @@ public static class DependencyInjection
         services.AddScoped<ICreateSetRepository, SetsRepository>();
         services.AddScoped<IUpdateSetRepository, SetsRepository>();
         services.AddScoped<IWordTypesRepository, WordTypesRepository>();
+        services.AddScoped<IRecordingMetaData, RecordingRepository>();
     }
 }

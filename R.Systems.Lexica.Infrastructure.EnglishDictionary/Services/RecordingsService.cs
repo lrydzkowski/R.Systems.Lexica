@@ -4,16 +4,16 @@ using R.Systems.Lexica.Core.Queries.GetRecording;
 
 namespace R.Systems.Lexica.Infrastructure.EnglishDictionary.Services;
 
-internal class GetRecordingService : IGetRecordingService
+internal class RecordingsService : IRecordingApi
 {
     private readonly IApiClient _apiClient;
 
-    public GetRecordingService(IApiClient apiClient)
+    public RecordingsService(IApiClient apiClient)
     {
         _apiClient = apiClient;
     }
 
-    public async Task<byte[]?> GetRecording(string word, WordType wordType)
+    public async Task<byte[]?> GetFileAsync(string word, WordType wordType)
     {
         string? pageContent = await _apiClient.GetPageAsync(word);
         if (pageContent == null)

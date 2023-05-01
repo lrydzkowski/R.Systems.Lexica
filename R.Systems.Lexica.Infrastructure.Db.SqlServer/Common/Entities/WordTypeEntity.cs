@@ -7,4 +7,6 @@ internal class WordTypeEntity
     public string Name { get; set; } = "";
 
     public ICollection<WordEntity> Words { get; set; } = new List<WordEntity>();
+
+    public ICollection<RecordingEntity> Recordings { get; set; } = new List<RecordingEntity>();
 }

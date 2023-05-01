@@ -2,7 +2,7 @@
 
 namespace R.Systems.Lexica.Core.Queries.GetRecording;
 
-public interface IGetRecordingService
+public interface IRecordingApi
 {
-    Task<byte[]?> GetRecording(string word, WordType wordType);
+    Task<byte[]?> GetFileAsync(string word, WordType wordType);
 }

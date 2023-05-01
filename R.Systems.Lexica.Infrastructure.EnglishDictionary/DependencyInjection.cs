@@ -29,6 +29,6 @@ public static class DependencyInjection
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddSingleton<IApiClient, ApiClient>();
-        services.AddSingleton<IGetRecordingService, GetRecordingService>();
+        services.AddSingleton<IRecordingApi, RecordingsService>();
     }
 }

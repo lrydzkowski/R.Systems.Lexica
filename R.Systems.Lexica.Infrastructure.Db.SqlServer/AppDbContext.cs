@@ -18,6 +18,8 @@ internal class AppDbContext : DbContext
 
     public DbSet<SetEntity> SetEntities => Set<SetEntity>();
 
+    public DbSet<RecordingEntity> RecordingEntities => Set<RecordingEntity>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
