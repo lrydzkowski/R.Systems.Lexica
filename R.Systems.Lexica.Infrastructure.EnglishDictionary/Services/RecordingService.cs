@@ -4,18 +4,18 @@ using R.Systems.Lexica.Core.Queries.GetRecording;
 
 namespace R.Systems.Lexica.Infrastructure.EnglishDictionary.Services;
 
-internal class RecordingsService : IRecordingApi
+internal class RecordingService : IRecordingApi
 {
     private readonly IApiClient _apiClient;
 
-    public RecordingsService(IApiClient apiClient)
+    public RecordingService(IApiClient apiClient)
     {
         _apiClient = apiClient;
     }
 
-    public async Task<byte[]?> GetFileAsync(string word, WordType wordType)
+    public async Task<byte[]?> GetFileAsync(string word, WordType wordType, CancellationToken cancellationToken)
     {
-        string? pageContent = await _apiClient.GetPageAsync(word);
+        string? pageContent = await _apiClient.GetPageAsync(word, cancellationToken);
         if (pageContent == null)
         {
             return null;
@@ -27,7 +27,7 @@ internal class RecordingsService : IRecordingApi
             return null;
         }
 
-        byte[]? recordingFile = await _apiClient.DownloadFileAsync(link);
+        byte[]? recordingFile = await _apiClient.DownloadFileAsync(link, cancellationToken);
 
         return recordingFile;
     }

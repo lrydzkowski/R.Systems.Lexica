@@ -5,7 +5,7 @@ namespace R.Systems.Lexica.Infrastructure.Db.SqlServer.Repositories;
 
 internal interface IWordTypesRepository
 {
-    Task<int?> GetWordTypeIdAsync(WordType wordType);
+    Task<int?> GetWordTypeIdAsync(WordType wordType, CancellationToken cancellationToken = default);
 }
 
 internal class WordTypesRepository : IWordTypesRepository
@@ -17,11 +17,11 @@ internal class WordTypesRepository : IWordTypesRepository
         _dbContext = dbContext;
     }
 
-    public async Task<int?> GetWordTypeIdAsync(WordType wordType)
+    public async Task<int?> GetWordTypeIdAsync(WordType wordType, CancellationToken cancellationToken = default)
     {
         int? wordTypeId = await _dbContext.WordTypes.Where(x => x.Name == wordType.ToString())
             .Select(x => x.WordTypeId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
 
         return wordTypeId;
     }

@@ -16,13 +16,13 @@ internal class RecordingRepository : IRecordingMetaData
         _wordTypesRepository = wordTypesRepository;
     }
 
-    public async Task<string?> GetFileNameAsync(string word, WordType wordType)
+    public async Task<string?> GetFileNameAsync(string word, WordType wordType, CancellationToken cancellationToken)
     {
-        int wordTypeId = await GetWordTypeIdAsync(wordType);
+        int wordTypeId = await GetWordTypeIdAsync(wordType, cancellationToken);
         string? fileName = await _dbContext.RecordingEntities.AsNoTracking()
             .Where(x => x.Word == word && x.WordTypeId == wordTypeId)
             .Select(x => x.FileName)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
 
         return fileName;
     }
@@ -48,9 +48,9 @@ internal class RecordingRepository : IRecordingMetaData
         await _dbContext.SaveChangesAsync();
     }
 
-    private async Task<int> GetWordTypeIdAsync(WordType wordType)
+    private async Task<int> GetWordTypeIdAsync(WordType wordType, CancellationToken cancellationToken = default)
     {
-        int? wordTypeId = await _wordTypesRepository.GetWordTypeIdAsync(wordType);
+        int? wordTypeId = await _wordTypesRepository.GetWordTypeIdAsync(wordType, cancellationToken);
         if (wordTypeId == null)
         {
             throw new InvalidOperationException($"Word type '{wordType}' doesn't exist in database.");

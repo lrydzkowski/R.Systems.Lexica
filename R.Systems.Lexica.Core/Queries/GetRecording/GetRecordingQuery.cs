@@ -36,17 +36,17 @@ public class GetRecordingQueryHandler : IRequestHandler<GetRecordingQuery, GetRe
 
     public async Task<GetRecordingResult> Handle(GetRecordingQuery request, CancellationToken cancellationToken)
     {
-        string? fileName = await _recordingMetaData.GetFileNameAsync(request.Word, request.WordType);
+        string? fileName = await _recordingMetaData.GetFileNameAsync(request.Word, request.WordType, cancellationToken);
         if (fileName != null)
         {
-            byte[]? fileFromStorage = await _recordingStorage.GetFileAsync(fileName);
+            byte[]? fileFromStorage = await _recordingStorage.GetFileAsync(fileName, cancellationToken);
             if (fileFromStorage != null)
             {
                 return GetResult(fileFromStorage, request.Word);
             }
         }
 
-        byte[]? fileFromApi = await _recordingApi.GetFileAsync(request.Word, request.WordType);
+        byte[]? fileFromApi = await _recordingApi.GetFileAsync(request.Word, request.WordType, cancellationToken);
         if (fileFromApi == null)
         {
             return new GetRecordingResult();

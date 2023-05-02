@@ -4,7 +4,7 @@ namespace R.Systems.Lexica.Core.Queries.GetRecording;
 
 public interface IRecordingMetaData
 {
-    Task<string?> GetFileNameAsync(string word, WordType wordType);
+    Task<string?> GetFileNameAsync(string word, WordType wordType, CancellationToken cancellationToken);
 
     Task AddFileNameAsync(string word, WordType wordType, string fileName);
 }

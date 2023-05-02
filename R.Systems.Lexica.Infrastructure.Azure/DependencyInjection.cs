@@ -63,6 +63,6 @@ public static class DependencyInjection
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddScoped<IRecordingStorage, RecordingsService>();
+        services.AddScoped<IRecordingStorage, RecordingStorage>();
     }
 }

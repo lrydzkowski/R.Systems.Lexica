@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using R.Systems.Lexica.Core.Common.Api;
 using R.Systems.Lexica.Core.Common.Validation;
 
 namespace R.Systems.Lexica.Core;
@@ -12,6 +13,7 @@ public static class DependencyInjection
     {
         services.AddMediatR();
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
+        services.ConfigureServices();
     }
 
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
@@ -33,5 +35,10 @@ public static class DependencyInjection
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    }
+
+    private static void ConfigureServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IApiRetryPolicies, ApiRetryPolicies>();
     }
 }

@@ -3,21 +3,21 @@ using R.Systems.Lexica.Core.Queries.GetRecording;
 
 namespace R.Systems.Lexica.Infrastructure.Azure.Services;
 
-internal class RecordingsService : IRecordingStorage
+internal class RecordingStorage : IRecordingStorage
 {
     private readonly BlobContainerClient _blobContainerClient;
 
-    public RecordingsService(BlobContainerClient blobContainerClient)
+    public RecordingStorage(BlobContainerClient blobContainerClient)
     {
         _blobContainerClient = blobContainerClient;
     }
 
-    public async Task<byte[]?> GetFileAsync(string fileName)
+    public async Task<byte[]?> GetFileAsync(string fileName, CancellationToken cancellationToken)
     {
         BlobClient blobClient = _blobContainerClient.GetBlobClient(fileName);
 
         using MemoryStream stream = new();
-        await blobClient.DownloadToAsync(stream);
+        await blobClient.DownloadToAsync(stream, cancellationToken);
         byte[] file = stream.ToArray();
 
         return file;
