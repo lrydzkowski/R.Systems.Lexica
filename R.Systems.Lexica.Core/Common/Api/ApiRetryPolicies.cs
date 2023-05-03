@@ -1,97 +1,88 @@
 ﻿using Microsoft.Extensions.Logging;
 using Polly;
+using Polly.Caching;
 using Polly.Retry;
+using Polly.Wrap;
 using RestSharp;
 
 namespace R.Systems.Lexica.Core.Common.Api;
 
-public interface IApiRetryPolicies
+public interface IApiRetryPolicies<TLogger>
 {
-    Task<RestResponse<T?>> ExecuteWithRetryPolicyAsync<T>(
-        RestClient client,
-        RestRequest restRequest,
-        ILogger logger,
+    Task<TResult> ExecuteWithRetryPolicyAsync<TResult>(
+        Func<Context, CancellationToken, Task<TResult>> action,
+        Func<TResult, bool> retryPredicate,
         int retryCount,
         CancellationToken cancellationToken = default
-    );
+    ) where TResult : RestResponse;
 
-    Task<RestResponse> ExecuteWithRetryPolicyAsync(
-        RestClient client,
-        RestRequest restRequest,
-        ILogger logger,
+    Task<TResult> ExecuteWithRetryPolicyAndCacheAsync<TResult>(
+        Func<Context, CancellationToken, Task<TResult>> action,
+        Func<TResult, bool> retryPredicate,
         int retryCount,
+        string cacheKey,
         CancellationToken cancellationToken = default
-    );
+    ) where TResult : RestResponse;
 }
 
-internal class ApiRetryPolicies
-    : IApiRetryPolicies
+internal class ApiRetryPolicies<TLogger>
+    : IApiRetryPolicies<TLogger>
 {
-    public async Task<RestResponse<T?>> ExecuteWithRetryPolicyAsync<T>(
-        RestClient client,
-        RestRequest restRequest,
-        ILogger logger,
+    private readonly ILogger<TLogger> _logger;
+    private readonly IAsyncCacheProvider _asyncCacheProvider;
+
+    public ApiRetryPolicies(ILogger<TLogger> logger, IAsyncCacheProvider asyncCacheProvider)
+    {
+        _logger = logger;
+        _asyncCacheProvider = asyncCacheProvider;
+    }
+
+    public async Task<TResult> ExecuteWithRetryPolicyAsync<TResult>(
+        Func<Context, CancellationToken, Task<TResult>> action,
+        Func<TResult, bool> retryPredicate,
         int retryCount,
         CancellationToken cancellationToken = default
-    )
+    ) where TResult : RestResponse
     {
-        AsyncRetryPolicy<RestResponse<T?>> retryPolicy = DefineRetryPolicy<T>(retryCount, logger);
+        AsyncRetryPolicy<TResult> retryPolicy = DefineRetryPolicy(retryPredicate, retryCount);
 
-        return await retryPolicy.ExecuteAsync(
-            async (_, c) => await client.ExecuteAsync<T?>(restRequest, c),
-            new Context(),
+        return await retryPolicy.ExecuteAsync(action, new Context(), cancellationToken);
+    }
+
+    public async Task<TResult> ExecuteWithRetryPolicyAndCacheAsync<TResult>(
+        Func<Context, CancellationToken, Task<TResult>> action,
+        Func<TResult, bool> retryPredicate,
+        int retryCount,
+        string cacheKey,
+        CancellationToken cancellationToken = default
+    ) where TResult : RestResponse
+    {
+        AsyncPolicyWrap<TResult> policyWrap =
+            Policy.WrapAsync(DefineCachePolicy<TResult>(), DefineRetryPolicy(retryPredicate, retryCount));
+
+        return await policyWrap.ExecuteAsync(
+            action,
+            new Context(cacheKey),
             cancellationToken
         );
     }
 
-    public async Task<RestResponse> ExecuteWithRetryPolicyAsync(
-        RestClient client,
-        RestRequest restRequest,
-        ILogger logger,
-        int retryCount,
-        CancellationToken cancellationToken = default
-    )
+    private AsyncCachePolicy<TResult> DefineCachePolicy<TResult>()
     {
-        AsyncRetryPolicy<RestResponse> retryPolicy = DefineRetryPolicy(retryCount, logger);
-
-        return await retryPolicy.ExecuteAsync(
-            async (_, c) => await client.ExecuteAsync(restRequest, c),
-            new Context(),
-            cancellationToken
-        );
+        return Policy.CacheAsync<TResult>(_asyncCacheProvider, TimeSpan.FromHours(24));
     }
 
-    private AsyncRetryPolicy<RestResponse<T?>> DefineRetryPolicy<T>(int retryCount, ILogger logger)
+    private AsyncRetryPolicy<TResult> DefineRetryPolicy<TResult>(Func<TResult, bool> resultPredicate, int retryCount)
+        where TResult : RestResponse
     {
         return Policy
-            .HandleResult<RestResponse<T?>>(x => !x.IsSuccessful)
+            .HandleResult(resultPredicate)
             .WaitAndRetryAsync(
                 retryCount,
                 _ => TimeSpan.FromSeconds(3),
                 (response, timeSpan, definedRetryCount, _) =>
                 {
-                    logger.LogWarning(
-                        "API request failed. HttpStatusCode = {StatusCode}. Waiting {TimeSpan} seconds before retry. Number attempt {RetryCount}. Uri = {Uri}. RequestResponse = {RequestResponse}.",
-                        response.Result.StatusCode,
-                        timeSpan,
-                        definedRetryCount,
-                        response.Result.ResponseUri,
-                        response.Result.Content
-                    );
-                }
-            );
-    }
-
-    private AsyncRetryPolicy<RestResponse> DefineRetryPolicy(int retryCount, ILogger logger)
-    {
-        return Policy
-            .HandleResult<RestResponse>(x => !x.IsSuccessful)
-            .WaitAndRetryAsync(
-                retryCount,
-                _ => TimeSpan.FromSeconds(3),
-                (response, timeSpan, definedRetryCount, _) =>
-                {
-                    logger.LogWarning(
+                    _logger.LogWarning(
                         "API request failed. HttpStatusCode = {StatusCode}. Waiting {TimeSpan} seconds before retry. Number attempt {RetryCount}. Uri = {Uri}. RequestResponse = {RequestResponse}.",
                         response.Result.StatusCode,
                         timeSpan,

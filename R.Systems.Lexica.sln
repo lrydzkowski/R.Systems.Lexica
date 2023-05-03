@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure.EnglishDictionary", "R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj", "{90742557-43CC-40A7-AC10-B712F8ED0005}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Lexica.Infrastructure.Wordnik", "R.Systems.Lexica.Infrastructure.Wordnik\R.Systems.Lexica.Infrastructure.Wordnik.csproj", "{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{90742557-43CC-40A7-AC10-B712F8ED0005}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90742557-43CC-40A7-AC10-B712F8ED0005}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90742557-43CC-40A7-AC10-B712F8ED0005}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{E556BB32-CF17-413A-8F53-4723248989AF} = {348E1E8F-5473-43FF-A448-6746DE652F54}
 		{2EDBF925-05F7-402F-82A6-D9806A8A69C6} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{90742557-43CC-40A7-AC10-B712F8ED0005} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{CDA04FBF-2AF3-48E5-B47D-B829494AB3BF} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

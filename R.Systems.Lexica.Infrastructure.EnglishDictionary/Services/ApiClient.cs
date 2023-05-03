@@ -20,13 +20,13 @@ internal class ApiClient : IApiClient
 
     private readonly EnglishDictionaryOptions _options;
     private readonly ILogger<ApiClient> _logger;
-    private readonly IApiRetryPolicies _apiRetryPolicies;
+    private readonly IApiRetryPolicies<ApiClient> _apiRetryPolicies;
     private readonly RestClient _client;
 
     public ApiClient(
         IOptions<EnglishDictionaryOptions> options,
         ILogger<ApiClient> logger,
-        IApiRetryPolicies apiRetryPolicies
+        IApiRetryPolicies<ApiClient> apiRetryPolicies
     )
     {
         _options = options.Value;
@@ -40,9 +40,8 @@ internal class ApiClient : IApiClient
         string requestPath = _options.Path.Replace("{word}", word);
         RestRequest request = new(requestPath, Method.Get);
         RestResponse response = await _apiRetryPolicies.ExecuteWithRetryPolicyAsync(
-            _client,
-            request,
-            _logger,
+            async (_, c) => await _client.ExecuteAsync(request, c),
+            (response) => !response.IsSuccessful,
             RetryCount,
             cancellationToken
         );
@@ -69,9 +68,8 @@ internal class ApiClient : IApiClient
     {
         RestRequest request = new(relativePath, Method.Get);
         RestResponse response = await _apiRetryPolicies.ExecuteWithRetryPolicyAsync(
-            _client,
-            request,
-            _logger,
+            async (_, c) => await _client.ExecuteAsync(request, c),
+            (response) => !response.IsSuccessful,
             RetryCount,
             cancellationToken
         );

@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly.Caching;
+using Polly.Caching.Memory;
 using R.Systems.Lexica.Core.Common.Api;
 using R.Systems.Lexica.Core.Common.Validation;
 
@@ -39,6 +41,7 @@ public static class DependencyInjection
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddSingleton<IApiRetryPolicies, ApiRetryPolicies>();
+        services.AddSingleton(typeof(IApiRetryPolicies<>), typeof(ApiRetryPolicies<>))
+            .AddSingleton<IAsyncCacheProvider, MemoryCacheProvider>();
     }
 }
