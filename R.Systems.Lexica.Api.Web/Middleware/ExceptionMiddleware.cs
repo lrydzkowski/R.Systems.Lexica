@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using R.Systems.Lexica.Core.Common.Errors;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
+using FluentValidation;
+using R.Systems.Lexica.Core.Common.Errors;
 
 namespace R.Systems.Lexica.Api.Web.Middleware;
 
@@ -26,9 +26,14 @@ public class ExceptionMiddleware
         {
             await HandleValidationExceptionAsync(httpContext, validationException);
         }
+        catch (OperationCanceledException)
+        {
+            _logger.LogWarning("Operation was cancelled");
+            HandleException(httpContext);
+        }
         catch (Exception exception)
         {
-            _logger.LogError($"Something went wrong: {exception}");
+            _logger.LogError(exception, "Something went wrong");
             HandleException(httpContext);
         }
     }

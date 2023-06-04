@@ -1,22 +1,25 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
-using R.Systems.Lexica.Core.Recordings.Queries.GetRecording;
+using R.Systems.Lexica.Api.Web.Mappers;
+using R.Systems.Lexica.Api.Web.Models;
+using R.Systems.Lexica.Core.Queries.GetRecording;
+using R.Systems.Lexica.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [Route("recordings")]
 public class RecordingsController : ControllerBase
 {
+    private readonly ISender _mediator;
+
     public RecordingsController(ISender mediator)
     {
-        Mediator = mediator;
+        _mediator = mediator;
     }
-
-    private ISender Mediator { get; }
 
     [SwaggerOperation(Summary = "Get recording")]
     [SwaggerResponse(
@@ -26,11 +29,15 @@ public class RecordingsController : ControllerBase
         contentTypes: new[] { "audio/mpeg" }
     )]
     [SwaggerResponse(statusCode: 500)]
-    [Authorize, RequiredScope("Access")]
-    [HttpGet, Route("{word}")]
-    public async Task<IActionResult> GetRecording([FromRoute] string word)
+    [HttpGet("{word}")]
+    public async Task<IActionResult> GetRecording(
+        [FromQuery] GetRecordingRequest request,
+        CancellationToken cancellationToken
+    )
     {
-        GetRecordingResult result = await Mediator.Send(new GetRecordingQuery { Word = word.Trim() });
+        GetRecordingMapper mapper = new();
+        GetRecordingQuery query = mapper.MapToCommand(request);
+        GetRecordingResult result = await _mediator.Send(query, cancellationToken);
         if (result.RecordingFile == null)
         {
             return NotFound(null);

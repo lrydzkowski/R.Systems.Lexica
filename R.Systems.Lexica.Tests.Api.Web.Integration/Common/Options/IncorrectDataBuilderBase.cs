@@ -17,6 +17,16 @@ internal abstract class IncorrectDataBuilderBase<T> where T : IOptionsData
 
     protected static string BuildNotEmptyErrorMessage(string position, string propertyName)
     {
-        return $"{position}.{propertyName}: '{propertyName}' must not be empty. Severity: Error";
+        return BuildNotEmptyErrorMessage(new[] { position }, propertyName);
+    }
+
+    protected static string BuildNotEmptyErrorMessage(string[] positions, string propertyName)
+    {
+        return $"{string.Join('.', positions)}.{propertyName}: '{propertyName}' must not be empty. Severity: Error";
+    }
+
+    protected static string BuildErrorMessage(string property, string errorMsg)
+    {
+        return $"{property}: {errorMsg} Severity: Error";
     }
 }

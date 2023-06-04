@@ -1,18 +1,32 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using R.Systems.Lexica.Api.Web.Auth;
+using R.Systems.Lexica.Api.Web.Options;
+using R.Systems.Lexica.Api.Web.Services;
+using R.Systems.Lexica.Core;
+using R.Systems.Lexica.Infrastructure.Db;
+using RunMethodsSequentially;
 
 namespace R.Systems.Lexica.Api.Web;
 
 public static class DependencyInjection
 {
-    public static void ConfigureServices(this IServiceCollection services, IWebHostEnvironment environment)
+    public static void ConfigureServices(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddHealthChecks();
         services.ConfigureSwagger();
         services.ConfigureCors();
-        services.AddAutoMapper(typeof(DependencyInjection).Assembly);
-        services.AddApplicationInsightsTelemetry();
+        services.ConfigureSequentialServices(environment);
+        services.ChangeApiControllerModelValidationResponse();
+        services.ConfigureOptions(configuration);
+        services.ConfigureAuth();
     }
 
     private static void ConfigureSwagger(this IServiceCollection services)
@@ -22,26 +36,32 @@ public static class DependencyInjection
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "R.Systems.Lexica.Api.Web", Version = "1.0" });
                 options.EnableAnnotations();
-                OpenApiSecurityScheme jwtSecurityScheme = new()
-                {
-                    BearerFormat = "JWT",
-                    Name = "JWT Authentication",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
-
-                    Reference = new OpenApiReference
+                options.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
                     {
-                        Id = JwtBearerDefaults.AuthenticationScheme,
-                        Type = ReferenceType.SecurityScheme
+                        In = ParameterLocation.Header,
+                        Description = "Please enter token",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        BearerFormat = "JWT",
+                        Scheme = "bearer"
                     }
-                };
-                options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+                );
                 options.AddSecurityRequirement(
                     new OpenApiSecurityRequirement
                     {
-                        { jwtSecurityScheme, Array.Empty<string>() }
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            Array.Empty<string>()
+                        }
                     }
                 );
             }
@@ -59,5 +79,42 @@ public static class DependencyInjection
                 );
             }
         );
+    }
+
+    private static void ConfigureSequentialServices(this IServiceCollection services, IWebHostEnvironment environment)
+    {
+        services.RegisterRunMethodsSequentially(
+                options => options.AddFileSystemLockAndRunMethods(environment.ContentRootPath)
+            )
+            .RegisterServiceToRunInJob<AppDbInitializer>();
+    }
+
+    private static void ChangeApiControllerModelValidationResponse(this IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(
+            options => options.InvalidModelStateResponseFactory =
+                InvalidModelStateService.InvalidModelStateResponseFactory
+        );
+    }
+
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.ConfigureOptionsWithValidation<HealthCheckOptions, HealthCheckOptionsValidator>(
+            configuration,
+            HealthCheckOptions.Position
+        );
+        services.ConfigureOptionsWithValidation<SerilogOptions, SerilogOptionsValidator>(
+            configuration,
+            SerilogOptions.Position
+        );
+    }
+
+    private static void ConfigureAuth(this IServiceCollection services)
+    {
+        services.AddAuthentication()
+            .AddScheme<ApiKeyAuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(
+                ApiKeyAuthenticationSchemeOptions.Name,
+                null
+            );
     }
 }

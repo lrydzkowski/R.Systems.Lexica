@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.WebApplication;
@@ -8,9 +8,9 @@ using System.Net;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.ExceptionMiddleware;
 
-[Collection(MainTestsCollection.CollectionName)]
-[Trait(TestConstants.Category, MainTestsCollection.CollectionName)]
-public class ExceptionMiddlewareTests : IClassFixture<WebApiFactory>
+[Collection(StandardCollection.CollectionName)]
+[Trait(TestConstants.Category, StandardCollection.CollectionName)]
+public class ExceptionMiddlewareTests
 {
     public ExceptionMiddlewareTests(WebApiFactory webApiFactory)
     {

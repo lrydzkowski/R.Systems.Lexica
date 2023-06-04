@@ -8,9 +8,9 @@ using System.Net;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.App.Queries.GetAppInfo;
 
-[Collection(MainTestsCollection.CollectionName)]
-[Trait(TestConstants.Category, MainTestsCollection.CollectionName)]
-public class GetAppInfoTests : IClassFixture<WebApiFactory>
+[Collection(StandardCollection.CollectionName)]
+[Trait(TestConstants.Category, StandardCollection.CollectionName)]
+public class GetAppInfoTests
 {
     public GetAppInfoTests(WebApiFactory webApiFactory)
     {
