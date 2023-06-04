@@ -1,18 +1,14 @@
-﻿using Azure.Storage.Files.Shares;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using R.Systems.Lexica.Core;
-using R.Systems.Lexica.Core.Recordings.Queries.GetRecording;
-using R.Systems.Lexica.Core.Sets.Queries.GetSet;
-using R.Systems.Lexica.Core.Sets.Queries.GetSets;
-using R.Systems.Lexica.Infrastructure.Azure.Common.FileShare;
-using R.Systems.Lexica.Infrastructure.Azure.Common.Options;
-using R.Systems.Lexica.Infrastructure.Azure.Recordings.Queries;
-using R.Systems.Lexica.Infrastructure.Azure.Sets.Common;
-using R.Systems.Lexica.Infrastructure.Azure.Sets.Queries;
+using R.Systems.Lexica.Core.Queries.GetRecording;
+using R.Systems.Lexica.Infrastructure.Azure.Options;
+using R.Systems.Lexica.Infrastructure.Azure.Services;
 
 namespace R.Systems.Lexica.Infrastructure.Azure;
 
@@ -23,53 +19,50 @@ public static class DependencyInjection
         IConfiguration configuration
     )
     {
-        ConfigureOptions(services, configuration);
-        ConfigureMicrosoftIdentity(services, configuration);
-        ConfigureAzureClients(services);
-        ConfigureServices(services);
+        services.ConfigureOptions(configuration);
+        services.ConfigureAuthentication(configuration);
+        services.ConfigureAzureClients();
+        services.ConfigureServices();
     }
 
-    private static void ConfigureOptions(IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureOptionsWithValidation<AzureFilesOptions, AzureFilesOptionsValidator>(
-            configuration,
-            AzureFilesOptions.Position
-        );
         services.ConfigureOptionsWithValidation<AzureAdOptions, AzureAdOptionsValidator>(
             configuration,
             AzureAdOptions.Position
         );
+        services.ConfigureOptionsWithValidation<AzureStorageOptions, AzureStorageOptionsValidator>(
+            configuration,
+            AzureStorageOptions.Position
+        );
     }
 
-    private static void ConfigureMicrosoftIdentity(IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMicrosoftIdentityWebApiAuthentication(configuration);
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApi(configuration, "AzureAd", AuthenticationSchemes.AzureAd);
     }
 
-    private static void ConfigureAzureClients(IServiceCollection services)
+    private static void ConfigureAzureClients(this IServiceCollection services)
     {
         services.AddAzureClients(
             azureClientFactoryBuilder =>
             {
-                azureClientFactoryBuilder.AddClient<ShareClient, ShareClientOptions>(
+                azureClientFactoryBuilder.AddClient<BlobContainerClient, BlobClientOptions>(
                     (context, serviceProvider) =>
                     {
-                        AzureFilesOptions options =
-                            serviceProvider.GetRequiredService<IOptions<AzureFilesOptions>>().Value;
+                        AzureStorageOptions options =
+                            serviceProvider.GetRequiredService<IOptions<AzureStorageOptions>>().Value;
 
-                        return new ShareClient(options.ConnectionString, options.FileShareName);
+                        return new BlobContainerClient(options.Blob.ConnectionString, options.Blob.ContainerName);
                     }
                 );
             }
         );
     }
 
-    private static void ConfigureServices(IServiceCollection services)
+    private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddScoped<IFileShareClient, FileShareClient>();
-        services.AddScoped<IGetSetsRepository, GetSetsRepository>();
-        services.AddScoped<IGetSetRepository, GetSetRepository>();
-        services.AddScoped<SetParser>();
-        services.AddScoped<IRecordingRepository, RecordingRepository>();
+        services.AddScoped<IRecordingStorage, RecordingStorage>();
     }
 }

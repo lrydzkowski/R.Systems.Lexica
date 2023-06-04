@@ -1,4 +1,4 @@
-﻿using R.Systems.Lexica.Infrastructure.Azure.Common.Options;
+﻿using R.Systems.Lexica.Infrastructure.Azure.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;

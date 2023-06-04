@@ -1,48 +1,52 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
+using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
+using R.Systems.Lexica.Core.Commands.CreateSet;
+using R.Systems.Lexica.Core.Commands.DeleteSet;
+using R.Systems.Lexica.Core.Commands.UpdateSet;
 using R.Systems.Lexica.Core.Common.Domain;
+using R.Systems.Lexica.Core.Common.Errors;
 using R.Systems.Lexica.Core.Common.Lists;
-using R.Systems.Lexica.Core.Sets.Queries.GetSet;
-using R.Systems.Lexica.Core.Sets.Queries.GetSets;
+using R.Systems.Lexica.Core.Queries.GetSet;
+using R.Systems.Lexica.Core.Queries.GetSets;
+using R.Systems.Lexica.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
 [ApiController]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
 [Route("sets")]
 public class SetsController : ControllerBase
 {
-    public SetsController(IMapper mapper, ISender mediator)
-    {
-        Mapper = mapper;
-        Mediator = mediator;
-    }
+    private readonly ISender _mediator;
 
-    private IMapper Mapper { get; }
-    private ISender Mediator { get; }
+    public SetsController(ISender mediator)
+    {
+        _mediator = mediator;
+    }
 
     [SwaggerOperation(Summary = "Get sets")]
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(ListInfo<Set>),
+        type: typeof(ListInfo<SetRecordDto>),
         contentTypes: new[] { "application/json" }
     )]
     [SwaggerResponse(statusCode: 500)]
-    [Authorize, RequiredScope("Access")]
     [HttpGet]
     public async Task<IActionResult> GetSets(
         [FromQuery] ListRequest listRequest,
-        [FromQuery] bool includeSetContent = false
+        CancellationToken cancellationToken
     )
     {
-        ListParameters listParameters = Mapper.Map<ListParameters>(listRequest);
-        GetSetsResult result = await Mediator.Send(
-            new GetSetsQuery { ListParameters = listParameters, IncludeSetContent = includeSetContent }
+        ListMapper mapper = new();
+        ListParameters listParameters = mapper.ToListParameter(listRequest);
+        GetSetsResult result = await _mediator.Send(
+            new GetSetsQuery { ListParameters = listParameters },
+            cancellationToken
         );
 
         return Ok(result.Sets);
@@ -52,19 +56,85 @@ public class SetsController : ControllerBase
     [SwaggerResponse(
         statusCode: 200,
         description: "Correct response",
-        type: typeof(ListInfo<Set>),
+        type: typeof(Set),
         contentTypes: new[] { "application/json" }
     )]
+    [SwaggerResponse(statusCode: 404)]
     [SwaggerResponse(statusCode: 500)]
-    [Authorize, RequiredScope("Access")]
-    [Route("content")]
-    [HttpGet]
-    public async Task<IActionResult> GetSet([FromQuery(Name = "setPath")] List<string> setPaths)
+    [HttpGet("{setId}")]
+    public async Task<IActionResult> GetSet(
+        long setId,
+        CancellationToken cancellationToken
+    )
     {
-        GetSetResult result = await Mediator.Send(
-            new GetSetQuery { SetPaths = setPaths }
+        GetSetResult result = await _mediator.Send(
+            new GetSetQuery { SetId = setId },
+            cancellationToken
+        );
+        if (result.Set == null)
+        {
+            return NotFound(null);
+        }
+
+        return Ok(result.Set);
+    }
+
+    [SwaggerOperation(Summary = "Delete set")]
+    [SwaggerResponse(
+        statusCode: 204,
+        description: "Set deleted"
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpDelete("{setId}")]
+    public async Task<IActionResult> DeleteSet(
+        long setId,
+        CancellationToken cancellationToken
+    )
+    {
+        await _mediator.Send(
+            new DeleteSetCommand { SetId = setId },
+            cancellationToken
         );
 
-        return Ok(result.Sets);
+        return NoContent();
+    }
+
+    [SwaggerOperation(Summary = "Create set")]
+    [SwaggerResponse(
+        statusCode: 201,
+        description: "Set created"
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPost]
+    public async Task<IActionResult> CreateSet(CreateSetRequest createSetRequest)
+    {
+        CreateSetMapper mapper = new();
+        CreateSetCommand command = mapper.ToCommand(createSetRequest);
+        CreateSetResult result = await _mediator.Send(command);
+
+        return CreatedAtAction(
+            nameof(GetSet),
+            new { setId = result.SetId },
+            result
+        );
+    }
+
+    [SwaggerOperation(Summary = "Update set")]
+    [SwaggerResponse(
+        statusCode: 204,
+        description: "Set updated"
+    )]
+    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
+    [SwaggerResponse(statusCode: 500)]
+    [HttpPut]
+    public async Task<IActionResult> UpdateSet(UpdateSetRequest updateSetRequest)
+    {
+        UpdateSetMapper mapper = new();
+        UpdateSetCommand command = mapper.ToCommand(updateSetRequest);
+        await _mediator.Send(command);
+
+        return NoContent();
     }
 }

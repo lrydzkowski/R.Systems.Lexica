@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
 
-[Collection(MainTestsCollection.CollectionName)]
-[Trait(TestConstants.Category, MainTestsCollection.CollectionName)]
-public class AzureAdOptionsTests : IClassFixture<WebApiFactory>
+[Collection(StandardCollection.CollectionName)]
+[Trait(TestConstants.Category, StandardCollection.CollectionName)]
+public class AzureAdOptionsTests
 {
     public AzureAdOptionsTests(ITestOutputHelper output, WebApiFactory webApiFactory)
     {

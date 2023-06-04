@@ -2,7 +2,11 @@
 
 public class Set
 {
-    public string Path { get; init; } = "";
+    public long SetId { get; init; }
+
+    public string Name { get; init; } = "";
 
     public List<Entry> Entries { get; init; } = new();
+
+    public DateTimeOffset CreatedAt { get; init; }
 }

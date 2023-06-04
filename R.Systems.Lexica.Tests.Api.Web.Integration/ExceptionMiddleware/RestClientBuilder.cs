@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Api.Web;
-using R.Systems.Lexica.Core.App.Queries.GetAppInfo;
+using R.Systems.Lexica.Core.Queries.GetAppInfo;
 using RestSharp;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.ExceptionMiddleware;

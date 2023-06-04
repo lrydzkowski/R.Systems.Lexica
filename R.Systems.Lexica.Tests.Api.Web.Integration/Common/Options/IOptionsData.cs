@@ -2,5 +2,5 @@
 
 internal interface IOptionsData
 {
-    Dictionary<string, string?> ConvertToInMemoryCollection();
+    Dictionary<string, string?> ConvertToInMemoryCollection(string? parentPosition = null);
 }

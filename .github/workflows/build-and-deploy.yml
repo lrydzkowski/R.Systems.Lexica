@@ -2,39 +2,32 @@ name: Build and Deploy
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - master
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version'
-        required: true
       
 env:
   REGISTRY: ghcr.io
   APP_IMAGE_NAME: lrydzkowski/r-systems-lexica
+  AZURE_WEBAPP_NAME: r-systems-lexica-dev-app
   
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       packages: write
     
     steps:
-      - name: Get a version from the tag
-        run: echo "APP_VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-
-      - name: Get a version from the parameter
-        if: "${{ github.event.inputs.version != '' }}"
-        run: echo "APP_VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+      - name: Generate version tag
+        run: echo "VERSION_TAG=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
         
-      - name: Show the version
-        run: echo ${{ env.APP_VERSION }}
+      - name: Show the version tag
+        run: echo ${{ env.VERSION_TAG }}
         
       - name: Checkout the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET Core SDK 7
         uses: actions/setup-dotnet@v2
@@ -50,11 +43,8 @@ jobs:
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
         
-      - name: Checkout the repository
-        uses: actions/checkout@v2
-        
       - name: Sign in to the Container registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -62,16 +52,38 @@ jobs:
           
       - name: Build an application docker image
         id: docker_app_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./R.Systems.Lexica.Api.Web/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.APP_VERSION }}
+          tags: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.VERSION_TAG }}
           
-      - name: Deploy to Azure Web App
-        uses: Azure/webapps-deploy@v2
+      - uses: mathieudutour/github-tag-action@v6.1
         with:
-          app-name: r-systems-lexica-dev-app
+          custom_tag: ${{ env.VERSION_TAG }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tag_prefix: ""
+
+    outputs:
+      version_tag: ${{ env.VERSION_TAG }}
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    environment:
+      name: 'dev'
+
+    steps:
+      - name: Echo Version Tag
+        run: echo ${{ needs.build.outputs.version_tag }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          images: ${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ env.APP_VERSION }}
+          images: '${{ env.REGISTRY }}/${{ env.APP_IMAGE_NAME }}:${{ needs.build.outputs.version_tag }}'

@@ -1,5 +1,4 @@
-﻿using R.Systems.Lexica.Core.Common.Extensions;
-using System.Linq.Dynamic.Core;
+﻿using System.Linq.Dynamic.Core;
 
 namespace R.Systems.Lexica.Core.Common.Lists.Extensions;
 
@@ -13,15 +12,14 @@ public static class SortExtensions
     )
     {
         sorting = PrepareSortingParameters(sorting, defaultSortingFieldName);
-        string fieldToSort = sorting.FieldName!.FirstCharToUpper();
 
-        if (!fieldsAvailableToSort.Contains(fieldToSort))
+        if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
         {
             return query;
         }
 
         string sortOrderQuery = sorting.Order == SortingOrder.Ascending ? "" : " desc";
-        string sortQuery = $"{fieldToSort}{sortOrderQuery}, {defaultSortingFieldName} asc";
+        string sortQuery = $"{sorting.FieldName}{sortOrderQuery}, {defaultSortingFieldName} asc";
         query = query.OrderBy(sortQuery);
 
         return query;

@@ -1,9 +1,14 @@
-using NLog;
-using NLog.Web;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using R.Systems.Lexica.Api.Web.Auth;
 using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Azure;
-using R.Systems.Lexica.Infrastructure.Pronunciation;
+using R.Systems.Lexica.Infrastructure.Db;
+using R.Systems.Lexica.Infrastructure.EnglishDictionary;
+using R.Systems.Lexica.Infrastructure.Wordnik;
+using Serilog;
+using Serilog.Debugging;
 
 namespace R.Systems.Lexica.Api.Web;
 
@@ -11,8 +16,8 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-        logger.Debug("init main");
+        Log.Logger = Serilog.CreateBootstrapLogger();
+        SelfLog.Enable(Console.Error);
 
         try
         {
@@ -25,27 +30,29 @@ public class Program
         }
         catch (Exception exception)
         {
-            logger.Error(exception, "Stopped program because of exception");
+            Log.Fatal(exception, "Application terminated unexpectedly");
             throw;
         }
         finally
         {
-            LogManager.Shutdown();
+            Log.CloseAndFlush();
         }
     }
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureServices(builder.Environment);
+        builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
         builder.Services.ConfigureCoreServices();
+        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructurePronunciationServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
-        builder.Logging.ClearProviders();
-        builder.Host.UseNLog();
+        builder.Services.AddApplicationInsightsTelemetry(builder.Configuration);
+        builder.Host.UseSerilog(Serilog.CreateLogger, true);
     }
 
     private static void ConfigureRequestPipeline(WebApplication app)
@@ -57,9 +64,25 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        UseHealthChecks(app);
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+    }
+
+    private static void UseHealthChecks(WebApplication app)
+    {
+        app.MapHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            )
+            .RequireAuthorization(
+                builder => builder.AddAuthenticationSchemes(ApiKeyAuthenticationSchemeOptions.Name)
+                    .RequireAuthenticatedUser()
+            );
     }
 }
