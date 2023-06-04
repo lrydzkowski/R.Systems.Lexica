@@ -1,10 +1,14 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using R.Systems.Lexica.Api.Web.Auth;
 using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Azure;
-using R.Systems.Lexica.Infrastructure.Db.SqlServer;
+using R.Systems.Lexica.Infrastructure.Db;
 using R.Systems.Lexica.Infrastructure.EnglishDictionary;
 using R.Systems.Lexica.Infrastructure.Wordnik;
 using Serilog;
+using Serilog.Debugging;
 
 namespace R.Systems.Lexica.Api.Web;
 
@@ -13,6 +17,7 @@ public class Program
     public static void Main(string[] args)
     {
         Log.Logger = Serilog.CreateBootstrapLogger();
+        SelfLog.Enable(Console.Error);
 
         try
         {
@@ -36,9 +41,9 @@ public class Program
 
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
-        builder.Services.ConfigureServices(builder.Environment);
+        builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
         builder.Services.ConfigureCoreServices();
-        builder.Services.ConfigureInfrastructureDbSqlServerServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
@@ -59,9 +64,25 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        UseHealthChecks(app);
         app.UseCors("CorsPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+    }
+
+    private static void UseHealthChecks(WebApplication app)
+    {
+        app.MapHealthChecks(
+                "/health",
+                new HealthCheckOptions
+                {
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }
+            )
+            .RequireAuthorization(
+                builder => builder.AddAuthenticationSchemes(ApiKeyAuthenticationSchemeOptions.Name)
+                    .RequireAuthenticatedUser()
+            );
     }
 }

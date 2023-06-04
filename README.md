@@ -6,7 +6,7 @@ You can find here the following projects:
 
 - R.Systems.Lexica.Api.Web - ASP.NET Core Web API, .NET 7, C# language
 - R.Systems.Lexica.Infrastructure.Azure
-- R.Systems.Lexica.Infrastructure.Db.SqlServer
+- R.Systems.Lexica.Infrastructure.Db
 - R.Systems.Lexica.Infrastructure.EnglishDictionary
 - R.Systems.Lexica.Infrastructure.Wordnik
 - R.Systems.Lexica.Core - Class library, .NET 7, C# language. Core functionalities of R.Systems.Lexica.

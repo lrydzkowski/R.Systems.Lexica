@@ -2,29 +2,31 @@
 
 namespace R.Systems.Lexica.Infrastructure.Azure.Options;
 
-public class AzureStorageOptionsValidator : AbstractValidator<AzureStorageOptions>
+internal class AzureStorageOptionsValidator : AbstractValidator<AzureStorageOptions>
 {
     public AzureStorageOptionsValidator()
     {
-        RuleFor(x => x.Blob).SetValidator(new BlobValidator());
+        RuleFor(x => x.Blob)
+            .SetValidator(new AzureStorageBlobValidator())
+            .OverridePropertyName(AzureStorageOptions.Position);
     }
 }
 
-public class BlobValidator : AbstractValidator<BlobOptions>
+internal class AzureStorageBlobValidator : AbstractValidator<AzureStorageBlobOptions>
 {
-    public BlobValidator()
+    public AzureStorageBlobValidator()
     {
         RuleFor(x => x.ConnectionString)
             .NotEmpty()
-            .WithName(nameof(BlobOptions.ConnectionString))
+            .WithName(nameof(AzureStorageBlobOptions.ConnectionString))
             .OverridePropertyName(
-                $"{AzureStorageOptions.Position}.{BlobOptions.Position}.{nameof(BlobOptions.ConnectionString)}"
+                $"{AzureStorageBlobOptions.Position}.{nameof(AzureStorageBlobOptions.ConnectionString)}"
             );
         RuleFor(x => x.ContainerName)
             .NotEmpty()
-            .WithName(nameof(BlobOptions.ContainerName))
+            .WithName(nameof(AzureStorageBlobOptions.ContainerName))
             .OverridePropertyName(
-                $"{AzureStorageOptions.Position}.{BlobOptions.Position}.{nameof(BlobOptions.ContainerName)}"
+                $"{AzureStorageBlobOptions.Position}.{nameof(AzureStorageBlobOptions.ContainerName)}"
             );
     }
 }

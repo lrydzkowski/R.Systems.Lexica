@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 using R.Systems.Lexica.Core.Queries.GetDefinitions;
 using R.Systems.Lexica.Infrastructure.Azure;
 using Swashbuckle.AspNetCore.Annotations;

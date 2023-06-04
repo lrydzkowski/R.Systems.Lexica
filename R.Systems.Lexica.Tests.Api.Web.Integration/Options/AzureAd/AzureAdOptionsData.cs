@@ -8,12 +8,12 @@ internal class AzureAdOptionsData : AzureAdOptions, IOptionsData
     public AzureAdOptionsData()
     {
         Instance = "https://login.microsoftonline.com/";
-        ClientId = "D6F94D05-BA99-4752-824E-B068F8DE9A15";
-        TenantId = "5B684592-06A9-42C4-A65C-2AA19DE3F3B3";
-        Audience = "https://lrspaceb2c.onmicrosoft.com/D6F94D05-BA99-4752-824E-B068F8DE9A15";
+        ClientId = "F5BB96F4-B901-4DD6-8903-0D2A7BB514CC";
+        TenantId = "59DC9E7F-5A22-4B18-A6A0-C5C485690694";
+        Audience = "https://lrspaceb2c.onmicrosoft.com/B24CC390-56DF-4D42-9601-BFCEA8503611";
     }
 
-    public Dictionary<string, string?> ConvertToInMemoryCollection()
+    public Dictionary<string, string?> ConvertToInMemoryCollection(string? parentPosition = null)
     {
         return new Dictionary<string, string?>
         {

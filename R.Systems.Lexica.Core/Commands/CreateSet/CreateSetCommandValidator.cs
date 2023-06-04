@@ -30,7 +30,7 @@ public class CreateSetCommandValidator : AbstractValidator<CreateSetCommand>
                 async (setName, cancellationToken) =>
                 {
                     bool setWithNameExists =
-                        await _createSetRepository.SetExistsAsync(setName, cancellationToken);
+                        await _createSetRepository.SetExistsAsync(setName, null, cancellationToken);
 
                     return !setWithNameExists;
                 }

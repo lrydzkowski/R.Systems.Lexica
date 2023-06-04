@@ -4,34 +4,41 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Api.Web;
-using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Options;
+using R.Systems.Lexica.Infrastructure.Db.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureStorage;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.ConnectionStrings;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.EnglishDictionary;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.HealthCheck;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Serilog;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using WireMock.Server;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.Common.WebApplication;
 
 public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2019-latest")
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
         .WithCleanUp(true)
         .Build();
 
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
-        new AzureAdOptionsData(), new ConnectionStringsOptionsData()
+        new AzureAdOptionsData(), new AzureStorageOptionsData(), new ConnectionStringsOptionsData(),
+        new EnglishDictionaryOptionsData(), new HealthCheckOptionsData(), new SerilogOptionsData(),
+        new WordnikOptionsData()
     };
-
-    public WireMockServer WireMockServer { get; }
 
     public WebApiFactory()
     {
         WireMockServer = WireMockServer.Start();
     }
+
+    public WireMockServer WireMockServer { get; }
 
     public async Task InitializeAsync()
     {
@@ -69,7 +76,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         configBuilder.AddInMemoryCollection(
             new Dictionary<string, string?>
             {
-                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppDb)}"] =
+                [$"{ConnectionStringsOptions.Position}:{nameof(ConnectionStringsOptions.AppPostgresDb)}"] =
                     BuildConnectionString()
             }
         );
@@ -77,7 +84,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private string BuildConnectionString()
     {
-        return _dbContainer.GetConnectionString() + ";Trust Server Certificate=true";
+        return _dbContainer.GetConnectionString();
     }
 
     private void DisableLogging(IConfigurationBuilder configBuilder)

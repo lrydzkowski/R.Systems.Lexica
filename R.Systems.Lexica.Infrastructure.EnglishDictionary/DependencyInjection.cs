@@ -16,6 +16,7 @@ public static class DependencyInjection
     {
         services.ConfigureOptions(configuration);
         services.ConfigureServices();
+        services.ConfigureHealthChecks();
     }
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -30,5 +31,10 @@ public static class DependencyInjection
     {
         services.AddSingleton<IApiClient, ApiClient>();
         services.AddSingleton<IRecordingApi, RecordingService>();
+    }
+
+    private static void ConfigureHealthChecks(this IServiceCollection services)
+    {
+        services.AddHealthChecks().AddCheck<EnglishDictionaryHealthCheck>(nameof(EnglishDictionaryHealthCheck));
     }
 }

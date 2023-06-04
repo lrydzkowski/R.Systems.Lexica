@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Polly.Caching;
 using Polly.Caching.Memory;
+using Polly.Caching;
 using R.Systems.Lexica.Core.Common.Api;
 using R.Systems.Lexica.Core.Common.Validation;
 

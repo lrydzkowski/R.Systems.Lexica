@@ -18,7 +18,7 @@ public class ApiTests
 
     private RestClient RestClient { get; }
 
-    [Theory(Skip = "No data ;)")]
+    [Theory]
     [MemberData(nameof(ApiDataBuilder.Build), MemberType = typeof(ApiDataBuilder))]
     public async Task SendRequest_ShouldReturn401_WhenNoAccessToken(string endpointUrlPath, Method httpMethod)
     {

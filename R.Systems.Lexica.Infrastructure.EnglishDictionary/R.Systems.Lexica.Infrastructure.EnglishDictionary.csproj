@@ -15,4 +15,8 @@
     <ProjectReference Include="..\R.Systems.Lexica.Core\R.Systems.Lexica.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="R.Systems.Lexica.Tests.Api.Web.Integration" />
+  </ItemGroup>
+
 </Project>

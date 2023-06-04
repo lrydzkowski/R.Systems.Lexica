@@ -1,13 +1,13 @@
 ﻿namespace R.Systems.Lexica.Infrastructure.Azure.Options;
 
-public class AzureStorageOptions
+internal class AzureStorageOptions
 {
     public const string Position = "AzureStorage";
 
-    public BlobOptions Blob { get; init; } = new();
+    public AzureStorageBlobOptions Blob { get; init; } = new();
 }
 
-public class BlobOptions
+internal class AzureStorageBlobOptions
 {
     public const string Position = "Blob";
 

@@ -32,12 +32,16 @@ public class UpdateSetCommandValidator : AbstractValidator<UpdateSetCommand>
 
     private void DefineSetNameUniquenessValidation()
     {
-        RuleFor(x => x.SetName)
+        RuleFor(x => x)
             .MustAsync(
-                async (setName, cancellationToken) =>
+                async (setCommand, cancellationToken) =>
                 {
                     bool setWithNameExists =
-                        await _createSetRepository.SetExistsAsync(setName, cancellationToken);
+                        await _createSetRepository.SetExistsAsync(
+                            setCommand.SetName,
+                            setCommand.SetId,
+                            cancellationToken
+                        );
 
                     return !setWithNameExists;
                 }

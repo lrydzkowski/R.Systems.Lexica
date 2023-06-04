@@ -1,4 +1,4 @@
-﻿using R.Systems.Lexica.Infrastructure.Db.SqlServer.Common.Options;
+﻿using R.Systems.Lexica.Infrastructure.Db.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 
 namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.ConnectionStrings;
@@ -13,14 +13,14 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 1,
                 new ConnectionStringsOptionsData
                 {
-                    AppDb = ""
+                    AppPostgresDb = ""
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppDb)
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
                         )
                     }
                 )
@@ -29,14 +29,30 @@ internal class ConnectionStringsOptionsIncorrectDataBuilder : IncorrectDataBuild
                 2,
                 new ConnectionStringsOptionsData
                 {
-                    AppDb = "  "
+                    AppPostgresDb = " "
                 },
                 BuildExpectedExceptionMessage(
                     new List<string>
                     {
                         BuildNotEmptyErrorMessage(
                             ConnectionStringsOptions.Position,
-                            nameof(ConnectionStringsOptions.AppDb)
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
+                        )
+                    }
+                )
+            ),
+            BuildParameters(
+                3,
+                new ConnectionStringsOptionsData
+                {
+                    AppPostgresDb = null
+                },
+                BuildExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        BuildNotEmptyErrorMessage(
+                            ConnectionStringsOptions.Position,
+                            nameof(ConnectionStringsOptions.AppPostgresDb)
                         )
                     }
                 )

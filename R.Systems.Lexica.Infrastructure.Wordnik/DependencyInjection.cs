@@ -16,7 +16,8 @@ public static class DependencyInjection
     {
         services.ConfigureOptions(configuration)
             .AddMemoryCache()
-            .ConfigureServices();
+            .ConfigureServices()
+            .ConfigureHealthChecks();
     }
 
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -35,5 +36,10 @@ public static class DependencyInjection
             .AddSingleton<IGetDefinitionsApi, GetDefinitionsApi>();
 
         return services;
+    }
+
+    private static void ConfigureHealthChecks(this IServiceCollection services)
+    {
+        services.AddHealthChecks().AddCheck<WordnikHealthCheck>(nameof(WordnikHealthCheck));
     }
 }

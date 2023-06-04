@@ -1,4 +1,5 @@
-﻿using R.Systems.Lexica.Core.Common.Extensions;
+﻿using Microsoft.ApplicationInsights.Extensibility;
+using R.Systems.Lexica.Core.Common.Extensions;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
@@ -16,7 +17,9 @@ public static class Serilog
 
     private static readonly ConsoleTheme Theme = AnsiConsoleTheme.Code;
 
-    private static readonly string StorageAccountConnectionStringName = "StorageAccount";
+    private static readonly string StorageAccountConnectionStringPath = "Serilog:StorageAccount:ConnectionString";
+
+    private static readonly string StorageAccountContainerNamePath = "Serilog:StorageAccount:ContainerName";
 
     public static ReloadableLogger CreateBootstrapLogger()
     {
@@ -47,17 +50,20 @@ public static class Serilog
             .WriteTo.Async(
                 configuration => configuration.DefineAzureBlobStorageSink(
                     context.Configuration,
-                    "r-systems-lexica-api-logs",
+                    context.Configuration[StorageAccountContainerNamePath] ?? "",
                     "all-{yyyy}-{MM}-{dd}.log"
                 )
             )
             .WriteTo.Async(
                 configuration => configuration.DefineAzureBlobStorageSink(
                     context.Configuration,
-                    "r-systems-lexica-api-logs",
+                    context.Configuration[StorageAccountContainerNamePath] ?? "",
                     "errors-{yyyy}-{MM}-{dd}.log",
                     restrictedToMinimumLevel: LogEventLevel.Warning
                 )
+            )
+            .WriteTo.DefineApplicationInsightsSink(
+                serviceProvider
             );
     }
 
@@ -94,12 +100,22 @@ public static class Serilog
     )
     {
         return sinkConfiguration.AzureBlobStorage(
-            connectionStringName: StorageAccountConnectionStringName,
-            configuration,
+            connectionString: configuration[StorageAccountConnectionStringPath],
             storageContainerName: storageContainerName,
             storageFileName: storageFileName,
             outputTemplate: OutputTemplate,
             restrictedToMinimumLevel: restrictedToMinimumLevel
+        );
+    }
+
+    private static LoggerConfiguration DefineApplicationInsightsSink(
+        this LoggerSinkConfiguration sinkConfiguration,
+        IServiceProvider services
+    )
+    {
+        return sinkConfiguration.ApplicationInsights(
+            services.GetRequiredService<TelemetryConfiguration>(),
+            TelemetryConverter.Traces
         );
     }
 }
