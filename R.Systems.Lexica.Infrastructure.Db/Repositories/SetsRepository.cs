@@ -35,10 +35,14 @@ internal class SetsRepository
     )
     {
         List<string> fieldsAvailableToSort = new() { "setId", "name", "createdAtUtc" };
+        Dictionary<string, string> fieldNamesMapping = new()
+        {
+            { "createdAt", "createdAtUtc" }
+        };
         List<string> fieldsAvailableToFilter = new() { "name" };
 
         List<SetRecordDto> sets = await _dbContext.SetEntities.AsNoTracking()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId")
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId", fieldNamesMapping)
             .Filter(fieldsAvailableToFilter, listParameters.Search)
             .Paginate(listParameters.Pagination)
             .Select(
@@ -51,7 +55,7 @@ internal class SetsRepository
             )
             .ToListAsync(cancellationToken);
         int count = await _dbContext.SetEntities.AsNoTracking()
-            .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId")
+            .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId", fieldNamesMapping)
             .Filter(fieldsAvailableToFilter, listParameters.Search)
             .Select(
                 setEntity => (int)setEntity.SetId!
