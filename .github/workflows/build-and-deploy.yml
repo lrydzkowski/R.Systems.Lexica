@@ -1,5 +1,5 @@
 name: Build and Deploy
-run-name: ${{ github.repository }} - ${{ github.run_id }} - ${{ github.event.repository.updated_at }}
+run-name: ${{ github.repository }} - ${{ github.run_id }}
 
 on:
   push:
