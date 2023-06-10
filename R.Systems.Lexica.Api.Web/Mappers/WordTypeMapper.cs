@@ -15,4 +15,16 @@ public static class WordTypeMapper
             _ => WordType.None
         };
     }
+
+    public static string MapToWordTypeName(WordType wordType)
+    {
+        return wordType switch
+        {
+            WordType.Noun => "noun",
+            WordType.Verb => "verb",
+            WordType.Adjective => "adjective",
+            WordType.Adverb => "adverb",
+            _ => "none"
+        };
+    }
 }

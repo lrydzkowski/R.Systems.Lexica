@@ -76,7 +76,10 @@ public class SetsController : ControllerBase
             return NotFound(null);
         }
 
-        return Ok(result.Set);
+        SetMapper mapper = new();
+        SetDto setDto = mapper.ToSetDto(result.Set);
+
+        return Ok(setDto);
     }
 
     [SwaggerOperation(Summary = "Delete set")]

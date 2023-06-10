@@ -8,10 +8,11 @@ public static class SortExtensions
         this IQueryable<T> query,
         List<string> fieldsAvailableToSort,
         Sorting sorting,
-        string defaultSortingFieldName
+        string defaultSortingFieldName,
+        Dictionary<string, string>? fieldNamesMapping = null
     )
     {
-        sorting = PrepareSortingParameters(sorting, defaultSortingFieldName);
+        sorting = PrepareSortingParameters(sorting, defaultSortingFieldName, fieldNamesMapping);
 
         if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
         {
@@ -25,17 +26,34 @@ public static class SortExtensions
         return query;
     }
 
-    private static Sorting PrepareSortingParameters(Sorting sorting, string defaultSortingFieldName)
+    private static Sorting PrepareSortingParameters(
+        Sorting sorting,
+        string defaultSortingFieldName,
+        Dictionary<string, string>? fieldNamesMapping = null
+    )
     {
-        if (sorting.FieldName != null)
+        if (sorting.FieldName == null)
         {
-            return sorting;
+            return new Sorting
+            {
+                FieldName = defaultSortingFieldName,
+                Order = SortingOrder.Ascending
+            };
         }
 
-        return new Sorting
+        sorting = MapFieldName(sorting, fieldNamesMapping);
+
+        return sorting;
+    }
+
+    private static Sorting MapFieldName(Sorting sorting, Dictionary<string, string>? fieldNamesMapping = null)
+    {
+        string fieldName = sorting.FieldName ?? "";
+        if (fieldNamesMapping?.TryGetValue(fieldName, out string? value) is true)
         {
-            FieldName = defaultSortingFieldName,
-            Order = SortingOrder.Ascending
-        };
+            sorting.FieldName = value;
+        }
+
+        return sorting;
     }
 }
