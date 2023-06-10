@@ -22,7 +22,7 @@ jobs:
     
     steps:
       - name: Generate version tag
-        run: echo "VERSION_TAG=$(date -u +'%Y-%m-%dT%H_%M_%SZ')" >> $GITHUB_ENV
+        run: echo "VERSION_TAG=$(date -u +'%Y%m%dT%H%M%SZ')" >> $GITHUB_ENV
         
       - name: Show the version tag
         run: echo ${{ env.VERSION_TAG }}
