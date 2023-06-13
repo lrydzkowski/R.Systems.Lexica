@@ -103,10 +103,6 @@ public static class DependencyInjection
             configuration,
             HealthCheckOptions.Position
         );
-        services.ConfigureOptionsWithValidation<SerilogOptions, SerilogOptionsValidator>(
-            configuration,
-            SerilogOptions.Position
-        );
     }
 
     private static void ConfigureAuth(this IServiceCollection services)
