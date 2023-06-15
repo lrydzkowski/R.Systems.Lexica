@@ -6,6 +6,7 @@ using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Azure;
 using R.Systems.Lexica.Infrastructure.Db;
 using R.Systems.Lexica.Infrastructure.EnglishDictionary;
+using R.Systems.Lexica.Infrastructure.Storage;
 using R.Systems.Lexica.Infrastructure.Wordnik;
 using Serilog;
 using Serilog.Debugging;
@@ -47,6 +48,7 @@ public class Program
         builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureStorageServices(builder.Configuration);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)

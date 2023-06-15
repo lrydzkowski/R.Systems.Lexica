@@ -32,6 +32,7 @@
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Db\R.Systems.Lexica.Infrastructure.Db.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj" />
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Storage\R.Systems.Lexica.Infrastructure.Storage.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Wordnik\R.Systems.Lexica.Infrastructure.Wordnik.csproj" />
   </ItemGroup>
 

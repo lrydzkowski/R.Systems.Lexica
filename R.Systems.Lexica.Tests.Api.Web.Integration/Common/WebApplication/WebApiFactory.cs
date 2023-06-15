@@ -7,11 +7,10 @@ using R.Systems.Lexica.Api.Web;
 using R.Systems.Lexica.Infrastructure.Db.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
-using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureStorage;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.ConnectionStrings;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.EnglishDictionary;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.HealthCheck;
-using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Serilog;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Storage;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Wordnik;
 using RunMethodsSequentially;
 using Testcontainers.PostgreSql;
@@ -28,9 +27,8 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
-        new AzureAdOptionsData(), new AzureStorageOptionsData(), new ConnectionStringsOptionsData(),
-        new EnglishDictionaryOptionsData(), new HealthCheckOptionsData(), new SerilogOptionsData(),
-        new WordnikOptionsData()
+        new AzureAdOptionsData(), new ConnectionStringsOptionsData(), new EnglishDictionaryOptionsData(),
+        new HealthCheckOptionsData(), new StorageOptionsData(), new WordnikOptionsData()
     };
 
     public WebApiFactory()

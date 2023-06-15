@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastruc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure.Db", "R.Systems.Lexica.Infrastructure.Db\R.Systems.Lexica.Infrastructure.Db.csproj", "{C97F17BC-9F02-4968-8E42-921CFC606DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Lexica.Infrastructure.EnglishDictionary", "R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj", "{0CD867D9-1F17-4521-AF13-7F69164EC7A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R.Systems.Lexica.Infrastructure.EnglishDictionary", "R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj", "{0CD867D9-1F17-4521-AF13-7F69164EC7A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R.Systems.Lexica.Infrastructure.Storage", "R.Systems.Lexica.Infrastructure.Storage\R.Systems.Lexica.Infrastructure.Storage.csproj", "{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +69,10 @@ Global
 		{0CD867D9-1F17-4521-AF13-7F69164EC7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD867D9-1F17-4521-AF13-7F69164EC7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD867D9-1F17-4521-AF13-7F69164EC7A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{86073ACA-4A54-454B-B2FA-0B2BF01E2B9A} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{C97F17BC-9F02-4968-8E42-921CFC606DF8} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 		{0CD867D9-1F17-4521-AF13-7F69164EC7A4} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
+		{B4B8162D-A5C2-496F-8DFB-BC3ED79C7B8D} = {2781F1A5-CCD4-4E90-A448-3E2563C58EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C7C7034-5BF5-4768-9C4A-944572427549}

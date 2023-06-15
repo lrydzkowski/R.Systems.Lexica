@@ -13,7 +13,7 @@ public class ApiTests
 {
     public ApiTests(WebApiFactory webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.MockDirectoryExists().CreateRestClient();
     }
 
     private RestClient RestClient { get; }

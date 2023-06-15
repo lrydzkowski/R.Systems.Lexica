@@ -14,7 +14,7 @@ public class GetAppInfoTests
 {
     public GetAppInfoTests(WebApiFactory webApiFactory)
     {
-        RestClient = webApiFactory.CreateRestClient();
+        RestClient = webApiFactory.MockDirectoryExists().CreateRestClient();
     }
 
     private RestClient RestClient { get; }
