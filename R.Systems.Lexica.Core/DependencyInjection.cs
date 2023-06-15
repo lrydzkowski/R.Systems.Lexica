@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Polly.Caching.Memory;
 using Polly.Caching;
+using Polly.Caching.Memory;
 using R.Systems.Lexica.Core.Common.Api;
 using R.Systems.Lexica.Core.Common.Validation;
 
@@ -24,7 +24,7 @@ public static class DependencyInjection
         string configurationPosition
     )
         where TOptions : class
-        where TValidator : class, IValidator<TOptions>, new()
+        where TValidator : class, IValidator<TOptions>
     {
         services.AddSingleton<IValidator<TOptions>, TValidator>();
         services.AddOptions<TOptions>()

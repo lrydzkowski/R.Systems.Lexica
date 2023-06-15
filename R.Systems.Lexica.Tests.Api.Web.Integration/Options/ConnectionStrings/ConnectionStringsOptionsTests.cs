@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc.Testing;
+using R.Systems.Lexica.Api.Web;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.WebApplication;
@@ -16,11 +18,11 @@ public class ConnectionStringsOptionsTests
     )
     {
         Output = output;
-        WebApiFactory = webApiFactory;
+        WebApiFactory = webApiFactory.MockDirectoryExists();
     }
 
     private ITestOutputHelper Output { get; }
-    private WebApiFactory WebApiFactory { get; }
+    private WebApplicationFactory<Program> WebApiFactory { get; }
 
     [Theory]
     [MemberData(
