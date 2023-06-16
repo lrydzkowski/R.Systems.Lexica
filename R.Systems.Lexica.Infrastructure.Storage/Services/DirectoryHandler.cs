@@ -3,6 +3,7 @@
 internal interface IDirectoryHandler
 {
     bool Exists(string directoryPath);
+    DirectoryInfo CreateDirectory(string path);
 }
 
 internal class DirectoryHandler
@@ -11,5 +12,10 @@ internal class DirectoryHandler
     public bool Exists(string directoryPath)
     {
         return Directory.Exists(directoryPath);
+    }
+
+    public DirectoryInfo CreateDirectory(string path)
+    {
+        return Directory.CreateDirectory(path);
     }
 }
