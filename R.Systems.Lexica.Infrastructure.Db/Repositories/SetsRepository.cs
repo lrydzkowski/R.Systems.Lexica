@@ -34,16 +34,16 @@ internal class SetsRepository
         CancellationToken cancellationToken
     )
     {
-        List<string> fieldsAvailableToSort = new() { "setId", "name", "createdAtUtc" };
+        List<string> fieldsAvailableToSort = new() { "setId", "name", "createdAt" };
+        List<string> fieldsAvailableToFilter = new() { "name", "createdAt" };
         Dictionary<string, string> fieldNamesMapping = new()
         {
             { "createdAt", "createdAtUtc" }
         };
-        List<string> fieldsAvailableToFilter = new() { "name" };
 
         List<SetRecordDto> sets = await _dbContext.SetEntities.AsNoTracking()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId", fieldNamesMapping)
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Filter(fieldsAvailableToFilter, listParameters.Search, fieldNamesMapping)
             .Paginate(listParameters.Pagination)
             .Select(
                 setEntity => new SetRecordDto
@@ -56,7 +56,7 @@ internal class SetsRepository
             .ToListAsync(cancellationToken);
         int count = await _dbContext.SetEntities.AsNoTracking()
             .Sort(fieldsAvailableToSort, listParameters.Sorting, "setId", fieldNamesMapping)
-            .Filter(fieldsAvailableToFilter, listParameters.Search)
+            .Filter(fieldsAvailableToFilter, listParameters.Search, fieldNamesMapping)
             .Select(
                 setEntity => (int)setEntity.SetId!
             )

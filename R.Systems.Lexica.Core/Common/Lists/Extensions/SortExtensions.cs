@@ -13,7 +13,6 @@ public static class SortExtensions
     )
     {
         sorting = PrepareSortingParameters(sorting, defaultSortingFieldName, fieldNamesMapping);
-
         if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
         {
             return query;

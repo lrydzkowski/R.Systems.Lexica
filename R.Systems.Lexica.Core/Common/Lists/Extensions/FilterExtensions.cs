@@ -5,7 +5,12 @@ namespace R.Systems.Lexica.Core.Common.Lists.Extensions;
 
 public static class FilterExtensions
 {
-    public static IQueryable<T> Filter<T>(this IQueryable<T> query, List<string> fieldsAvailableToFilter, Search search)
+    public static IQueryable<T> Filter<T>(
+        this IQueryable<T> query,
+        List<string> fieldsAvailableToFilter,
+        Search search,
+        Dictionary<string, string>? fieldNamesMapping = null
+    )
     {
         if (search.Query == null)
         {
@@ -16,8 +21,9 @@ public static class FilterExtensions
         List<string> whereQueryParts = new();
         foreach (string fieldName in fieldsAvailableToFilter)
         {
+            string mappedFieldName = MapFieldName(fieldName, fieldNamesMapping);
             PropertyInfo? property = properties.FirstOrDefault(
-                property => property.Name.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase)
+                property => property.Name.Equals(mappedFieldName, StringComparison.InvariantCultureIgnoreCase)
             );
             if (property == null)
             {
@@ -28,7 +34,11 @@ public static class FilterExtensions
             int index = whereQueryParts.Count;
             if (property.PropertyType == typeof(string))
             {
-                whereQueryPart = GetStringWhereQuery(fieldName, index);
+                whereQueryPart = GetStringWhereQuery(mappedFieldName, index);
+            }
+            else if (property.PropertyType == typeof(DateTimeOffset))
+            {
+                whereQueryPart = GetDateTimeWhereQuery(mappedFieldName, index);
             }
 
             if (whereQueryPart == null)
@@ -60,9 +70,24 @@ public static class FilterExtensions
         return entityType.GetProperties();
     }
 
+    private static string MapFieldName(string fieldName, Dictionary<string, string>? fieldNamesMapping = null)
+    {
+        if (fieldNamesMapping?.TryGetValue(fieldName, out string? value) is true)
+        {
+            fieldName = value;
+        }
+
+        return fieldName;
+    }
+
     private static string GetStringWhereQuery(string fieldName, int index)
     {
         return $"{fieldName}.ToLower().Contains(@{index})";
+    }
+
+    private static string GetDateTimeWhereQuery(string fieldName, int index)
+    {
+        return $"{fieldName}.ToString().Contains(@{index})";
     }
 
     private static ParsingConfig DynamicLinqParsingConfig { get; } = new()
