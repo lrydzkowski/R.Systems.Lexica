@@ -47,14 +47,18 @@ internal class ApiClient : IApiClient
         );
         if (WasRedirected(requestPath, response))
         {
-            _logger.LogWarning($"Request to '{requestPath}' was redirected to '{response.ResponseUri?.AbsolutePath}'.");
+            _logger.LogWarning(
+                "Request to '{RequestPath}' was redirected to '{RedirectedPath}'.",
+                requestPath,
+                response.ResponseUri?.AbsolutePath
+            );
 
             return null;
         }
 
         if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogWarning($"'{response.ResponseUri?.AbsoluteUri}' returns not found.");
+            _logger.LogWarning("'{Url}' returns not found.", response.ResponseUri?.AbsoluteUri);
 
             return null;
         }
@@ -82,7 +86,7 @@ internal class ApiClient : IApiClient
     private bool WasRedirected(string requestPath, RestResponse response)
     {
         return response.ResponseUri != null
-               && !response.ResponseUri.AbsolutePath.Equals(requestPath, StringComparison.InvariantCultureIgnoreCase);
+            && !response.ResponseUri.AbsolutePath.Equals(requestPath, StringComparison.InvariantCultureIgnoreCase);
     }
 
     private void HandleUnexpectedError(RestResponse response)
