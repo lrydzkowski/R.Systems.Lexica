@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using R.Systems.Lexica.Api.Web.Auth;
 using R.Systems.Lexica.Api.Web.Options;
@@ -14,6 +13,7 @@ public static class DependencyInjection
 {
     public static void ConfigureServices(
         this IServiceCollection services,
+        IWebHostEnvironment environment,
         IConfiguration configuration
     )
     {
@@ -22,7 +22,7 @@ public static class DependencyInjection
         services.AddHealthChecks();
         services.ConfigureSwagger();
         services.ConfigureCors();
-        services.ConfigureSequentialServices(configuration);
+        services.ConfigureSequentialServices(environment, configuration);
         services.ChangeApiControllerModelValidationResponse();
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
@@ -82,11 +82,21 @@ public static class DependencyInjection
 
     private static void ConfigureSequentialServices(
         this IServiceCollection services,
+        IWebHostEnvironment environment,
         IConfiguration configuration
     )
     {
         services.RegisterRunMethodsSequentially(
-                options => options.AddPostgreSqlLockAndRunMethods(configuration["ConnectionStrings:AppPostgresDb"])
+                options =>
+                {
+                    string? connectionString = configuration["ConnectionStrings:AppPostgresDb"]?.Trim();
+                    if (!string.IsNullOrEmpty(connectionString))
+                    {
+                        options.AddPostgreSqlLockAndRunMethods(connectionString);
+                    }
+
+                    options.AddFileSystemLockAndRunMethods(environment.ContentRootPath);
+                }
             )
             .RegisterServiceToRunInJob<AppDbInitializer>();
     }
