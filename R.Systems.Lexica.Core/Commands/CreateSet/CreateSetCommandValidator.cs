@@ -36,7 +36,8 @@ public class CreateSetCommandValidator : AbstractValidator<CreateSetCommand>
                 }
             )
             .WithName(nameof(CreateSetCommand.SetName))
-            .WithMessage("'{PropertyName}' with the given name ('{PropertyValue}') exists.");
+            .WithMessage("'{PropertyName}' with the given name ('{PropertyValue}') exists.")
+            .WithErrorCode("UniqueValidator");
     }
 
     private void DefineEntriesValidation()
@@ -51,7 +52,8 @@ public class CreateSetCommandValidator : AbstractValidator<CreateSetCommand>
                     return distinctWords.Count == entries.Count;
                 }
             )
-            .WithMessage("'{PropertyName}' cannot contain repeated words.");
+            .WithMessage("'{PropertyName}' cannot contain repeated words.")
+            .WithErrorCode("UniqueValidator");
         RuleForEach(x => x.Entries).SetValidator(new EntryValidator());
     }
 }

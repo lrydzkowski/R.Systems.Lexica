@@ -14,8 +14,7 @@ public static class DependencyInjection
 {
     public static void ConfigureServices(
         this IServiceCollection services,
-        IConfiguration configuration,
-        IWebHostEnvironment environment
+        IConfiguration configuration
     )
     {
         services.AddControllers();
@@ -23,7 +22,7 @@ public static class DependencyInjection
         services.AddHealthChecks();
         services.ConfigureSwagger();
         services.ConfigureCors();
-        services.ConfigureSequentialServices(environment);
+        services.ConfigureSequentialServices(configuration);
         services.ChangeApiControllerModelValidationResponse();
         services.ConfigureOptions(configuration);
         services.ConfigureAuth();
@@ -81,10 +80,13 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureSequentialServices(this IServiceCollection services, IWebHostEnvironment environment)
+    private static void ConfigureSequentialServices(
+        this IServiceCollection services,
+        IConfiguration configuration
+    )
     {
         services.RegisterRunMethodsSequentially(
-                options => options.AddFileSystemLockAndRunMethods(environment.ContentRootPath)
+                options => options.AddPostgreSqlLockAndRunMethods(configuration["ConnectionStrings:AppPostgresDb"])
             )
             .RegisterServiceToRunInJob<AppDbInitializer>();
     }
