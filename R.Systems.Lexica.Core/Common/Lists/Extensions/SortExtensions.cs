@@ -12,12 +12,12 @@ public static class SortExtensions
         Dictionary<string, string>? fieldNamesMapping = null
     )
     {
-        sorting = PrepareSortingParameters(sorting, defaultSortingFieldName, fieldNamesMapping);
         if (!fieldsAvailableToSort.Contains(sorting.FieldName!))
         {
             return query;
         }
 
+        sorting = PrepareSortingParameters(sorting, defaultSortingFieldName, fieldNamesMapping);
         string sortOrderQuery = sorting.Order == SortingOrder.Ascending ? "" : " desc";
         string sortQuery = $"{sorting.FieldName}{sortOrderQuery}, {defaultSortingFieldName} asc";
         query = query.OrderBy(sortQuery);
