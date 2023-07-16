@@ -11,13 +11,13 @@ using R.Systems.Lexica.Core.Common.Errors;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
-using R.Systems.Lexica.Infrastructure.Azure;
+using R.Systems.Lexica.Infrastructure.Auth0;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
 [ApiController]
-[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.Auth0)]
 [Route("sets")]
 public class SetsController : ControllerBase
 {

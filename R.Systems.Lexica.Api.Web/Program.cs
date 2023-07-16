@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using R.Systems.Lexica.Api.Web.Auth;
 using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
+using R.Systems.Lexica.Infrastructure.Auth0;
 using R.Systems.Lexica.Infrastructure.Azure;
 using R.Systems.Lexica.Infrastructure.Db;
 using R.Systems.Lexica.Infrastructure.EnglishDictionary;
@@ -45,7 +46,8 @@ public class Program
         builder.Services.ConfigureServices(builder.Environment, builder.Configuration);
         builder.Services.ConfigureCoreServices();
         builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
+        //builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureAuth0Services(builder.Configuration);
         builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
         builder.Services.ConfigureInfrastructureStorageServices(builder.Configuration);

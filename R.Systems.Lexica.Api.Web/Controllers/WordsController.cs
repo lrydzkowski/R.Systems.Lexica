@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Queries.GetDefinitions;
-using R.Systems.Lexica.Infrastructure.Azure;
+using R.Systems.Lexica.Infrastructure.Auth0;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
 [ApiController]
-[Authorize(AuthenticationSchemes = AuthenticationSchemes.AzureAd)]
+[Authorize(AuthenticationSchemes = AuthenticationSchemes.Auth0)]
 [Route("words")]
 public class WordsController : ControllerBase
 {

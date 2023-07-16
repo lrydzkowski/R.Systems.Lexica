@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Expressions" Version="3.4.1" />
@@ -29,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Auth0\R.Systems.Lexica.Infrastructure.Auth0.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Db\R.Systems.Lexica.Infrastructure.Db.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj" />
