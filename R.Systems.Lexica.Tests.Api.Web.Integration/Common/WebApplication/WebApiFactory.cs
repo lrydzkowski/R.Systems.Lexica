@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Api.Web;
 using R.Systems.Lexica.Infrastructure.Db.Common.Options;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.Options;
-using R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
+using R.Systems.Lexica.Tests.Api.Web.Integration.Options.Auth0;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.ConnectionStrings;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.EnglishDictionary;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Options.HealthCheck;
@@ -27,7 +27,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
-        new AzureAdOptionsData(), new ConnectionStringsOptionsData(), new EnglishDictionaryOptionsData(),
+        new Auth0OptionsData(), new ConnectionStringsOptionsData(), new EnglishDictionaryOptionsData(),
         new HealthCheckOptionsData(), new StorageOptionsData(), new WordnikOptionsData()
     };
 
