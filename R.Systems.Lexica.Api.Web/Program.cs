@@ -4,7 +4,6 @@ using R.Systems.Lexica.Api.Web.Auth;
 using R.Systems.Lexica.Api.Web.Middleware;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Infrastructure.Auth0;
-using R.Systems.Lexica.Infrastructure.Azure;
 using R.Systems.Lexica.Infrastructure.Db;
 using R.Systems.Lexica.Infrastructure.EnglishDictionary;
 using R.Systems.Lexica.Infrastructure.Storage;

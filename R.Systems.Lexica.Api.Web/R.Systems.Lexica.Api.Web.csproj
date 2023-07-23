@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Auth0\R.Systems.Lexica.Infrastructure.Auth0.csproj" />
-    <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Azure\R.Systems.Lexica.Infrastructure.Azure.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Db\R.Systems.Lexica.Infrastructure.Db.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.EnglishDictionary\R.Systems.Lexica.Infrastructure.EnglishDictionary.csproj" />
     <ProjectReference Include="..\R.Systems.Lexica.Infrastructure.Storage\R.Systems.Lexica.Infrastructure.Storage.csproj" />
