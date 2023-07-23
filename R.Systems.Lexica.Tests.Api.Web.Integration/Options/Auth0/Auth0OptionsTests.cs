@@ -6,13 +6,13 @@ using R.Systems.Lexica.Tests.Api.Web.Integration.Common.TestsCollections;
 using R.Systems.Lexica.Tests.Api.Web.Integration.Common.WebApplication;
 using Xunit.Abstractions;
 
-namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.AzureAd;
+namespace R.Systems.Lexica.Tests.Api.Web.Integration.Options.Auth0;
 
 [Collection(StandardCollection.CollectionName)]
 [Trait(TestConstants.Category, StandardCollection.CollectionName)]
-public class AzureAdOptionsTests
+public class Auth0OptionsTests
 {
-    public AzureAdOptionsTests(ITestOutputHelper output, WebApiFactory webApiFactory)
+    public Auth0OptionsTests(ITestOutputHelper output, WebApiFactory webApiFactory)
     {
         Output = output;
         WebApiFactory = webApiFactory.MockDirectoryExists();
@@ -23,8 +23,8 @@ public class AzureAdOptionsTests
 
     [Theory]
     [MemberData(
-        nameof(AzureAdOptionsIncorrectDataBuilder.Build),
-        MemberType = typeof(AzureAdOptionsIncorrectDataBuilder)
+        nameof(Auth0OptionsIncorrectDataBuilder.Build),
+        MemberType = typeof(Auth0OptionsIncorrectDataBuilder)
     )]
     public void InitApp_IncorrectAppSettings_ThrowsException(
         int id,
