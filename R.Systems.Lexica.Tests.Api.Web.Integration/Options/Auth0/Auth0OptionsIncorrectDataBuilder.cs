@@ -60,6 +60,32 @@ internal class Auth0OptionsIncorrectDataBuilder : IncorrectDataBuilderBase<Auth0
                         BuildNotEmptyErrorMessage(Auth0Options.Position, nameof(Auth0Options.Audience))
                     }
                 )
+            ),
+            BuildParameters(
+                5,
+                new Auth0OptionsData
+                {
+                    RoleClaimName = ""
+                },
+                BuildExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        BuildNotEmptyErrorMessage(Auth0Options.Position, nameof(Auth0Options.RoleClaimName))
+                    }
+                )
+            ),
+            BuildParameters(
+                6,
+                new Auth0OptionsData
+                {
+                    RoleClaimName = "  "
+                },
+                BuildExpectedExceptionMessage(
+                    new List<string>
+                    {
+                        BuildNotEmptyErrorMessage(Auth0Options.Position, nameof(Auth0Options.RoleClaimName))
+                    }
+                )
             )
         };
     }

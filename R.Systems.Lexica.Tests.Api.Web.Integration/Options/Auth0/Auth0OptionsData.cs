@@ -9,6 +9,7 @@ internal class Auth0OptionsData : Auth0Options, IOptionsData
     {
         Domain = "test.eu.auth0.com";
         Audience = "https://test.ddns.net/api/test";
+        RoleClaimName = "test/roles";
     }
 
     public Dictionary<string, string?> ConvertToInMemoryCollection(string? parentPosition = null)
@@ -16,7 +17,8 @@ internal class Auth0OptionsData : Auth0Options, IOptionsData
         return new Dictionary<string, string?>
         {
             [$"{Position}:{nameof(Domain)}"] = Domain,
-            [$"{Position}:{nameof(Audience)}"] = Audience
+            [$"{Position}:{nameof(Audience)}"] = Audience,
+            [$"{Position}:{nameof(RoleClaimName)}"] = RoleClaimName
         };
     }
 }

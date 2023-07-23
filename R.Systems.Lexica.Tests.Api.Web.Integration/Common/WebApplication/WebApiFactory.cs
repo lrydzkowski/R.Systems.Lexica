@@ -28,7 +28,7 @@ public class WebApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     private readonly List<IOptionsData> _defaultOptionsData = new()
     {
         new Auth0OptionsData(), new ConnectionStringsOptionsData(), new EnglishDictionaryOptionsData(),
-        new HealthCheckOptionsData(), new StorageOptionsData(), new WordnikOptionsData()
+        new HealthCheckOptionsData(), new StorageOptionsData(), new WordnikOptionsData(), new Auth0OptionsData()
     };
 
     public WebApiFactory()
