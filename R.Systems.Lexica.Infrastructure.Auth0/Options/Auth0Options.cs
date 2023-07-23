@@ -7,4 +7,6 @@ internal class Auth0Options
     public string Domain { get; init; } = "";
 
     public string Audience { get; init; } = "";
+
+    public string RoleClaimName { get; init; } = "";
 }

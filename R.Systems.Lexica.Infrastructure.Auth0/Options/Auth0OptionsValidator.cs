@@ -8,6 +8,7 @@ internal class Auth0OptionsValidator : AbstractValidator<Auth0Options>
     {
         DefineDomainValidator();
         DefineAudienceValidator();
+        DefineRoleClaimValidator();
     }
 
     private void DefineDomainValidator()
@@ -24,5 +25,13 @@ internal class Auth0OptionsValidator : AbstractValidator<Auth0Options>
             .NotEmpty()
             .WithName(nameof(Auth0Options.Audience))
             .OverridePropertyName($"{Auth0Options.Position}.{nameof(Auth0Options.Audience)}");
+    }
+
+    private void DefineRoleClaimValidator()
+    {
+        RuleFor(x => x.RoleClaimName)
+            .NotEmpty()
+            .WithName(nameof(Auth0Options.RoleClaimName))
+            .OverridePropertyName($"{Auth0Options.Position}.{nameof(Auth0Options.RoleClaimName)}");
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using R.Systems.Lexica.Core;
+using R.Systems.Lexica.Core.Common.Auth;
+using R.Systems.Lexica.Infrastructure.Auth0.Auth;
 using R.Systems.Lexica.Infrastructure.Auth0.Options;
 
 namespace R.Systems.Lexica.Infrastructure.Auth0;
@@ -15,7 +18,7 @@ public static class DependencyInjection
     )
     {
         services.ConfigureOptions(configuration);
-        services.ConfigureAuthentication(configuration);
+        services.ConfigureAuth(configuration);
     }
 
     private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
@@ -26,7 +29,7 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication()
             .AddJwtBearer(
@@ -41,5 +44,17 @@ public static class DependencyInjection
                     };
                 }
             );
+        services.AddSingleton<IAuthorizationHandler, RoleHandler>();
+        services.AddAuthorization(
+            options =>
+            {
+                options.AddPolicy(
+                    AuthorizationPolicies.IsAdmin,
+                    policy => policy.RequireAuthenticatedUser()
+                        .AddRequirements(new RoleRequirement(new List<string> { "admin" }))
+                );
+            }
+        );
+        services.AddScoped<IRolesManager, RolesManager>();
     }
 }

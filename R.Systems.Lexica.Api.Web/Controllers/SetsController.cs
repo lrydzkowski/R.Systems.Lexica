@@ -12,6 +12,7 @@ using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
 using R.Systems.Lexica.Infrastructure.Auth0;
+using R.Systems.Lexica.Infrastructure.Auth0.Auth;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
@@ -89,6 +90,7 @@ public class SetsController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
+    [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet(
         long setId,
@@ -110,6 +112,7 @@ public class SetsController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
+    [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpPost]
     public async Task<IActionResult> CreateSet(CreateSetRequest createSetRequest)
     {
@@ -131,6 +134,7 @@ public class SetsController : ControllerBase
     )]
     [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
     [SwaggerResponse(statusCode: 500)]
+    [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpPut]
     public async Task<IActionResult> UpdateSet(UpdateSetRequest updateSetRequest)
     {
