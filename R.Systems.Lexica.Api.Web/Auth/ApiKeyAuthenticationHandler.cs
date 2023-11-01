@@ -8,7 +8,7 @@ namespace R.Systems.Lexica.Api.Web.Auth;
 
 public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationSchemeOptions>
 {
-    private const string ApiKeyHeaderName = "api-key";
+    private const string ApiKeyName = "api-key";
 
     private readonly string _apiKey;
 
@@ -25,7 +25,14 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        string? apiKey = Request.Headers[ApiKeyHeaderName];
+        string? apiKey = Request.Headers[ApiKeyName];
+        if (apiKey == null)
+        {
+            apiKey = Request.Query.Where(x => x.Key == ApiKeyName)
+                .Select(x => x.Value.FirstOrDefault())
+                .FirstOrDefault();
+        }
+
         if (!_apiKey.Equals(apiKey, StringComparison.InvariantCultureIgnoreCase))
         {
             return Task.FromResult(AuthenticateResult.Fail("Wrong API key."));
