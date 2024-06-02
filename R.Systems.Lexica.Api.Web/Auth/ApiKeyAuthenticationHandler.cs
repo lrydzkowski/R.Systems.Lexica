@@ -16,9 +16,8 @@ public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthentic
         IOptionsMonitor<ApiKeyAuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock,
         IOptions<HealthCheckOptions> healthCheckOptions
-    ) : base(options, logger, encoder, clock)
+    ) : base(options, logger, encoder)
     {
         _apiKey = healthCheckOptions.Value.ApiKey;
     }
