@@ -1,16 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Core.Queries.GetDefinitions;
-using R.Systems.Lexica.Infrastructure.Auth0;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
-[ApiController]
-[Authorize(AuthenticationSchemes = AuthenticationSchemes.Auth0)]
 [Route("words")]
-public class WordsController : ControllerBase
+public class WordsController : ApiControllerWithAuthBase
 {
     public WordsController(ISender mediator)
     {
@@ -21,14 +18,12 @@ public class WordsController : ControllerBase
 
     [SwaggerOperation(Summary = "Get word definitions")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(List<Definition>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
-    [Route("{word}/definitions")]
-    [HttpGet]
+    [HttpGet("{word}/definitions")]
     public async Task<IActionResult> GetDefinitions(
         string word,
         CancellationToken cancellationToken

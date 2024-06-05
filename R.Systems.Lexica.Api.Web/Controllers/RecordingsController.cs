@@ -1,18 +1,14 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
 using R.Systems.Lexica.Core.Queries.GetRecording;
-using R.Systems.Lexica.Infrastructure.Auth0;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
-[ApiController]
-[Authorize(AuthenticationSchemes = AuthenticationSchemes.Auth0)]
 [Route("recordings")]
-public class RecordingsController : ControllerBase
+public class RecordingsController : ApiControllerWithAuthBase
 {
     private readonly ISender _mediator;
 
@@ -23,12 +19,11 @@ public class RecordingsController : ControllerBase
 
     [SwaggerOperation(Summary = "Get recording")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(byte[]),
-        contentTypes: new[] { "audio/mpeg" }
+        contentTypes: ["audio/mpeg"]
     )]
-    [SwaggerResponse(statusCode: 500)]
     [HttpGet("{word}")]
     public async Task<IActionResult> GetRecording(
         [FromQuery] GetRecordingRequest request,

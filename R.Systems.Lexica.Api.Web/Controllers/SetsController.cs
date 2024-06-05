@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Api.Web.Mappers;
@@ -6,21 +7,16 @@ using R.Systems.Lexica.Api.Web.Models;
 using R.Systems.Lexica.Core.Commands.CreateSet;
 using R.Systems.Lexica.Core.Commands.DeleteSet;
 using R.Systems.Lexica.Core.Commands.UpdateSet;
-using R.Systems.Lexica.Core.Common.Domain;
-using R.Systems.Lexica.Core.Common.Errors;
 using R.Systems.Lexica.Core.Common.Lists;
 using R.Systems.Lexica.Core.Queries.GetSet;
 using R.Systems.Lexica.Core.Queries.GetSets;
-using R.Systems.Lexica.Infrastructure.Auth0;
 using R.Systems.Lexica.Infrastructure.Auth0.Auth;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
-[ApiController]
-[Authorize(AuthenticationSchemes = AuthenticationSchemes.Auth0)]
 [Route("sets")]
-public class SetsController : ControllerBase
+public class SetsController : ApiControllerWithAuthBase
 {
     private readonly ISender _mediator;
 
@@ -31,12 +27,11 @@ public class SetsController : ControllerBase
 
     [SwaggerOperation(Summary = "Get sets")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(ListInfo<SetRecordDto>),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
     [HttpGet]
     public async Task<IActionResult> GetSets(
         [FromQuery] ListRequest listRequest,
@@ -55,13 +50,12 @@ public class SetsController : ControllerBase
 
     [SwaggerOperation(Summary = "Get set")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
-        type: typeof(Set),
-        contentTypes: new[] { "application/json" }
+        type: typeof(SetDto),
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 404)]
-    [SwaggerResponse(statusCode: 500)]
+    [SwaggerResponse(StatusCodes.Status404NotFound)]
     [HttpGet("{setId}")]
     public async Task<IActionResult> GetSet(
         long setId,
@@ -80,16 +74,15 @@ public class SetsController : ControllerBase
         SetMapper mapper = new();
         SetDto setDto = mapper.ToSetDto(result.Set);
 
+
         return Ok(setDto);
     }
 
     [SwaggerOperation(Summary = "Delete set")]
     [SwaggerResponse(
-        statusCode: 204,
+        StatusCodes.Status204NoContent,
         description: "Set deleted"
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
     [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpDelete("{setId}")]
     public async Task<IActionResult> DeleteSet(
@@ -107,11 +100,10 @@ public class SetsController : ControllerBase
 
     [SwaggerOperation(Summary = "Create set")]
     [SwaggerResponse(
-        statusCode: 201,
-        description: "Set created"
+        StatusCodes.Status201Created,
+        description: "Set created",
+        type: typeof(CreateSetResult)
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
     [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpPost]
     public async Task<IActionResult> CreateSet(CreateSetRequest createSetRequest)
@@ -129,11 +121,9 @@ public class SetsController : ControllerBase
 
     [SwaggerOperation(Summary = "Update set")]
     [SwaggerResponse(
-        statusCode: 204,
+        StatusCodes.Status204NoContent,
         description: "Set updated"
     )]
-    [SwaggerResponse(statusCode: 422, type: typeof(List<ErrorInfo>), contentTypes: new[] { "application/json" })]
-    [SwaggerResponse(statusCode: 500)]
     [Authorize(Policy = AuthorizationPolicies.IsAdmin)]
     [HttpPut]
     public async Task<IActionResult> UpdateSet(UpdateSetRequest updateSetRequest)

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mime;
 using System.Text.Json;
 using FluentValidation;
 using R.Systems.Lexica.Core.Common.Errors;
@@ -56,14 +57,14 @@ public class ExceptionMiddleware
         };
         string errorsSerialized = JsonSerializer.Serialize(errors, jsonSerializerOptions);
 
-        context.Response.ContentType = "application/json";
+        context.Response.ContentType = MediaTypeNames.Application.Json;
         context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
         await context.Response.WriteAsync(errorsSerialized);
     }
 
     private void HandleException(HttpContext context)
     {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = MediaTypeNames.Application.Json;
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
     }
 }

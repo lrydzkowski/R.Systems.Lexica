@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net.Mime;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using R.Systems.Lexica.Api.Web.Mappers;
 using R.Systems.Lexica.Api.Web.Models;
@@ -8,8 +9,7 @@ using System.Reflection;
 
 namespace R.Systems.Lexica.Api.Web.Controllers;
 
-[ApiController]
-public class AppController : ControllerBase
+public class AppController : ApiControllerBase
 {
     public AppController(ISender mediator)
     {
@@ -20,13 +20,12 @@ public class AppController : ControllerBase
 
     [SwaggerOperation(Summary = "Get basic information about application")]
     [SwaggerResponse(
-        statusCode: 200,
+        StatusCodes.Status200OK,
         description: "Correct response",
         type: typeof(GetAppInfoResponse),
-        contentTypes: new[] { "application/json" }
+        contentTypes: [MediaTypeNames.Application.Json]
     )]
-    [SwaggerResponse(statusCode: 500)]
-    [HttpGet, Route("")]
+    [HttpGet("")]
     public async Task<IActionResult> GetAppInfo()
     {
         GetAppInfoResult result = await Mediator.Send(
