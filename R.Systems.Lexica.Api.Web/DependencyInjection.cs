@@ -24,7 +24,7 @@ public static class DependencyInjection
         services.ConfigureCors();
         services.ConfigureSequentialServices(environment, configuration);
         services.ChangeApiControllerModelValidationResponse();
-        services.ConfigureOptions(configuration);
+        services.ConfigureOptions(configuration, environment);
         services.ConfigureAuth();
     }
 
@@ -109,11 +109,16 @@ public static class DependencyInjection
         );
     }
 
-    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureOptions(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.ConfigureOptionsWithValidation<HealthCheckOptions, HealthCheckOptionsValidator>(
             configuration,
-            HealthCheckOptions.Position
+            HealthCheckOptions.Position,
+            environment
         );
     }
 

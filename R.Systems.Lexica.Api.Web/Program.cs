@@ -44,12 +44,11 @@ public class Program
     {
         builder.Services.ConfigureServices(builder.Environment, builder.Configuration);
         builder.Services.ConfigureCoreServices();
-        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration);
-        //builder.Services.ConfigureInfrastructureAzureServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureAuth0Services(builder.Configuration);
-        builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration);
-        builder.Services.ConfigureInfrastructureStorageServices(builder.Configuration);
+        builder.Services.ConfigureInfrastructureDbServices(builder.Configuration, builder.Environment);
+        builder.Services.ConfigureInfrastructureAuth0Services(builder.Configuration, builder.Environment);
+        builder.Services.ConfigureInfrastructureEnglishDictionaryServices(builder.Configuration, builder.Environment);
+        builder.Services.ConfigureInfrastructureWordnikServices(builder.Configuration, builder.Environment);
+        builder.Services.ConfigureInfrastructureStorageServices(builder.Configuration, builder.Environment);
     }
 
     private static void ConfigureLogging(WebApplicationBuilder builder)

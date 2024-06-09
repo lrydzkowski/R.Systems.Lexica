@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -14,18 +15,24 @@ public static class DependencyInjection
 {
     public static void ConfigureInfrastructureAuth0Services(
         this IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IWebHostEnvironment environment
     )
     {
-        services.ConfigureOptions(configuration);
+        services.ConfigureOptions(configuration, environment);
         services.ConfigureAuth(configuration);
     }
 
-    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureOptions(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.ConfigureOptionsWithValidation<Auth0Options, Auth0OptionsValidator>(
             configuration,
-            Auth0Options.Position
+            Auth0Options.Position,
+            environment
         );
     }
 

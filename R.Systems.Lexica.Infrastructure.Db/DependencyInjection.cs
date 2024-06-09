@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -18,20 +19,26 @@ public static class DependencyInjection
 {
     public static void ConfigureInfrastructureDbServices(
         this IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IWebHostEnvironment environment
     )
     {
-        services.ConfigureOptions(configuration);
+        services.ConfigureOptions(configuration, environment);
         services.ConfigureAppDbContext();
         services.ConfigureServices();
         ConfigureHealthChecks(services);
     }
 
-    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureOptions(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.ConfigureOptionsWithValidation<ConnectionStringsOptions, ConnectionStringsOptionsValidator>(
             configuration,
-            ConnectionStringsOptions.Position
+            ConnectionStringsOptions.Position,
+            environment
         );
     }
 

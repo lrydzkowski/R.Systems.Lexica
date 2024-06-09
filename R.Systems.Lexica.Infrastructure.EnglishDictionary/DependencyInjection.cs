@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Core.Queries.GetRecording;
@@ -11,19 +12,25 @@ public static class DependencyInjection
 {
     public static void ConfigureInfrastructureEnglishDictionaryServices(
         this IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IWebHostEnvironment environment
     )
     {
-        services.ConfigureOptions(configuration);
+        services.ConfigureOptions(configuration, environment);
         services.ConfigureServices();
         services.ConfigureHealthChecks();
     }
 
-    private static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureOptions(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.ConfigureOptionsWithValidation<EnglishDictionaryOptions, EnglishDictionaryOptionsValidator>(
             configuration,
-            EnglishDictionaryOptions.Position
+            EnglishDictionaryOptions.Position,
+            environment
         );
     }
 

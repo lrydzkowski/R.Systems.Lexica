@@ -36,5 +36,12 @@
   <ItemGroup>
     <Folder Include="Logs\" />
   </ItemGroup>
+  
+  <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
+    <Exec Command="dotnet swagger tofile --output ./openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1"
+          WorkingDirectory="$(ProjectDir)"
+          EnvironmentVariables="ASPNETCORE_ENVIRONMENT=SwaggerCli"
+          LogStandardErrorAsError="true" />
+  </Target>
 
 </Project>

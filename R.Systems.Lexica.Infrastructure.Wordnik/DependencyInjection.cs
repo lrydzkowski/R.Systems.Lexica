@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using R.Systems.Lexica.Core;
 using R.Systems.Lexica.Core.Queries.GetDefinitions;
@@ -11,20 +12,26 @@ public static class DependencyInjection
 {
     public static void ConfigureInfrastructureWordnikServices(
         this IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IWebHostEnvironment environment
     )
     {
-        services.ConfigureOptions(configuration)
+        services.ConfigureOptions(configuration, environment)
             .AddMemoryCache()
             .ConfigureServices()
             .ConfigureHealthChecks();
     }
 
-    private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection ConfigureOptions(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
         services.ConfigureOptionsWithValidation<WordnikOptions, WordnikOptionsValidator>(
             configuration,
-            WordnikOptions.Position
+            WordnikOptions.Position,
+            environment
         );
 
         return services;

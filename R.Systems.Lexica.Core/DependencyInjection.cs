@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Polly.Caching;
 using Polly.Caching.Memory;
 using R.Systems.Lexica.Core.Common.Api;
@@ -11,6 +13,8 @@ namespace R.Systems.Lexica.Core;
 
 public static class DependencyInjection
 {
+    private const string SwaggerCliEnvironmentName = "SwaggerCli";
+
     public static void ConfigureCoreServices(this IServiceCollection services)
     {
         services.AddMediatR();
@@ -21,16 +25,20 @@ public static class DependencyInjection
     public static void ConfigureOptionsWithValidation<TOptions, TValidator>(
         this IServiceCollection services,
         IConfiguration configuration,
-        string configurationPosition
+        string configurationPosition,
+        IWebHostEnvironment environment
     )
         where TOptions : class
         where TValidator : class, IValidator<TOptions>
     {
         services.AddSingleton<IValidator<TOptions>, TValidator>();
-        services.AddOptions<TOptions>()
+        OptionsBuilder<TOptions> optionsBuilder = services.AddOptions<TOptions>()
             .Bind(configuration.GetSection(configurationPosition))
-            .ValidateFluently()
-            .ValidateOnStart();
+            .ValidateFluently();
+        if (environment.EnvironmentName != SwaggerCliEnvironmentName)
+        {
+            optionsBuilder.ValidateOnStart();
+        }
     }
 
     private static void AddMediatR(this IServiceCollection services)
