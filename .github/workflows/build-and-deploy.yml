@@ -39,7 +39,7 @@ jobs:
         run: dotnet restore
 
       - name: Install .NET Tools
-        uses: dotnet tool restore
+        run: dotnet tool restore
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
